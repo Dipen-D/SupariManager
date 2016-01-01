@@ -1,0 +1,128 @@
+<!-- Begin page content -->
+		<div class="container">
+			<div class="page-header row">
+				<div class="col-xs-6">
+					<h1 style="font-size:22px;font-weight:700;">Process</h1>
+				</div>
+				<div class="col-xs-6">
+					<input type="text" class="form-control bigFonts" readonly  placeholder="Date" value="24/11/2015" style="margin-top: 15px;" />
+				</div>
+			</div>
+
+			<div class="form-horizontal">
+				<div class="form-group">
+					<div class="col-lg-4 col-sm-5 col-xs-12">
+						<select id="product" class="bigFonts" ng-model="processEntry.product">
+							<option value="Mari">Mari</option>
+							<option value="Supari" >Supari</option>
+						</select>
+						<div>
+							<br>
+						</div>
+						<select id="type" class="bigFonts" style="width: 100%;" ng-model="processEntry.type">
+							<option value="">Select a type</option>
+							<option value="N">N</option>
+							<option value="C">C</option>
+							<option value="DC">DC</option>
+						</select>
+						
+						<!-- <input type="number" pattern="\d*" ng-model="rawMaterial" class="form-control bigFonts" placeholder="Raw Material" /> -->
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="" class="col-sm-2 col-xs-12  control-label">Raw Material</label>
+					<div class="col-sm-3 col-xs-7 input-bags">
+						<div class="input-group">
+							<input type="number" id="rawMaterialBags" ng-model="processEntry.rawMaterialBags"  pattern="\d*" class="form-control bigFonts " placeholder="Bags" aria-describedby="basic-addon2" min="0" max="999"/>
+							<span class="input-group-addon" >x 65 KG</span>
+						</div>
+					</div>
+					<div class="col-sm-3 col-xs-5">
+						<div class="input-group">
+							<input type="number" id="rawMaterialPackets" ng-model="processEntry.rawMaterialPackets" pattern="\d*" class="form-control bigFonts " placeholder="Packet" aria-describedby="basic-addon2" min="0" max="65"/>
+							<span class="input-group-addon" > KG</span>
+						</div>
+					</div>
+				</div>
+				<hr />
+				<div id="entryFields">
+					<div class="form-group" ng-repeat="type in processEntry.supariType" ng-hide="(processEntry.product != 'Supari')">
+						<label for="" class="col-sm-2 col-xs-12  control-label">{{type}}</label>
+						<div class="col-sm-3 col-xs-7 input-bags">
+							<div class="input-group">
+								<input type="number" id="{{type + 'Bags'}}" pattern="\d*" class="form-control bigFonts " placeholder="Bags" aria-describedby="basic-addon2" />
+								<span class="input-group-addon" >x 65 KG</span>
+							</div>
+						</div>
+						<div class="col-sm-3 col-xs-5">
+							<div class="input-group">
+								<input type="number" id="{{type + 'Packets'}}" pattern="\d*" class="form-control bigFonts " placeholder="Packet" aria-describedby="basic-addon2" />
+								<span class="input-group-addon" > KG</span>
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-group" ng-repeat="type in processEntry.mariType" ng-hide="(processEntry.product != 'Mari')">
+						<label for="" class="col-sm-2 col-xs-12  control-label">{{type}}</label>
+						<div class="col-sm-3 col-xs-7 input-bags">
+							<div class="input-group">
+								<input type="number" id="{{type + 'Bags'}}" pattern="\d*" class="form-control bigFonts" placeholder="Bags" aria-describedby="basic-addon2" />
+								<span class="input-group-addon" >x 65 KG</span>
+							</div>
+						</div>
+						<div class="col-sm-3 col-xs-5">
+							<div class="input-group">
+								<input type="number" id="{{type + 'Packets'}}" pattern="\d*" class="form-control bigFonts" placeholder="Packet" aria-describedby="basic-addon2" />
+								<span class="input-group-addon" > KG</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<hr />
+			<div class="form-group form-group-sm">
+				<label for="" class="col-sm-2 col-xs-6  control-label">Total</label>
+				<label for="" class="col-sm-2 col-xs-6  control-label text-right">{{processEntry.getTotalWeight()}} KG</label>
+			</div>
+
+			<div class="form-group form-group-sm">
+				<label for="" class="col-sm-2 col-xs-6  control-label">Adj</label>
+				<label for="" class="col-sm-2 col-xs-6  control-label text-right" ng-class="{'text-danger' : (processEntry.getAdjustment() < 0), 'text-success' : (processEntry.getAdjustment() >= 0)}">{{processEntry.getAdjustment()}} KG</label>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button id="saveBtn" type="submit" class="btn btn-success btn-block btn-block-xs bigFonts">Save</button>
+				</div>
+			</div> 
+		</div>
+		<!-- Modal starts -->
+		<div id="summary-modal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title">Processed</h4>
+					</div>
+					<div class="modal-body">
+						<table class="table table-bordered">
+							<tbody id="recieptContainer">
+								
+							</tbody>
+						</table>
+						<div class="text-right" ng-class="{'text-danger' : (getAdjustment() < 0), 'text-success' : (processEntry.getAdjustment() >= 0)}">*Weight loss/gain: {{processEntry.getAdjustment()}} KG</div>
+					</div>
+					<div class="modal-footer">
+						<div class="col-xs-6">
+							<button type="button" class="btn btn-default bigFonts" data-dismiss="modal" style="width: 100%;">No</button>
+						</div>
+						<div class="col-xs-6">
+							<button type="button" class="btn btn-success bigFonts" data-dismiss="modal" style="width: 100%;">Yes</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>

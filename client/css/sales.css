@@ -1,0 +1,85 @@
+#entryFields .form-control{
+	margin: 5px 0;
+}
+
+#entryFields select{
+	margin: 10px 0;
+}
+
+.input-group{
+	margin: 5px 0;
+}
+.input-group .form-control{
+	margin: 0px 0 !important;
+}
+
+.addBtn{
+	margin: 5px 0;
+}
+
+.entries{
+	border-bottom: 1px solid #EEE;
+    padding: 5px;
+}
+
+.oddClass {
+	background: #eee
+}
+
+.invalidInput{
+	border: 1px solid red;
+}
+
+.flRight{
+	float:right;
+}
+
+.clearIcon{
+	float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.recieptContainer{
+	display:none;
+}
+
+.recieptContainerModal td{
+	vertical-align:middle !important;
+}
+
+.recieptHeader{
+	background-color: #d9edf7;
+	padding: 15px 10px;
+}
+
+.totalBagsContainer{
+	padding: 15px 10px;
+}
+.recieptFooter{
+	background-color: #d9edf7;
+	padding: 15px 10px;
+}
+@media (max-width: 768px) {
+	.typeClass{
+		text-align:right;
+	}
+}
+
+
+/******************* Swipe to delete **********************/
+.list .item {
+  border-bottom: 1px solid #e1e1e1;
+  height: 50px;
+}
+/*.list .item .item-swipe {
+  background: #ffffff;
+  padding: 15px 10px;
+  z-index: 1;
+}*/
+.item-swipe.swipefix {
+    margin-left: 0px !important;
+}
+/*.list .item .item-swipe.open {
+    padding: 11px !Important;
+}*/

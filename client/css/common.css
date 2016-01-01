@@ -1,0 +1,249 @@
+body > .container {
+  padding: 60px 15px 0;
+}
+
+.calc-label{
+	display:inline-block;
+	padding-top:7px;
+}
+.border-bottom{
+	border-bottom: 1px solid #eee;
+	margin-bottom:10px;
+}
+
+.not-visible{
+	visibility:hidden;
+}
+
+.page-header{
+	margin-top: 0px;
+	font-size:20px !important;
+}
+
+.bigFonts{
+	font-size:18px !important;
+}
+
+@media (max-width: 768px) {
+  .page-header{
+	  margin-top:0;
+	  margin-bottom:10px;
+  }
+  .page-header h1{
+	  font-size: 18px;
+  }
+}
+
+
+@media (min-width: 768px) {
+	.btn-block-xs{
+		width:auto;
+	}
+}
+
+/*---------------------------------For Dropdown Menu---------------------------------------------------------*/
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+li.divider
+{
+	height: 1px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+
+/*-----------------------------------------------------------For sorting symbol---------------------------------------------*/
+.sortorder:after {
+  content: '\25b2';
+}
+.sortorder.reverse:after {
+  content: '\25bc';
+}
+span.sortorder
+{
+	font-size: 10px;
+	text-align: center;
+	vertical-align: middle;
+}
+span.sortoder.reverse
+{
+	font-size: 10px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+/*-----------------------------------------------------Navbar----------------------------------------*/
+ul.dropdown-menu.multi-level {
+    font-size: 18px;
+}
+
+.navbar-nav {
+    margin: 0px;
+	font-size:18px;
+}
+
+a.delete
+{
+	color:red;
+	margin-left:10px
+}
+a.redirect
+{
+	color:green;
+	margin-left:6px;
+}
+/*-------------------------------------------Swipe to Delete-----------------------------------------------------*/
+.list {
+  width: 100%;
+  overflow: hidden;
+}
+.list .item .item-swipe {
+  background: #ffffff;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+ margin-left: -14px;
+}
+.list .item a.item-swipe {
+  display: block;
+  height: 100%;
+  position: relative;
+  text-decoration: inherit;
+  color: #333;
+   
+}
+
+
+
+.list .item a.item-swipe:active { 
+	color: inherit; 
+}
+
+.list .item .item-swipe.open { 
+	background: #333; padding:20px; 
+}
+
+.list .item .item-swipe.open:before {
+  content: "\f00d";
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  color: #fff;
+  position: absolute;
+  right: 71px;
+  font-size: 24px;
+  margin-top: -5px;
+  padding: -4px -2px 0px 3px;
+}
+
+.list .item .item-back {
+  background: #E1E1E1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 10px;
+  text-align: right;
+}
+
+.list .item .item-back .action {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 50px;
+  border: inherit;
+  outline: inherit;
+  color: #fff;
+  padding: 0;
+  font-size: 22px;
+}
+
+.list .item .item-back .action.first { 
+	right: 0; 
+}
+
+.list .item .item-back .action.second { 
+	right: 50px; 
+}
+
+.list .item .item-swipe.swiped {
+  -webkit-transition: all .1s linear;
+  -ms-transition: all .1s linear;
+  -moz-transition: all .1s linear;
+  -o-transition: all .1s linear;
+  transition: all .1s linear;
+}
+
+.btn-delete { 
+	background: #b22222; 
+}
+
+.btn-check {
+	background: #008000;
+}
+
+/*------------------------------------------Wrapping(content of table to ceneter)-----------------------------------------------*/
+.wrap {
+    height: 60px;
+	text-align:center;
+    display: table-cell;
+    vertical-align: middle;
+	text-align:right;
+}
+
+/*---------------------------------------------------------Tooltip---------------------------------------------------------------*/
+.popover-content {
+   padding: 0px;
+}
+/*------------------------------------------------------------To make digits right aligned------------------------------------------*/

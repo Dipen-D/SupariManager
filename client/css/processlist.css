@@ -1,0 +1,66 @@
+/******************* Swipe to delete **********************/
+.list .item {
+ border-bottom: 1px solid #E1E1E1;
+  position: relative;
+  height: 62px;
+}
+.list .item1
+{
+	padding:10px;
+	background:#d9edf7;
+	margin-left:-22px;
+	height:58px
+}
+
+.amount
+{
+	width: 82px;
+    margin-left: -12px;
+}
+
+.extra
+{	padding-right:0px;
+    padding-left: 8px;
+}
+
+span.row1.input-fix
+{
+	margin-left:-15px;
+}
+span.row1.type-fix
+{
+	margin-left: -15px;
+}
+span.row1.date-fix
+{
+	margin-left:5px;
+}
+
+b.date-heading
+{
+	margin:5px;
+}
+b.product-heading {
+    margin-left: -10px;
+}
+b.input-heading {
+    margin-left: -12px;
+}
+b.output-heading {
+    margin-left: 0px;
+}
+.kgs
+{
+	margin-left: 17px;
+}
+
+.wrap.float-input-output-right {
+    float: right;
+    padding: 17px;
+    padding-right: 0px;
+}
+
+.input-output-heading
+{
+	text-align:right;
+}

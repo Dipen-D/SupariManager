@@ -1,0 +1,21 @@
+.calc-label{
+	display:inline-block;
+	padding-top:7px;
+}
+
+.productLabel{
+	padding: 0;
+}
+
+.input-group .form-control {
+	font-size: 18px;
+}
+
+.input-group{
+	z-index: 0;
+}
+@media (max-width: 768px) {
+  .input-bags {
+    margin-bottom: 15px !important;
+  }
+}
