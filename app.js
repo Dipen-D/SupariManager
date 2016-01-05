@@ -59,13 +59,13 @@ if (Meteor.isClient) {
 		  .pluck('name')
 		  .flatten()
 		  .value();
-		//console.log(this.supariType);
+		console.log(this.supariType);
 		
 		//this.supariType = SupariTypes.find({}, {name:1, _id:0});//["Moro","Moti","Sevar","Jam","Jini","Lindi","MMF","MF","S.F.","J.F.","G.F.","R.F."];
 		this.mariType = ["Mari1","Mari2"];
 			this.getTotalWeight = function(){
 				var total = 0;
-				var data = (this.product == 'Supari') ? supariType : mariType;
+				var data = (this.product == 'Supari') ? this.supariType : this.mariType;
 				$.each(data, function(index, value){
 					var weight = getTotalWeightForProduct(value);
 					total+= weight;
@@ -103,7 +103,7 @@ if (Meteor.isClient) {
 			var fillModalHtml = function(){
 				var obj = "";
 				var totalWeight = 0;
-				var data = ($('#product').val() == 'Supari') ? supariType : mariType;
+				var data = ($('#product').val() == 'Supari') ? this.supariType : this.mariType;
 				var rawMaterialBags = (isNaN($('#rawMaterialBags').val()))? 0 : $('#rawMaterialBags').val();
 				var rawMaterialPackets = (isNaN($('#rawMaterialPackets').val()))? 0 : $('#rawMaterialPackets').val();
 				var rawMaterial = parseInt(rawMaterialBags * 65) + parseInt(rawMaterialPackets);
