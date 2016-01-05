@@ -47,7 +47,9 @@
 .recieptContainerModal td{
 	vertical-align:middle !important;
 }
-
+#saveBtna{
+	display:none;
+}
 .recieptHeader{
 	background-color: #d9edf7;
 	padding: 15px 10px;

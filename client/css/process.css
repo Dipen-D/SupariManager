@@ -1,0 +1,15 @@
+.edit-del{
+	padding:15px 10px;
+}
+
+.del-row .item-swipe.swipefix {
+    padding: 15px 10px;
+}
+.receipt.row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.del-row .row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
