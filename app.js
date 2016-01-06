@@ -37,13 +37,12 @@ if (Meteor.isClient) {
 
     $urlRouterProvider.otherwise("/saleslist");
   });
-   angular.module('supariApp').directive('processList', function () {
-	
-	return {
-      restrict: 'E',
-      templateUrl: 'process-entry.html',
-      controllerAs: 'processEntry',
-      controller: function ($scope, $reactive) {
+   angular.module('supariApp').directive('processEntry', function () {
+		return {
+			restrict: 'E',
+			templateUrl: 'process-entry.html',
+			controllerAs: 'processEntry',
+			 controller: function ($scope, $reactive) {
 	    $reactive(this).attach($scope);
 		this.product = "Supari";
 		
@@ -104,6 +103,9 @@ if (Meteor.isClient) {
 				var obj = "";
 				var totalWeight = 0;
 				var data = ($('#product').val() == 'Supari') ? this.supariType : this.mariType;
+				console.log(data);
+				console.log(this.supariType);
+				console.log(this.mariType);
 				var rawMaterialBags = (isNaN($('#rawMaterialBags').val()))? 0 : $('#rawMaterialBags').val();
 				var rawMaterialPackets = (isNaN($('#rawMaterialPackets').val()))? 0 : $('#rawMaterialPackets').val();
 				var rawMaterial = parseInt(rawMaterialBags * 65) + parseInt(rawMaterialPackets);
@@ -150,6 +152,7 @@ if (Meteor.isClient) {
 			}
 		}
 	});
+
  	 
 		
 	angular.module('supariApp').directive('purchaseEntry', function () {
@@ -178,7 +181,7 @@ if (Meteor.isClient) {
 			templateUrl: 'sales-entry.html',
 			controllerAs: 'salesEntry',
 			controller: function ($scope, $stateParams) {
-			
+			this.product = "Supari";
 			function add_commasInAmount(nStr) { //regulerExpression function add coma(,) in price range
 				nStr += '';
 				x = nStr.split('.');

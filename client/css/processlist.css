@@ -4,14 +4,16 @@
   position: relative;
   height: 62px;
 }
-.list .item1
+.list .item1 
 {
 	padding:10px;
 	background:#d9edf7;
 	margin-left:-22px;
-	height:58px
+	height:58px;
 }
-
+.processlistheader{
+	height:58px;
+}
 .amount
 {
 	width: 82px;
