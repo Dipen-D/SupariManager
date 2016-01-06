@@ -43,6 +43,7 @@ if (Meteor.isClient) {
 			templateUrl: 'process-entry.html',
 			controllerAs: 'processEntry',
 			 controller: function ($scope, $reactive) {
+				 var data = [];
 	    $reactive(this).attach($scope);
 		this.product = "Supari";
 		
