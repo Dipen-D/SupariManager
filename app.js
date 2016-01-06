@@ -37,9 +37,9 @@ if (Meteor.isClient) {
 
     $urlRouterProvider.otherwise("/saleslist");
   });
-
-  angular.module('supariApp').directive('processEntry', function () {
-    return {
+  
+	
+	return {
       restrict: 'E',
       templateUrl: 'process-entry.html',
       controllerAs: 'processEntry',
@@ -298,10 +298,10 @@ if (Meteor.isClient) {
 				}
 				if(data.length > 0){
 					$('.recieptContainer').show();
-					$('#saveBtn').show();
+					$('#saveBtnsales').show();
 				}else{
 					$('.recieptContainer').hide();
-					$('#saveBtn').hide();
+					$('#saveBtnsales').hide();
 				}
 				
 			$('.recieptContainer .list').html(obj);
@@ -376,7 +376,7 @@ if (Meteor.isClient) {
 					}
 					fillRecieptHtml();
 				});
-				$('#saveBtn').click(function(){
+				$('#saveBtnsales').click(function(){
 					fillModalHtml();
 				});
 				$('select').on('change',function(){
@@ -453,22 +453,22 @@ if (Meteor.isClient) {
 				{date:"12/13", account: "R.S.A", transport: "N.P.T",bags:"68"},
 				{date:"12/12", account: "Sudesh", transport: "V.T.Co",bags:"6000"},
 				{date:"12/11", account: "M.M", transport: "N.P.T",bags:"50"}];
-			
-				this.predicate = 'date';
-				this.reverse = true;
-				this.order = function(predicate) {
+					this.predicate = 'date';
+					this.reverse = true;
+					this.order = function(predicate) {
 					this.reverse = (this.predicate === predicate) ? !this.reverse : false;
 					this.predicate = predicate;
 				}
-			}]
+		}]
 		}
 	});
+
 	angular.module('supariApp').directive('purchaseList', function () {
     return {
       restrict: 'E',
       templateUrl: 'purchase-list.html',
       controllerAs: 'purchaseList',
-      controller:function ($scope, $stateParams) {
+      controller:['$scope',function ($scope, $stateParams) {
 		this.weight = function(nStr) { //regulerExpression function add coma(,) in price range
 							nStr += '';
 							x = nStr.split('.');
@@ -487,8 +487,14 @@ if (Meteor.isClient) {
 		{date:"12/13", product: "Mari", account: "G.K.S",weight:"6800"},
 		{date:"12/12", product: "supari", account: "M.M",weight:"650"},
 		{date:"12/11", product: "Mari", account: "Sudesh",weight:"650"}];
+		this.predicate = 'date';
+					this.reverse = true;
+					this.order = function(predicate) {
+					this.reverse = (this.predicate === predicate) ? !this.reverse : false;
+					this.predicate = predicate;
+					}
 
-	  }
+	  }]
     }
   });
     angular.module('supariApp').directive('processList', function () {
@@ -496,7 +502,7 @@ if (Meteor.isClient) {
       restrict: 'E',
       templateUrl: 'process-list.html',
       controllerAs: 'processList',
-      controller:function ($scope, $stateParams) {
+      controller:['$scope',function ($scope, $stateParams) {
 		this.weight = function(nStr) { //regulerExpression function add coma(,) in price range
 							nStr += '';
 							x = nStr.split('.');
@@ -516,7 +522,13 @@ if (Meteor.isClient) {
 		{date:"12/13", type:"C", product: "Mari", input: "6900",output:"6800"},
 		{date:"12/12", type:"DC", product: "supari", input: "650",output:"650"},
 		{date:"12/11", type:"N", product: "Mari", input: "650",output:"650"}];
-	  }
+		this.predicate = 'date';
+		this.reverse = true;
+		this.order = function(predicate) {
+			this.reverse = (this.predicate === predicate) ? !this.reverse : false;
+		this.predicate = predicate;
+		}
+	  }]
     }
   });
 
@@ -538,12 +550,22 @@ if (Meteor.isClient) {
 			},
 		
 		});
-	
+		$('[data-toggle="popover"]').popover();
+		$('body').on('click', function (e) {
+			$('[data-toggle="popover"]').each(function () {
+			//the 'is' for buttons that trigger popups
+			//the 'has' for icons within a button that triggers a popup
+				if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+					$(this).popover('hide');
+				}
+			});
+		});
 		close();
 		deleteItem();
 		editItem();
 		editItemDesktop();
 		deleteItemDesktop();
+		
 		window.onload = function() {
 			$("html").unmask();
 			$("body").show();

@@ -15,22 +15,22 @@
 					</td>
 					<td>
 						<div class="col-xs-3 col-lg-3 heading-date">
-							<b class="date-heading" ng-click="order('date')">Date</b><span class="sortorder" ng-show="purchaseList.predicate === 'date'" ng-class="{reverse:reverse}"></span>
+							<b class="date-heading" ng-click="purchaseList.order('date')">Date</b><span class="sortorder" ng-show="purchaseList.predicate === 'date'" ng-class="{reverse:purchaseList.reverse}"></span>
 						</div>
 					</td>
 					<td>
 						<div class="col-xs-3 col-lg-3 heading-prdouct">
-							<b ng-click="order('product')" >Product</b><span class="sortorder" ng-show="purchaseList.predicate === 'product'" ng-class="{reverse:reverse}"></span>
+							<b ng-click="purchaseList.order('product')" >Product</b><span class="sortorder" ng-show="purchaseList.predicate === 'product'" ng-class="{reverse:purchaseList.reverse}"></span>
 						</div>
 					</td>
 					<td>
 						<div class="col-xs-3 col-lg-2 heading-account">
-							<b ng-click="order('account')">Account</b><span class="sortorder" ng-show="purchaseList.predicate === 'account'" ng-class="{reverse:reverse}"></span>
+							<b ng-click="purchaseList.order('account')">Account</b><span class="sortorder" ng-show="purchaseList.predicate === 'account'" ng-class="{reverse:purchaseList.reverse}"></span>
 						</div>
 					</td>
 					<td>
 						<div class="col-xs-3 col-lg-2 heading-weight">
-							<b ng-click="order('weight')">Weight</b><span class="sortorder" ng-show="purchaseList.predicate === 'weight'" ng-class="{reverse:reverse}"></span>
+							<b ng-click="purchaseList.order('weight')">Weight</b><span class="sortorder" ng-show="purchaseList.predicate === 'weight'" ng-class="{reverse:purchaseList.reverse}"></span>
 							<b class="purchase-kg">(KG)</b>
 						</div>
 					</td>

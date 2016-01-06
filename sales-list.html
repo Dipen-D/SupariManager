@@ -15,22 +15,22 @@
 					</td>
 					<td>
 						<div class="col-xs-3 col-lg-3">
-							<b class="date-heading" ng-click="salesList.order('date')">Date</b><span class="sortorder" ng-show="salesList.predicate === 'date'" ng-class="{reverse:reverse}"></span>
+							<b class="date-heading" ng-click="salesList.order('date')">Date</b><span class="sortorder" ng-show="salesList.predicate === 'date'" ng-class="{reverse:salesList.reverse}"></span>
 						</div>
 					</td>
 					<td>
 						<div class="col-xs-3 col-lg-3">
-							<b class="account-heading" ng-click="salesList.order('account')" >Account</b><span class="sortorder" ng-show="salesList.predicate === 'account'" ng-class="{reverse:reverse}"></span>
+							<b class="account-heading" ng-click="salesList.order('account')" >Account</b><span class="sortorder" ng-show="salesList.predicate === 'account'" ng-class="{reverse:salesList.reverse}"></span>
 						</div>
 					</td>
 					<td>
 						<div class="col-xs-3 col-lg-2">
-							<b class="transport-heading" ng-click="salesList.order('transport')">Transport</b><span class="sortorder" ng-show="salesList.predicate === 'transport'" ng-class="{reverse:reverse}"></span>
+							<b class="transport-heading" ng-click="salesList.order('transport')">Transport</b><span class="sortorder" ng-show="salesList.predicate === 'transport'" ng-class="{reverse:salesList.reverse}"></span>
 						</div>
 					</td>
 					<td>
 						<div class="col-xs-3 col-lg-2 sales-bags">
-							<b class="bags-heading" ng-click="salesList.order('bags')">Bags</b><span class="sortorder" ng-show="salesList.predicate === 'bags'" ng-class="{reverse:reverse}"></span>				
+							<b class="bags-heading" ng-click="salesList.order('bags')">Bags</b><span class="sortorder" ng-show="salesList.predicate === 'bags'" ng-class="{reverse:salesList.reverse}"></span>				
 						</div>
 					</td>
 					<td>
@@ -42,7 +42,7 @@
 			</div>
 		</div>
  
-		<div class="list" ng-repeat="user in salesList.users |  orderBy:salesList.predicate:reverse">
+		<div class="list" ng-repeat="user in salesList.users |  orderBy:salesList.predicate:salesList.reverse">
 			<div class="item">
 			<div class="item-swipe bigFonts">
 				<div class="col-xs-3 hidden-xs hidden-sm hidden-md col-lg-1">
@@ -87,3 +87,4 @@
 			</div>
 		</div>
 	</div>
+	
