@@ -99,13 +99,11 @@ if (Meteor.isClient) {
 					return (isNaN(weight))? 0 : weight;
 			};
 
-			var fillModalHtml = function(){
+			this.fillModalHtml = function(){
 				var obj = "";
 				var totalWeight = 0;
 				var data = ($('#product').val() == 'Supari') ? this.supariType : this.mariType;
 				console.log(data);
-				console.log(this.supariType);
-				console.log(this.mariType);
 				var rawMaterialBags = (isNaN($('#rawMaterialBags').val()))? 0 : $('#rawMaterialBags').val();
 				var rawMaterialPackets = (isNaN($('#rawMaterialPackets').val()))? 0 : $('#rawMaterialPackets').val();
 				var rawMaterial = parseInt(rawMaterialBags * 65) + parseInt(rawMaterialPackets);
@@ -143,12 +141,12 @@ if (Meteor.isClient) {
 				$('#recieptContainer').html(obj);
 			};
 
-			$(document).ready(function(){
+			/*$(document).ready(function(){
 				$('#saveBtn').click(function(){
 					//$('#summary-modal').modal('show');
 					fillModalHtml();
 				});
-			});
+			});*/
 			}
 		}
 	});
@@ -450,12 +448,12 @@ if (Meteor.isClient) {
 									return x1 + x2;
 				}
 				this.users = 
-				[{date:"12/16", account: "M.S.A", transport: "V.T.Co",bags:"1000"},
-				{date:"12/15", account: "M.M", transport: "N.P.T",bags:"20"},
-				{date:"12/14", account: "Sudesh", transport: "V.T.Co",bags:"70"},
-				{date:"12/13", account: "R.S.A", transport: "N.P.T",bags:"68"},
-				{date:"12/12", account: "Sudesh", transport: "V.T.Co",bags:"6000"},
-				{date:"12/11", account: "M.M", transport: "N.P.T",bags:"50"}];
+				[{date:"12/16", account: "M.S.A", transport: "V.T.Co",bags:1000},
+				{date:"12/15", account: "M.M", transport: "N.P.T",bags:20},
+				{date:"12/14", account: "Sudesh", transport: "V.T.Co",bags:70},
+				{date:"12/13", account: "R.S.A", transport: "N.P.T",bags:68},
+				{date:"12/12", account: "Sudesh", transport: "V.T.Co",bags:6000},
+				{date:"12/11", account: "M.M", transport: "N.P.T",bags:50}];
 					this.predicate = 'date';
 					this.reverse = true;
 					this.order = function(predicate) {
@@ -484,12 +482,12 @@ if (Meteor.isClient) {
 							return x1 + x2;
 						}
 		this.users = 
-		[{date:"12/16", product: "supari", account: "Mallaya",weight:"6500"},
-		{date:"12/15", product: "Mari", account: "M.M",weight:"660"},
-		{date:"12/14", product: "supari", account: "Sudesh",weight:"6700"},
-		{date:"12/13", product: "Mari", account: "G.K.S",weight:"6800"},
-		{date:"12/12", product: "supari", account: "M.M",weight:"650"},
-		{date:"12/11", product: "Mari", account: "Sudesh",weight:"650"}];
+		[{date:"12/16", product: "supari", account: "Mallaya",weight:6500},
+		{date:"12/15", product: "Mari", account: "M.M",weight:660},
+		{date:"12/14", product: "supari", account: "Sudesh",weight:6700},
+		{date:"12/13", product: "Mari", account: "G.K.S",weight:6800},
+		{date:"12/12", product: "supari", account: "M.M",weight:650},
+		{date:"12/11", product: "Mari", account: "Sudesh",weight:650}];
 		this.predicate = 'date';
 					this.reverse = true;
 					this.order = function(predicate) {
@@ -519,12 +517,12 @@ if (Meteor.isClient) {
 						}
 		this.users = 
 		[
-		{date:"12/16", type:"DC", product: "supari", input: "6000",output:"6500"},
-		{date:"12/15", type:"N", product: "Mari", input: "660",output:"660"},
-		{date:"12/14", type:"N", product: "supari", input: "660",output:"670"},
-		{date:"12/13", type:"C", product: "Mari", input: "6900",output:"6800"},
-		{date:"12/12", type:"DC", product: "supari", input: "650",output:"650"},
-		{date:"12/11", type:"N", product: "Mari", input: "650",output:"650"}];
+		{date:"12/16", type:"DC", product: "supari", input: 6000,output:"6500"},
+		{date:"12/15", type:"N", product: "Mari", input: 660,output:"660"},
+		{date:"12/14", type:"N", product: "supari", input: 660,output:"670"},
+		{date:"12/13", type:"C", product: "Mari", input: 6900,output:"6800"},
+		{date:"12/12", type:"DC", product: "supari", input: 650,output:"650"},
+		{date:"12/11", type:"N", product: "Mari", input: 650,output:"650"}];
 		this.predicate = 'date';
 		this.reverse = true;
 		this.order = function(predicate) {

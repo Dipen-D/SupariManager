@@ -11,8 +11,8 @@
 	margin-left:-22px;
 	height:58px;
 }
-.processlistheader{
-	height:58px;
+.item1.item.processlist {
+    height: 58px;
 }
 .amount
 {
