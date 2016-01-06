@@ -37,7 +37,7 @@ if (Meteor.isClient) {
 
     $urlRouterProvider.otherwise("/saleslist");
   });
-  
+   angular.module('supariApp').directive('processList', function () {
 	
 	return {
       restrict: 'E',
