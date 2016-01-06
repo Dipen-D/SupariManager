@@ -60,6 +60,9 @@ if (Meteor.isClient) {
 		  .value();
 		console.log(this.supariType);
 		
+		if(this.supariType.length == 0){
+			this.supariType = ["Moro","Moti","Sevar","Jam","Jini","Lindi","MMF","MF","S.F.","J.F.","G.F.","R.F."];
+		}
 		//this.supariType = SupariTypes.find({}, {name:1, _id:0});//["Moro","Moti","Sevar","Jam","Jini","Lindi","MMF","MF","S.F.","J.F.","G.F.","R.F."];
 		this.mariType = ["Mari1","Mari2"];
 			this.getTotalWeight = function(){
