@@ -1,4 +1,5 @@
 SupariTypes = new Mongo.Collection("SupariTypeMaster");
+AccountNames = new Mongo.Collection("AccountTypeMaster");
 
 if (Meteor.isClient) {
   angular.module('supariApp', [
@@ -155,15 +156,29 @@ if (Meteor.isClient) {
 		}
 	});
 
- 	 
-		
+ 
 	angular.module('supariApp').directive('purchaseEntry', function () {
 		return {
 			restrict: 'E',
 			templateUrl: 'purchase-entry.html',
 			controllerAs: 'purchaseEntry',
-			controller: function ($scope, $stateParams) {
-					this.product = "Supari";
+			
+			controller: function($scope, $reactive) {
+				$reactive(this).attach($scope);
+
+				/*this.helpers({
+					AccountNames: () => {
+						return AccountNames.find({});
+					}
+				});*/
+				this.AccountNames = AccountNames.find({});
+				/*this.AccountNames = 
+				_.chain(this.AccountNames)
+							.pluck('name')
+							.flatten()
+							.value();
+					console.log(this.AccountNames);*/
+				this.product = "Supari";
 					this.datePicker  = "24/11/2015";
 					this.getValidValue = function(val){
 					val = (isNaN(val) || val =="" || val == null)? 0 : parseInt(val);
@@ -173,7 +188,7 @@ if (Meteor.isClient) {
 						var weight = (this.getValidValue(this.bags) * 65) + this.getValidValue(this.packets);
 							return (isNaN(weight))? 0 : weight;
 					}
-			}	
+			}
 		}
 	});
 	

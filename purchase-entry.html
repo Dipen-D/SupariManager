@@ -14,10 +14,15 @@
 			<div class="col-lg-4 col-sm-5 col-xs-12">
 				<select class="bigFonts" style="width: 100%;" ng-model="purchaseEntry.accountName">
 					<option value="">Select an account</option>
-					<option value="Mallya">Mallya</option>
+					<!--<option value="Mallya">Mallya</option>
 					<option value="Sudesh">Sudesh</option>
 					<option value="G.K.S">G.K.S</option>
-					<option value="M.M.">M.M.</option>
+					<option value="M.M.">M.M.</option>-->
+					<option
+						ng-repeat="accountName in purchaseEntry.AccountNames"
+						value="{{accountName}}">
+						{{accountName}}
+					</option>
 				</select>
 			</div>
 		  </div>		  		
