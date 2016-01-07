@@ -113,7 +113,7 @@
 								
 							</tbody>
 						</table>
-						<div class="text-right" ng-class="{'text-danger' : (getAdjustment() < 0), 'text-success' : (processEntry.getAdjustment() >= 0)}">*Weight loss/gain: {{processEntry.getAdjustment()}} KG</div>
+						<div class="text-right" ng-class="{'text-danger' : (processEntry.getAdjustment() < 0), 'text-success' : (processEntry.getAdjustment() >= 0)}">*Weight loss/gain: {{processEntry.getAdjustment()}} KG</div>
 					</div>
 					<div class="modal-footer">
 						<div class="col-xs-6">

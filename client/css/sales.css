@@ -85,3 +85,9 @@
 /*.list .item .item-swipe.open {
     padding: 11px !Important;
 }*/
+
+/******************Delete icon ********************/
+a.delete-salesEntry {
+    padding-left: 14px;
+    color: red;
+}

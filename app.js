@@ -335,7 +335,7 @@ if (Meteor.isClient) {
 			};
 			
 			var IsValidInputs = function(){
-				if(ValidateInputField('type') && ValidateInputField('brand') && ValidateInputField('subType') && ValidateInputField('bags') ){
+				if(ValidateInputField('type') && ValidateInputField('brand') && ValidateInputField('subType') && ValidateInputField('bags') && ValidateInputField('product') && ValidateInputField('transportName') && ValidateInputField('accountName') ){
 					return true;
 				} 
 				return false;
@@ -369,7 +369,19 @@ if (Meteor.isClient) {
 				$('body').on('click tap', '.delete-salesEntry', function(e) {
 				e.preventDefault();
 				var that = $(this);
-				that.parent().parent().closest('.row').fadeOut('500');
+				var index = $(this).parent().parent().index();
+					console.log(index);
+					if(index > -1){
+						data.splice(index,1);
+					}
+				if($('.row').length > 5){
+					that.parent().parent().closest('.row').remove();
+				}
+				else {
+					that.parent().parent().closest('.row').remove();
+					$('.recieptContainer').hide();
+					$('#saveBtnsales').hide();
+				}
 				});
 			}
 				
@@ -378,6 +390,7 @@ if (Meteor.isClient) {
 				$('#add').click(function(){
 					if(IsValidInputs()){
 						updateEntry();
+						console.log(data);
 					}
 					fillRecieptHtml();
 				});
@@ -410,13 +423,10 @@ if (Meteor.isClient) {
 					wrapScroll: 'body',
 					binder: true,
 					swipeStart: function() {
-						console.log('start');
 					},
 					swipeMove: function() {
-						console.log('move');
 					},
 					swipeEnd: function() {
-						console.log('end');
 					},
 				});	
 				$('body').on('click tap', '.btn-delete', function(e) {

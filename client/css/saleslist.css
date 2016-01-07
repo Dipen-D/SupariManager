@@ -62,3 +62,7 @@ b.transport-heading
     float: right;
     padding: 17px;
 }
+/*cursor pointer for header */
+.item1.item.saleslist b {
+    cursor: pointer;
+}

@@ -66,3 +66,7 @@ b.output-heading {
 {
 	text-align:right;
 }
+/*cursor pointer for header */
+.item1.item.processlist b {
+    cursor: pointer;
+}
