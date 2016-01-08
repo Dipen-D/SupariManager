@@ -1,5 +1,5 @@
-SupariTypes = new Mongo.Collection("SupariTypeMaster");
 AccountNames = new Mongo.Collection("AccountTypeMaster");
+SupariTypes = new Mongo.Collection("SupariTypeMaster");
 
 if (Meteor.isClient) {
   angular.module('supariApp', [
@@ -145,13 +145,6 @@ if (Meteor.isClient) {
 				obj += "</tr>";	
 				$('#recieptContainer').html(obj);
 			};
-
-			/*$(document).ready(function(){
-				$('#saveBtn').click(function(){
-					//$('#summary-modal').modal('show');
-					fillModalHtml();
-				});
-			});*/
 			}
 		}
 	});
@@ -163,21 +156,37 @@ if (Meteor.isClient) {
 			templateUrl: 'purchase-entry.html',
 			controllerAs: 'purchaseEntry',
 			
-			controller: function($scope, $reactive) {
+			controller: function($scope, $reactive, $meteor) {
 				$reactive(this).attach($scope);
 
 				/*this.helpers({
 					AccountNames: () => {
-						return AccountNames.find({});
+						return AccountNames.find({},{fields: {'name':1}});
 					}
 				});*/
-				this.AccountNames = AccountNames.find({});
-				/*this.AccountNames = 
-				_.chain(this.AccountNames)
-							.pluck('name')
-							.flatten()
-							.value();
-					console.log(this.AccountNames);*/
+
+				//Meteor.subscribe("accounts");
+				//var data = Meteor.call("getAccounts");
+				Meteor.call('getAccounts', function(err, data) {
+					if(!err){
+						$scope.AccountNames = data;
+						if (!$scope.$$phase){
+							$scope.$digest();
+						}
+						//Session.set("accounts", data);
+					} else {
+						console.log(err);
+					}
+				});
+
+				/*Meteor.autorun(function(){
+					$scope.AccountNames = Session.get('accounts');
+					console.log($scope.AccountNames);
+					if (!$scope.$$phase){
+						$scope.$digest();
+					}
+				});*/
+
 				this.product = "Supari";
 					this.datePicker  = "24/11/2015";
 					this.getValidValue = function(val){
