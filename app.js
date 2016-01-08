@@ -1,8 +1,11 @@
 PurchaseAccountNames = new Mongo.Collection("PurchaseAccountName");
+SalesAccountNames = new Mongo.Collection("SalesAccountName");
 SupariTypes = new Mongo.Collection("SupariTypeMaster");
 MariTypes = new Mongo.Collection("MariTypeMaster");
 ProductNames = new Mongo.Collection("ProductNameMaster");
 ProductTypes = new Mongo.Collection("ProductTypeMaster");
+BrandTypes = new Mongo.Collection("BrandName");
+
 
 if (Meteor.isClient) {
     angular.module('supariApp', [
@@ -231,7 +234,29 @@ if (Meteor.isClient) {
             restrict: 'E',
             templateUrl: 'sales-entry.html',
             controllerAs: 'salesEntry',
-            controller: function ($scope, $stateParams) {
+            controller: function ($scope, $reactive, $meteor) {
+                    $reactive(this).attach($scope);
+
+                    Meteor.call('getSalesAccountName', function (err, data) {
+                        if (!err) {
+                            $scope.SalesAccountNames = data;
+                            if (!$scope.$$phase) {
+                                $scope.$digest();
+                            }
+                        } else {
+                            console.log(err);
+                        }
+                    });
+                Meteor.call('getBrandName', function (err, data) {
+                    if (!err) {
+                        $scope.BrandTypes = data;
+                        if (!$scope.$$phase) {
+                            $scope.$digest();
+                        }
+                    } else {
+                        console.log(err);
+                    }
+                });
                 this.product = "Supari";
                 function add_commasInAmount(nStr) { //regulerExpression function add coma(,) in price range
                     nStr += '';

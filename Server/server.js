@@ -35,6 +35,14 @@ if (Meteor.isServer) {
         getMariTypes: function () {
             var maritypes = MariTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
             return maritypes;
+        },
+        getSalesAccountName: function () {
+            var salesaccoutname = SalesAccountNames.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
+            return salesaccoutname;
+        },
+        getBrandName: function () {
+            var brandname = BrandTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
+            return brandname;
         }
     });
 }

@@ -12,11 +12,12 @@
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-lg-4 col-sm-5 col-xs-12">
-                <select id="accountName" class="bigFonts" style="width: 100%;" ng-model="accountName">
+                <select id="accountName" class="bigFonts" style="width: 100%;" ng-model="salesEntry.accountName">
                     <option value="">Select an account</option>
-                    <option value="M.S.D.">M.S.D.</option>
-                    <option value="M.S.A">M.S.A</option>
-                    <option value="R.S.A">R.S.A</option>
+                    <option ng-repeat="sales in SalesAccountNames"
+                            value="{{sales.Name}}">
+                        {{sales.Name}}
+                    </option>
                 </select>
                 <div>
                     <br/>
@@ -33,6 +34,10 @@
                 <select id="product" class="bigFonts" ng-model="salesEntry.product">
                     <option value="Supari">Supari</option>
                     <option value="Mari">Mari</option>
+                    <option ng-repeat="brand in BrandTypes"
+                            value="{{brand.Name}}">
+                        {{brand.Name}}
+                    </option>
                 </select>
             </div>
         </div>
