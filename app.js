@@ -1,5 +1,7 @@
 AccountNames = new Mongo.Collection("AccountTypeMaster");
 SupariTypes = new Mongo.Collection("SupariTypeMaster");
+ProductNames = new Mongo.Collection("ProductNameMaster");
+ProductTypes = new Mongo.Collection("ProductTypeMaster");
 
 if (Meteor.isClient) {
   angular.module('supariApp', [
@@ -174,6 +176,26 @@ if (Meteor.isClient) {
 							$scope.$digest();
 						}
 						//Session.set("accounts", data);
+					} else {
+						console.log(err);
+					}
+				});
+				Meteor.call('getProducts', function(err, data) {
+					if(!err){
+						$scope.ProductNames = data;
+						if (!$scope.$$phase) {
+							$scope.$digest();
+						}
+					} else {
+						console.log(err);
+					}
+				});
+				Meteor.call('getProductTypes', function(err, data) {
+					if(!err){
+						$scope.ProductTypes = data;
+						if (!$scope.$$phase) {
+							$scope.$digest();
+						}
 					} else {
 						console.log(err);
 					}
