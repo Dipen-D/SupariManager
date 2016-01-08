@@ -1,90 +1,99 @@
 <!-- Begin page content -->
-	<div class="container">
-		<div class="page-header row">
-			<div class="container">
-				<h1 style="font-size:22px;font-weight:700;">Sales List</h1>
-			</div>
-		</div> 
-		<div class="list">
-			<div class="item1 item saleslist"> 
-				<tr>
-					<td>
-						<div class="col-xs-3 hidden-xs hidden-sm hidden-md col-lg-1">
-							<b>Edit</b>	
-						</div>
-					</td>
-					<td>
-						<div class="col-xs-3 col-lg-3">
-							<b class="date-heading" ng-click="salesList.order('date')">Date</b><span class="sortorder" ng-show="salesList.predicate === 'date'" ng-class="{reverse:salesList.reverse}"></span>
-						</div>
-					</td>
-					<td>
-						<div class="col-xs-3 col-lg-3">
-							<b class="account-heading" ng-click="salesList.order('account')" >Account</b><span class="sortorder" ng-show="salesList.predicate === 'account'" ng-class="{reverse:salesList.reverse}"></span>
-						</div>
-					</td>
-					<td>
-						<div class="col-xs-3 col-lg-2">
-							<b class="transport-heading" ng-click="salesList.order('transport')">Transport</b><span class="sortorder" ng-show="salesList.predicate === 'transport'" ng-class="{reverse:salesList.reverse}"></span>
-						</div>
-					</td>
-					<td>
-						<div class="col-xs-3 col-lg-2 sales-bags">
-							<b class="bags-heading" ng-click="salesList.order('bags')">Bags</b><span class="sortorder" ng-show="salesList.predicate === 'bags'" ng-class="{reverse:salesList.reverse}"></span>				
-						</div>
-					</td>
-					<td>
-						<div class="col-xs-3 hidden-xs hidden-sm hidden-md col-lg-1">
-							<b>Delete</b>	
-						</div>
-					</td>
-				</tr>
-			</div>
-		</div>
- 
-		<div class="list" ng-repeat="user in salesList.users |  orderBy:salesList.predicate:salesList.reverse">
-			<div class="item">
-			<div class="item-swipe bigFonts">
-				<div class="col-xs-3 hidden-xs hidden-sm hidden-md col-lg-1">
-					<div class="wrap">
-						 <a class="redirect" href='/sales' ><span class='glyphicon glyphicon-edit'></span></a>
-					</div>
-				</div>
-				<div class="col-xs-3 col-lg-3">
-					<div class="wrap">
-						<span class="row1 date-fix date">{{user.date}} </span>
-					</div>
-				</div>
-				<div class="col-xs-3 col-lg-3">
-					<div class="wrap">
-						 <span class="row1 account-fix produc">{{user.account}}</span>
-					</div>
-				</div>
-				<div class="col-xs-3 col-lg-2">
-					<div class="wrap">
-						 <span class="row1 transport-fix product">{{user.transport}}</span>
-					</div>
-				</div>
-				<div class="col-xs-3 col-lg-2 extra">
-					<div class="wrap float-bags-right">
-						 <span class="product bags-fix" data-placement="left" data-container="body" data-toggle="popover" title="10 X 65 + 10 = 650KG">{{salesList.bags(user.bags)}}</span>
-					</div>
-				</div>
-				<div class="col-xs-3 hidden-xs col-lg-1 extra">
-					<div class="wrap">
-						 <a class="delete" href='#'><span class='glyphicon glyphicon-trash'></span></a>
-					</div>
-				</div>
-			</div>
-				<div class="item-back">
-					<button class="action first btn-delete" type="button">
-						<i class="fa fa-trash-o"></i>
-					</button>
-					<button class="action second btn-check" type="button">
-						<i class="fa fa-edit"></i>
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
+<div class="container">
+    <div class="page-header row">
+        <div class="container">
+            <h1 style="font-size:22px;font-weight:700;">Sales List</h1>
+        </div>
+    </div>
+    <div class="list">
+        <div class="item1 item saleslist">
+            <tr>
+                <td>
+                    <div class="col-xs-3 hidden-xs hidden-sm hidden-md col-lg-1">
+                        <b>Edit</b>
+                    </div>
+                </td>
+                <td>
+                    <div class="col-xs-3 col-lg-3">
+                        <b class="date-heading" ng-click="salesList.order('date')">Date</b><span class="sortorder"
+                                                                                                 ng-show="salesList.predicate === 'date'"
+                                                                                                 ng-class="{reverse:salesList.reverse}"></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="col-xs-3 col-lg-3">
+                        <b class="account-heading" ng-click="salesList.order('account')">Account</b><span
+                            class="sortorder" ng-show="salesList.predicate === 'account'"
+                            ng-class="{reverse:salesList.reverse}"></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="col-xs-3 col-lg-2">
+                        <b class="transport-heading" ng-click="salesList.order('transport')">Transport</b><span
+                            class="sortorder" ng-show="salesList.predicate === 'transport'"
+                            ng-class="{reverse:salesList.reverse}"></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="col-xs-3 col-lg-2 sales-bags">
+                        <b class="bags-heading" ng-click="salesList.order('bags')">Bags</b><span class="sortorder"
+                                                                                                 ng-show="salesList.predicate === 'bags'"
+                                                                                                 ng-class="{reverse:salesList.reverse}"></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="col-xs-3 hidden-xs hidden-sm hidden-md col-lg-1">
+                        <b>Delete</b>
+                    </div>
+                </td>
+            </tr>
+        </div>
+    </div>
+
+    <div class="list" ng-repeat="user in salesList.users |  orderBy:salesList.predicate:salesList.reverse">
+        <div class="item">
+            <div class="item-swipe bigFonts">
+                <div class="col-xs-3 hidden-xs hidden-sm hidden-md col-lg-1">
+                    <div class="wrap">
+                        <a class="redirect" href='/sales'><span class='glyphicon glyphicon-edit'></span></a>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-lg-3">
+                    <div class="wrap">
+                        <span class="row1 date-fix date">{{user.date}} </span>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-lg-3">
+                    <div class="wrap">
+                        <span class="row1 account-fix produc">{{user.account}}</span>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-lg-2">
+                    <div class="wrap">
+                        <span class="row1 transport-fix product">{{user.transport}}</span>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-lg-2 extra">
+                    <div class="wrap float-bags-right">
+                        <span class="product bags-fix" data-placement="left" data-container="body" data-toggle="popover"
+                              title="10 X 65 + 10 = 650KG">{{salesList.bags(user.bags)}}</span>
+                    </div>
+                </div>
+                <div class="col-xs-3 hidden-xs col-lg-1 extra">
+                    <div class="wrap">
+                        <a class="delete" href='#'><span class='glyphicon glyphicon-trash'></span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="item-back">
+                <button class="action first btn-delete" type="button">
+                    <i class="fa fa-trash-o"></i>
+                </button>
+                <button class="action second btn-check" type="button">
+                    <i class="fa fa-edit"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 	

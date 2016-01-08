@@ -12,11 +12,11 @@
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-lg-4 col-sm-5 col-xs-12">
-                <select class="bigFonts" style="width: 100%;" ng-model="purchaseEntry.AccountNames">
+                <select class="bigFonts" style="width: 100%;" ng-model="purchaseEntry.PurchaseAccountNames" value="{{purchaseEntry.PurchaseAccountNames}}">
                     <option value="">Select an account</option>
-                    <option ng-repeat="accountName in AccountNames"
-                            value="{{accountName.name}}">
-                        {{accountName.name}}
+                    <option ng-repeat="accountName in PurchaseAccountNames"
+                            value="{{accountName.Name}}">
+                        {{accountName.Name}}
                     </option>
                 </select>
             </div>
@@ -25,8 +25,8 @@
             <div class="col-sm-10">
                 <select class="bigFonts" ng-model="purchaseEntry.product" value="{{purchaseEntry.product}}">
                     <option ng-repeat="product in ProductNames"
-                            value="{{product.name}}">
-                        {{product.name}}
+                            value="{{product.Name}}">
+                        {{product.Name}}
                     </option>
                 </select>
             </div>
@@ -37,8 +37,8 @@
                 <select class="bigFonts" style="width: 100%;" ng-model="purchaseEntry.type" value="{{purchaseEntry.type}}">
                     <option value="">Select a type</option>
                     <option ng-repeat="type in ProductTypes"
-                            value="{{type.name}}">
-                        {{type.name}}
+                            value="{{type.Name}}">
+                        {{type.Name}}
                     </option>
                 </select>
             </div>
@@ -93,7 +93,7 @@
                     </tr>
                     <tr>
                         <td scope="row">Account</td>
-                        <td>{{purchaseEntry.accountName}}</td>
+                        <td>{{purchaseEntry.AccountNames}}</td>
                     </tr>
                     <tr>
                         <td scope="row">Type</td>

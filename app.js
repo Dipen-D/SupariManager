@@ -1,5 +1,6 @@
-AccountNames = new Mongo.Collection("AccountTypeMaster");
+PurchaseAccountNames = new Mongo.Collection("PurchaseAccountName");
 SupariTypes = new Mongo.Collection("SupariTypeMaster");
+MariTypes = new Mongo.Collection("MariTypeMaster");
 ProductNames = new Mongo.Collection("ProductNameMaster");
 ProductTypes = new Mongo.Collection("ProductTypeMaster");
 
@@ -45,35 +46,38 @@ if (Meteor.isClient) {
 			restrict: 'E',
 			templateUrl: 'process-entry.html',
 			controllerAs: 'processEntry',
-			 controller: function ($scope, $reactive) {
-				 var data = [];
-	    $reactive(this).attach($scope);
+			controller: function($scope, $reactive, $meteor) {
+				$reactive(this).attach($scope);
+				// var data = [];
 		this.product = "Supari";
-		
-		this.supariComtrollers = {};
-		
-		this.helpers({
-          supariTypes: () => {
-            return SupariTypes.find({}, {fields: {'name':1}});
-          }
-        });
-		//console.log(this.supariTypes);
-		this.supariType = _.chain(this.supariTypes)
-		  .pluck('name')
-		  .flatten()
-		  .value();
-		console.log(this.supariType);
-		
-		if(this.supariType.length == 0){
-			this.supariType = ["Moro","Moti","Sevar","Jam","Jini","Lindi","MMF","MF","S.F.","J.F.","G.F.","R.F."];
-		}
-		//this.supariType = SupariTypes.find({}, {name:1, _id:0});//["Moro","Moti","Sevar","Jam","Jini","Lindi","MMF","MF","S.F.","J.F.","G.F.","R.F."];
-		this.mariType = ["Mari1","Mari2"];
+		$scope.SupariTypes = "";
+		//$scope.MariTypes = "";
+		Meteor.call('getSupariTypes', function(err, data) {
+			if(!err){
+				$scope.SupariTypes = data;
+				if (!$scope.$$phase) {
+						$scope.$digest();
+				}
+				} else {
+					console.log(err);
+				}
+		});
+		Meteor.call('getMariTypes', function(err, data) {
+			if(!err){
+				$scope.MariTypes = data;
+				if (!$scope.$$phase) {
+					$scope.$digest();
+				}
+			} else {
+				console.log(err);
+			}
+		});
+		//this.mariType = ["Mari1","Mari2"];
 			this.getTotalWeight = function(){
 				var total = 0;
-				var data = (this.product == 'Supari') ? this.supariType : this.mariType;
+				var data = (this.product == 'Supari') ? $scope.SupariTypes : $scope.MariTypes;
 				$.each(data, function(index, value){
-					var weight = getTotalWeightForProduct(value);
+					var weight = getTotalWeightForProduct(value.Name);
 					total+= weight;
 				});
 				return total;
@@ -109,7 +113,7 @@ if (Meteor.isClient) {
 			this.fillModalHtml = function(){
 				var obj = "";
 				var totalWeight = 0;
-				var data = ($('#product').val() == 'Supari') ? this.supariType : this.mariType;
+				var data = ($('#product').val() == 'Supari') ? $scope.SupariTypes : $scope.MariTypes;
 				console.log(data);
 				var rawMaterialBags = (isNaN($('#rawMaterialBags').val()))? 0 : $('#rawMaterialBags').val();
 				var rawMaterialPackets = (isNaN($('#rawMaterialPackets').val()))? 0 : $('#rawMaterialPackets').val();
@@ -131,11 +135,11 @@ if (Meteor.isClient) {
 				obj += "<td>" + rawMaterial +" KG</td>";
 				obj += "</tr>";
 				$.each(data, function(index, value){
-					var weight = getTotalWeightForProduct(value);
+					var weight = getTotalWeightForProduct(value.Name);
 					if(weight > 0){
 						totalWeight+= weight;
 						obj += "<tr>";
-						obj += "<td scope='row'>"+value+"</td>";
+						obj += "<td scope='row'>"+value.Name+"</td>";
 						obj += "<td>" + weight +" KG</td>";
 						obj += "</tr>";	
 					}
@@ -171,7 +175,7 @@ if (Meteor.isClient) {
 				//var data = Meteor.call("getAccounts");
 				Meteor.call('getAccounts', function(err, data) {
 					if(!err){
-						$scope.AccountNames = data;
+						$scope.PurchaseAccountNames = data;
 						if (!$scope.$$phase){
 							$scope.$digest();
 						}

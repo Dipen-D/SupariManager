@@ -29,7 +29,6 @@
 						<!-- <input type="number" pattern="\d*" ng-model="rawMaterial" class="form-control bigFonts" placeholder="Raw Material" /> -->
 					</div>
 				</div>
-				
 				<div class="form-group">
 					<label for="" class="col-sm-2 col-xs-12  control-label">Raw Material</label>
 					<div class="col-sm-3 col-xs-7 input-bags">
@@ -47,33 +46,33 @@
 				</div>
 				<hr />
 				<div id="entryFields">
-					<div class="form-group" ng-repeat="type in processEntry.supariType" ng-hide="(processEntry.product != 'Supari')">
-						<label for="" class="col-sm-2 col-xs-12  control-label">{{type}}</label>
+					<div class="form-group" ng-repeat="type in SupariTypes" ng-hide="(processEntry.product != 'Supari')">
+						<label for="" class="col-sm-2 col-xs-12  control-label">{{type.Name}}</label>
 						<div class="col-sm-3 col-xs-7 input-bags">
 							<div class="input-group">
-								<input type="number" id="{{type + 'Bags'}}" pattern="\d*" class="form-control bigFonts " placeholder="Bags" aria-describedby="basic-addon2" />
+								<input type="number" id="{{type.Name + 'Bags'}}" pattern="\d*" class="form-control bigFonts " placeholder="Bags" aria-describedby="basic-addon2" />
 								<span class="input-group-addon" >x 65 KG</span>
 							</div>
 						</div>
 						<div class="col-sm-3 col-xs-5">
 							<div class="input-group">
-								<input type="number" id="{{type + 'Packets'}}" pattern="\d*" class="form-control bigFonts " placeholder="Packet" aria-describedby="basic-addon2" />
+								<input type="number" id="{{type.Name + 'Packets'}}" pattern="\d*" class="form-control bigFonts " placeholder="Packet" aria-describedby="basic-addon2" />
 								<span class="input-group-addon" > KG</span>
 							</div>
 						</div>
 					</div>
 					
-					<div class="form-group" ng-repeat="type in processEntry.mariType" ng-hide="(processEntry.product != 'Mari')">
-						<label for="" class="col-sm-2 col-xs-12  control-label">{{type}}</label>
+					<div class="form-group" ng-repeat="type in MariTypes" ng-hide="(processEntry.product != 'Mari')">
+						<label for="" class="col-sm-2 col-xs-12  control-label">{{type.Name}}</label>
 						<div class="col-sm-3 col-xs-7 input-bags">
 							<div class="input-group">
-								<input type="number" id="{{type + 'Bags'}}" pattern="\d*" class="form-control bigFonts" placeholder="Bags" aria-describedby="basic-addon2" />
+								<input type="number" id="{{type.Name + 'Bags'}}" pattern="\d*" class="form-control bigFonts" placeholder="Bags" aria-describedby="basic-addon2" />
 								<span class="input-group-addon" >x 65 KG</span>
 							</div>
 						</div>
 						<div class="col-sm-3 col-xs-5">
 							<div class="input-group">
-								<input type="number" id="{{type + 'Packets'}}" pattern="\d*" class="form-control bigFonts" placeholder="Packet" aria-describedby="basic-addon2" />
+								<input type="number" id="{{type.Name + 'Packets'}}" pattern="\d*" class="form-control bigFonts" placeholder="Packet" aria-describedby="basic-addon2" />
 								<span class="input-group-addon" > KG</span>
 							</div>
 						</div>

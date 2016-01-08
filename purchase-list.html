@@ -1,91 +1,101 @@
 <!-- Begin page content -->
-	<div class="container">
-		<div class="page-header row">
-			<div class="container">
-				<h1 style="font-size:22px;font-weight:700;">Purchase List</h1>
-			</div>
-		</div>
-		<div class="list">
-			<div class="item1 item purchaselist"> 
-				<tr>
-					<td>
-						<div class="col-xs-3 col-lg-1 hidden-xs hidden-md hidden-sm">
-							<b>Edit</b>	
-						</div>
-					</td>
-					<td>
-						<div class="col-xs-3 col-lg-3 heading-date">
-							<b class="date-heading" ng-click="purchaseList.order('date')">Date</b><span class="sortorder" ng-show="purchaseList.predicate === 'date'" ng-class="{reverse:purchaseList.reverse}"></span>
-						</div>
-					</td>
-					<td>
-						<div class="col-xs-3 col-lg-3 heading-prdouct">
-							<b ng-click="purchaseList.order('product')" >Product</b><span class="sortorder" ng-show="purchaseList.predicate === 'product'" ng-class="{reverse:purchaseList.reverse}"></span>
-						</div>
-					</td>
-					<td>
-						<div class="col-xs-3 col-lg-2 heading-account">
-							<b ng-click="purchaseList.order('account')">Account</b><span class="sortorder" ng-show="purchaseList.predicate === 'account'" ng-class="{reverse:purchaseList.reverse}"></span>
-						</div>
-					</td>
-					<td>
-						<div class="col-xs-3 col-lg-2 heading-weight">
-							<b ng-click="purchaseList.order('weight')">Weight</b><span class="sortorder" ng-show="purchaseList.predicate === 'weight'" ng-class="{reverse:purchaseList.reverse}"></span><br>
-							<b class="purchase-kg">(KG)</b>
-						</div>
-					</td>
-					<td>
-						<div class="col-xs-3 col-lg-1 hidden-xs hidden-sm hidden-md">
-							<b>Delete</b>	
-						</div>
-					</td>
-					
-				</tr>
-			</div>
-		</div>
- 
-		<div class="list" ng-repeat="user in purchaseList.users |  orderBy:purchaseList.predicate:purchaseList.reverse">
-			<div class="item">
-			<div class="item-swipe bigFonts">
-				<div class="col-xs-3 col-lg-1 hidden-xs hidden-md hidden-sm">
-					<div class="wrap">
-						 <a class="redirect" href='/purchase' ><span class='glyphicon glyphicon-edit'></span></a>
-					</div>
-				</div>
-				<div class="col-xs-3 col-lg-3">
-					<div class="wrap">
-						  <span class="row1 date-content date">{{user.date}} </span> 
-					</div>
-				</div>
-				<div class="col-xs-3 col-lg-3">
-					<div class="wrap">
-						 <span class="row1 type-content product">{{user.product}}</span>
-					</div>
-				</div>
-				<div class="col-xs-3 col-lg-2">
-					<div class="wrap">
-						 <span class="row1 name-content account">{{user.account}}</span>
-					</div>
-				</div>
-				<div class="col-xs-3 col-lg-2 extra">
-					<div class="wrap float-right">
-						 <span class="weight weight-fix" data-placement="left" data-container="body" data-toggle="popover" title="10 X 65 + 10 = 650KG">{{purchaseList.weight(user.weight)}}</span>
-					</div>
-				</div>
-				<div class="col-xs-3 col-lg-1 extra hidden-md">
-					<div class="wrap">
-						 <a class="delete" href='#'><span class='glyphicon glyphicon-trash'></span></a>
-					</div>
-				</div>
-			</div>
-				<div class="item-back">
-					<button class="action first btn-delete" type="button">
-						<i class="fa fa-trash-o"></i>
-					</button>
-					<button class="action second btn-check" type="button">
-						<i class="fa fa-edit"></i>
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
+<div class="container">
+    <div class="page-header row">
+        <div class="container">
+            <h1 style="font-size:22px;font-weight:700;">Purchase List</h1>
+        </div>
+    </div>
+    <div class="list">
+        <div class="item1 item purchaselist">
+            <tr>
+                <td>
+                    <div class="col-xs-3 col-lg-1 hidden-xs hidden-md hidden-sm">
+                        <b>Edit</b>
+                    </div>
+                </td>
+                <td>
+                    <div class="col-xs-3 col-lg-3 heading-date">
+                        <b class="date-heading" ng-click="purchaseList.order('date')">Date</b><span class="sortorder"
+                                                                                                    ng-show="purchaseList.predicate === 'date'"
+                                                                                                    ng-class="{reverse:purchaseList.reverse}"></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="col-xs-3 col-lg-3 heading-prdouct">
+                        <b ng-click="purchaseList.order('product')">Product</b><span class="sortorder"
+                                                                                     ng-show="purchaseList.predicate === 'product'"
+                                                                                     ng-class="{reverse:purchaseList.reverse}"></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="col-xs-3 col-lg-2 heading-account">
+                        <b ng-click="purchaseList.order('account')">Account</b><span class="sortorder"
+                                                                                     ng-show="purchaseList.predicate === 'account'"
+                                                                                     ng-class="{reverse:purchaseList.reverse}"></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="col-xs-3 col-lg-2 heading-weight">
+                        <b ng-click="purchaseList.order('weight')">Weight</b><span class="sortorder"
+                                                                                   ng-show="purchaseList.predicate === 'weight'"
+                                                                                   ng-class="{reverse:purchaseList.reverse}"></span><br>
+                        <b class="purchase-kg">(KG)</b>
+                    </div>
+                </td>
+                <td>
+                    <div class="col-xs-3 col-lg-1 hidden-xs hidden-sm hidden-md">
+                        <b>Delete</b>
+                    </div>
+                </td>
+
+            </tr>
+        </div>
+    </div>
+
+    <div class="list" ng-repeat="user in purchaseList.users |  orderBy:purchaseList.predicate:purchaseList.reverse">
+        <div class="item">
+            <div class="item-swipe bigFonts">
+                <div class="col-xs-3 col-lg-1 hidden-xs hidden-md hidden-sm">
+                    <div class="wrap">
+                        <a class="redirect" href='/purchase'><span class='glyphicon glyphicon-edit'></span></a>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-lg-3">
+                    <div class="wrap">
+                        <span class="row1 date-content date">{{user.date}} </span>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-lg-3">
+                    <div class="wrap">
+                        <span class="row1 type-content product">{{user.product}}</span>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-lg-2">
+                    <div class="wrap">
+                        <span class="row1 name-content account">{{user.account}}</span>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-lg-2 extra">
+                    <div class="wrap float-right">
+                        <span class="weight weight-fix" data-placement="left" data-container="body"
+                              data-toggle="popover"
+                              title="10 X 65 + 10 = 650KG">{{purchaseList.weight(user.weight)}}</span>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-lg-1 extra hidden-md">
+                    <div class="wrap">
+                        <a class="delete" href='#'><span class='glyphicon glyphicon-trash'></span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="item-back">
+                <button class="action first btn-delete" type="button">
+                    <i class="fa fa-trash-o"></i>
+                </button>
+                <button class="action second btn-check" type="button">
+                    <i class="fa fa-edit"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
