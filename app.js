@@ -268,6 +268,26 @@ if (Meteor.isClient) {
                         console.log(err);
                     }
                 });
+                Meteor.call('getProducts', function (err, data) {
+                    if (!err) {
+                        $scope.ProductNames = data;
+                        if (!$scope.$$phase) {
+                            $scope.$digest();
+                        }
+                    } else {
+                        console.log(err);
+                    }
+                });
+                Meteor.call('getSupariTypes', function (err, data) {
+                    if (!err) {
+                        $scope.SupariTypes = data;
+                        if (!$scope.$$phase) {
+                            $scope.$digest();
+                        }
+                    } else {
+                        console.log(err);
+                    }
+                });
                 this.product = "Supari";
                 function add_commasInAmount(nStr) { //regulerExpression function add coma(,) in price range
                     nStr += '';

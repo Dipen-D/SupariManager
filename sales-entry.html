@@ -34,8 +34,10 @@
         <div class="form-group">
             <div class="col-sm-10">
                 <select id="product" class="bigFonts" ng-model="salesEntry.product">
-                    <option value="Supari">Supari</option>
-                    <option value="Mari">Mari</option>
+                    <option ng-repeat="product in ProductNames"
+                            value="{{product.Name}}">
+                        {{product.Name}}
+                    </option>
 
                 </select>
             </div>
@@ -63,18 +65,11 @@
                     <div class="col-sm-2 col-xs-4">
                         <select id="subType" class="bigFonts" style="width: 100%;">
                             <option value="">Detail Type</option>
-                            <option value="Moro">Moro</option>
-                            <option value="Moti">Moti</option>
-                            <option value="Sevar">Sevar</option>
-                            <option value="Jam">Jam</option>
-                            <option value="Jini">Jini</option>
-                            <option value="Lindi">Lindi</option>
-                            <option value="MMF">MMF</option>
-                            <option value="MF">MF</option>
-                            <option value="S.F.">S.F.</option>
-                            <option value="J.F.">J.F.</option>
-                            <option value="G.F.">G.F.</option>
-                            <option value="R.F.">R.F.</option>
+                            <option ng-repeat="types in SupariTypes"
+                                    value="{{types.Name}}">
+                                {{types.Name}}
+                            </option>
+
                         </select>
                     </div>
                 </div>
