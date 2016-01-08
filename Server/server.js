@@ -43,6 +43,10 @@ if (Meteor.isServer) {
         getBrandName: function () {
             var brandname = BrandTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
             return brandname;
+        },
+        getTransportTypes : function() {
+            var transportname = TransportTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
+            return transportname;
         }
     });
 }

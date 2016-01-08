@@ -24,8 +24,10 @@
                 </div>
                 <select id="transportName" class="bigFonts" style="width: 100%;" ng-model="transportName">
                     <option value="">Select a transport</option>
-                    <option value="V.T.Co">V.T.Co</option>
-                    <option value="N.P.T.">N.P.T.</option>
+                    <option ng-repeat="transport in TransportTypes"
+                            value="{{transport.Name}}">
+                        {{transport.Name}}
+                    </option>
                 </select>
             </div>
         </div>
@@ -34,10 +36,7 @@
                 <select id="product" class="bigFonts" ng-model="salesEntry.product">
                     <option value="Supari">Supari</option>
                     <option value="Mari">Mari</option>
-                    <option ng-repeat="brand in BrandTypes"
-                            value="{{brand.Name}}">
-                        {{brand.Name}}
-                    </option>
+
                 </select>
             </div>
         </div>
@@ -55,8 +54,10 @@
                     <div class="col-sm-2 col-xs-4">
                         <select id="brand" class="bigFonts" style="width: 100%;">
                             <option value="">Brand</option>
-                            <option value="Maruti">Maruti</option>
-                            <option value="Sagar">Sagar</option>
+                            <option ng-repeat="brand in BrandTypes"
+                                    value="{{brand.Name}}">
+                                {{brand.Name}}
+                            </option>
                         </select>
                     </div>
                     <div class="col-sm-2 col-xs-4">

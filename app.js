@@ -5,6 +5,7 @@ MariTypes = new Mongo.Collection("MariTypeMaster");
 ProductNames = new Mongo.Collection("ProductNameMaster");
 ProductTypes = new Mongo.Collection("ProductTypeMaster");
 BrandTypes = new Mongo.Collection("BrandName");
+TransportTypes = new Mongo.Collection("TransportType");
 
 
 if (Meteor.isClient) {
@@ -250,6 +251,16 @@ if (Meteor.isClient) {
                 Meteor.call('getBrandName', function (err, data) {
                     if (!err) {
                         $scope.BrandTypes = data;
+                        if (!$scope.$$phase) {
+                            $scope.$digest();
+                        }
+                    } else {
+                        console.log(err);
+                    }
+                });
+                Meteor.call('getTransportTypes', function (err, data) {
+                    if (!err) {
+                        $scope.TransportTypes = data;
                         if (!$scope.$$phase) {
                             $scope.$digest();
                         }
