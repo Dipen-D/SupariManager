@@ -28,7 +28,7 @@ if (Meteor.isServer) {
             var producttypes = ProductTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
             return producttypes;
         },
-        getSupariTypes: function (){
+        getSupariTypes: function () {
             var suparitypes = SupariTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
             return suparitypes;
         },

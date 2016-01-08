@@ -12,7 +12,8 @@
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-lg-4 col-sm-5 col-xs-12">
-                <select class="bigFonts" style="width: 100%;" ng-model="purchaseEntry.PurchaseAccountNames" value="{{purchaseEntry.PurchaseAccountNames}}">
+                <select class="bigFonts" style="width: 100%;" ng-model="purchaseEntry.PurchaseAccountNames"
+                        value="{{purchaseEntry.PurchaseAccountNames}}">
                     <option value="">Select an account</option>
                     <option ng-repeat="accountName in PurchaseAccountNames"
                             value="{{accountName.Name}}">
@@ -34,7 +35,8 @@
 
         <div class="form-group">
             <div class="col-lg-4 col-sm-5 col-xs-12">
-                <select class="bigFonts" style="width: 100%;" ng-model="purchaseEntry.type" value="{{purchaseEntry.type}}">
+                <select class="bigFonts" style="width: 100%;" ng-model="purchaseEntry.type"
+                        value="{{purchaseEntry.type}}">
                     <option value="">Select a type</option>
                     <option ng-repeat="type in ProductTypes"
                             value="{{type.Name}}">
@@ -93,7 +95,7 @@
                     </tr>
                     <tr>
                         <td scope="row">Account</td>
-                        <td>{{purchaseEntry.AccountNames}}</td>
+                        <td>{{purchaseEntry.PurchaseAccountNames}}</td>
                     </tr>
                     <tr>
                         <td scope="row">Type</td>
