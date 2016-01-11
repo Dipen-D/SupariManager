@@ -13,7 +13,7 @@
         <div class="form-group">
             <div class="col-lg-4 col-sm-5 col-xs-12">
                 <select class="bigFonts" style="width: 100%;" ng-model="purchaseEntry.PurchaseAccountNames"
-                        value="{{purchaseEntry.PurchaseAccountNames}}">
+                        value="{{purchaseEntry.PurchaseAccountNames}}" id="select">
                     <option value="">Select an account</option>
                     <option ng-repeat="accountName in PurchaseAccountNames"
                             value="{{accountName.Name}}">
@@ -118,12 +118,12 @@
             </div>
             <div class="modal-footer">
                 <div class="col-xs-6">
-                    <button type="button" class="btn btn-default bigFonts no" data-dismiss="modal" style="width: 100%;">
+                    <button type="button" class="btn btn-default bigFonts no" data-dismiss="modal" style="width: 100%;" ng-click="no()">
                         No
                     </button>
                 </div>
                 <div class="col-xs-6">
-                    <button type="button" class="btn btn-success bigFonts yes" data-dismiss="modal" style="width: 100%;">
+                    <button type="button" class="btn btn-success bigFonts yes" data-dismiss="modal" style="width: 100%;" ng-click ="yes()">
                         Yes
                     </button>
                 </div>

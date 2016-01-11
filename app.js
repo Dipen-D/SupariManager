@@ -7,7 +7,8 @@ ProductMainTypes = new Mongo.Collection("ProductMainType");
 ProductTypes = new Mongo.Collection("ProductTypeMaster");
 BrandTypes = new Mongo.Collection("BrandName");
 TransportTypes = new Mongo.Collection("TransportType");
-
+Counters = new Mongo.Collection("Counters");
+Purchase = new Mongo.Collection("Purchase");
 
 if (Meteor.isClient) {
     angular.module('supariApp', [
@@ -185,7 +186,6 @@ if (Meteor.isClient) {
             restrict: 'E',
             templateUrl: 'purchase-entry.html',
             controllerAs: 'purchaseEntry',
-
             controller: function ($scope, $reactive, $meteor) {
                 $reactive(this).attach($scope);
 
@@ -247,14 +247,30 @@ if (Meteor.isClient) {
                     var weight = (this.getValidValue(this.bags) * 65) + this.getValidValue(this.packets);
                     return (isNaN(weight)) ? 0 : weight;
                 }
-                $(document).ready(function () {
-                    $('.no').click(function () {
-                        console.log("not saved");
+
+                $scope.no = function () {
+                    console.log("No");
+                }
+                $scope.yes = function () {
+                    console.log("Yes");
+                    var product = ($scope.purchaseEntry.product);
+                    var accountname = ($scope.purchaseEntry.PurchaseAccountNames);
+                    var bags = ($scope.purchaseEntry.bags);
+                    var packets = ($scope.purchaseEntry.packets);
+                    var kgs = bags * 65 + packets;
+                    var date = ($scope.purchaseEntry.datePicker);
+                    var data = { _id:"0",account:accountname,product:product,kgs:kgs,date:date,bags:bags,packets:packets}
+                    console.log(data);
+                    Meteor.call('purchaseEntry',data, function (err, data) {
+                        if (!err) {
+                            console.log("sucess");
+                        } else {
+                            console.log(err);
+                        }
                     });
-                    $('.yes').click(function () {
-                        console.log("save values to database");
-                    })
-                });
+                }
+
+
             }
         }
     });

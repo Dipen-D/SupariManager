@@ -51,6 +51,23 @@ if (Meteor.isServer) {
         getTransportTypes : function() {
             var transportname = TransportTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
             return transportname;
+        },
+        purchaseEntry: function(data) {
+            Counters.update({_id: "purchaseId"}, {$inc: {SequenceValue: 1}});
+            var ret = Counters.findOne({_id: "purchaseId"});
+            var id = ret.SequenceValue.toString();
+            console.log(id);
+            console.log(data);
+            Purchase.insert({
+                    _id:id,
+                    CreatedDate:data.date,
+                    LastModifiedDate:data.date,
+                    PurchaseAccountName:data.account,
+                    Type:data.product,
+                    Bags:data.bags,
+                    Packets:data.packets
+            });
+
         }
     });
 }
