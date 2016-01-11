@@ -253,6 +253,7 @@ if (Meteor.isClient) {
                 }
                 $scope.yes = function () {
                     console.log("Yes");
+                    $(".modal-content").mask("")
                     var product = ($scope.purchaseEntry.product);
                     var accountname = ($scope.purchaseEntry.PurchaseAccountNames);
                     var bags = ($scope.purchaseEntry.bags);
@@ -264,10 +265,12 @@ if (Meteor.isClient) {
                     Meteor.call('purchaseEntry',data, function (err, data) {
                         if (!err) {
                             console.log("sucess");
+                            $(".modal-content").unmask();
                         } else {
                             console.log(err);
                         }
                     });
+
                 }
 
 
@@ -644,7 +647,7 @@ if (Meteor.isClient) {
             templateUrl: 'purchase-list.html',
             controllerAs: 'purchaseList',
             controller: ['$scope', function ($scope, $stateParams) {
-                this.weight = function (nStr) { //regulerExpression function add coma(,) in price range
+               $scope.weight = function (nStr) { //regulerExpression function add coma(,) in price range
                     nStr += '';
                     x = nStr.split('.');
                     x1 = x[0];
@@ -655,18 +658,32 @@ if (Meteor.isClient) {
                     }
                     return x1 + x2;
                 }
-                this.users =
-                    [{date: "12/16", product: "supari", account: "Mallaya", weight: 6500},
-                        {date: "12/15", product: "Mari", account: "M.M", weight: 660},
-                        {date: "12/14", product: "supari", account: "Sudesh", weight: 6700},
-                        {date: "12/13", product: "Mari", account: "G.K.S", weight: 6800},
-                        {date: "12/12", product: "supari", account: "M.M", weight: 650},
-                        {date: "12/11", product: "Mari", account: "Sudesh", weight: 650}];
-                this.predicate = 'date';
-                this.reverse = true;
-                this.order = function (predicate) {
-                    this.reverse = (this.predicate === predicate) ? !this.reverse : false;
-                    this.predicate = predicate;
+                $scope.predicate = 'date';
+                $scope.reverse = true;
+                $scope.order = function (predicate) {
+                    $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+                    $scope.predicate = predicate;
+                }
+                Meteor.call('getPurchaseList', function (err, data) {
+                    if (!err) {
+                        $scope.Purchase = data;
+                        if (!$scope.$$phase) {
+                            $scope.$digest();
+                        }
+                    } else {
+                        console.log(err);
+                    }
+                });
+
+                $scope.delete = function (id) {
+                    console.log(id);
+                    Meteor.call('deletePurchaseEntry',id, function (err, data) {
+                        if (!err) {
+                            console.log("delete");
+                        } else {
+                            console.log(err);
+                        }
+                    });
                 }
 
             }]

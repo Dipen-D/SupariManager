@@ -65,9 +65,20 @@ if (Meteor.isServer) {
                     PurchaseAccountName:data.account,
                     Type:data.product,
                     Bags:data.bags,
-                    Packets:data.packets
+                    Packets:data.packets,
+                    kgs:data.kgs
             });
 
+        },
+        getPurchaseList: function () {
+            var purchaselist = Purchase.find({},{fields: {'CreatedDate': 1,'Type':1,'PurchaseAccountName':1,kgs:1,'_id': 1}}).fetch();
+            return purchaselist;
+        },
+        deletePurchaseEntry : function(id) {
+            Purchase.remove({
+                _id:id
+            });
         }
+
     });
 }
