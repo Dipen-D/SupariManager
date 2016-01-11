@@ -14,17 +14,20 @@
         <div class="form-group">
             <div class="col-lg-4 col-sm-5 col-xs-12">
                 <select id="product" class="bigFonts" ng-model="processEntry.product">
-                    <option value="Mari">Mari</option>
-                    <option value="Supari">Supari</option>
+                    <option ng-repeat="product in ProductNames"
+                            value="{{product.Name}}">
+                        {{product.Name}}
+                    </option>
                 </select>
                 <div>
                     <br>
                 </div>
                 <select id="type" class="bigFonts" style="width: 100%;" ng-model="processEntry.type">
                     <option value="">Select a type</option>
-                    <option value="N">N</option>
-                    <option value="C">C</option>
-                    <option value="DC">DC</option>
+                    <option ng-repeat="maintype in ProductMainTypes"
+                            value="{{maintype.Name}}">
+                        {{maintype.Name}}
+                    </option>
                 </select>
 
                 <!-- <input type="number" pattern="\d*" ng-model="rawMaterial" class="form-control bigFonts" placeholder="Raw Material" /> -->

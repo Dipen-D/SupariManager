@@ -3,6 +3,7 @@ SalesAccountNames = new Mongo.Collection("SalesAccountName");
 SupariTypes = new Mongo.Collection("SupariTypeMaster");
 MariTypes = new Mongo.Collection("MariTypeMaster");
 ProductNames = new Mongo.Collection("ProductNameMaster");
+ProductMainTypes = new Mongo.Collection("ProductMainType");
 ProductTypes = new Mongo.Collection("ProductTypeMaster");
 BrandTypes = new Mongo.Collection("BrandName");
 TransportTypes = new Mongo.Collection("TransportType");
@@ -58,6 +59,26 @@ if (Meteor.isClient) {
                 Meteor.call('getSupariTypes', function (err, data) {
                     if (!err) {
                         $scope.SupariTypes = data;
+                        if (!$scope.$$phase) {
+                            $scope.$digest();
+                        }
+                    } else {
+                        console.log(err);
+                    }
+                });
+                Meteor.call('getProducts', function (err, data) {
+                    if (!err) {
+                        $scope.ProductNames = data;
+                        if (!$scope.$$phase) {
+                            $scope.$digest();
+                        }
+                    } else {
+                        console.log(err);
+                    }
+                });
+                Meteor.call('getProductMainTypes', function (err, data) {
+                    if (!err) {
+                        $scope.ProductMainTypes = data;
                         if (!$scope.$$phase) {
                             $scope.$digest();
                         }
@@ -226,6 +247,14 @@ if (Meteor.isClient) {
                     var weight = (this.getValidValue(this.bags) * 65) + this.getValidValue(this.packets);
                     return (isNaN(weight)) ? 0 : weight;
                 }
+                $(document).ready(function () {
+                    $('.no').click(function () {
+                        console.log("not saved");
+                    });
+                    $('.yes').click(function () {
+                        console.log("save values to database");
+                    })
+                });
             }
         }
     });
@@ -238,7 +267,17 @@ if (Meteor.isClient) {
             controller: function ($scope, $reactive, $meteor) {
                     $reactive(this).attach($scope);
 
-                    Meteor.call('getSalesAccountName', function (err, data) {
+                Meteor.call('getProductMainTypes', function (err, data) {
+                    if (!err) {
+                        $scope.ProductMainTypes = data;
+                        if (!$scope.$$phase) {
+                            $scope.$digest();
+                        }
+                    } else {
+                        console.log(err);
+                    }
+                });
+                Meteor.call('getSalesAccountName', function (err, data) {
                         if (!err) {
                             $scope.SalesAccountNames = data;
                             if (!$scope.$$phase) {
