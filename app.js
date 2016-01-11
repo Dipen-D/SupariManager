@@ -39,6 +39,10 @@ if (Meteor.isClient) {
                 url: '/purchase',
                 template: '<purchase-entry></purchase-entry>'
             })
+            .state('purchaseEditEntry', {
+                url: '/purchase/:purchaseId',
+                template: '<purchase-entry></purchase-entry>'
+            })
             .state('purchaseList', {
                 url: '/purchaselist',
                 template: '<purchase-list></purchase-list>'
@@ -186,15 +190,14 @@ if (Meteor.isClient) {
             restrict: 'E',
             templateUrl: 'purchase-entry.html',
             controllerAs: 'purchaseEntry',
-            controller: function ($scope, $reactive, $meteor) {
+            controller: function ($scope, $reactive, $meteor, $stateParams) {
                 $reactive(this).attach($scope);
 
-                /*this.helpers({
-                 AccountNames: () => {
-                 return AccountNames.find({},{fields: {'name':1}});
-                 }
-                 });*/
-
+                this.purchaseId = $stateParams.purchaseId;
+                if (!!this.purchaseId){
+                    console.log(this.purchaseId);
+                    console.log("Fetch data...");
+                }
                 //Meteor.subscribe("accounts");
                 //var data = Meteor.call("getAccounts");
                 Meteor.call('getAccounts', function (err, data) {
