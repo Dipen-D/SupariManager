@@ -11,6 +11,7 @@ Counters = new Mongo.Collection("Counters");
 Purchase = new Mongo.Collection("Purchase");
 ProcessDetail = new Mongo.Collection("ProcessDetail");
 ProcessList = new Mongo.Collection("ProcessList");
+Process = new Mongo.Collection("Process");
 
 if (Meteor.isClient) {
     angular.module('supariApp', [
@@ -210,37 +211,25 @@ if (Meteor.isClient) {
                     for(i=0;i<processDetail.length;i++){
                         x1.push(processDetail[i].key);
                     }
-                    console.log(processDetail);
-                    console.log(x);
-                   /* var final = {};
-                    for(i=0;i<processDetail.length;i++) {
 
-                        var x = processDetail[i].key;
-                        x = get(processDetail,x);
-                        function get(array, pouch) {
 
-                            var found;
-                            array.some(function (entry) {
-                                if (entry.key == pouch) {
-                                    found = entry;
-                                    return true;
-                                }
-                            });
-                            if (found) {
-                                // Found it, create an object with the properties we want
-                                return {
-                                    bags: found.bags,
-                                    packets: found.packets,
-                                    weight: found.value
-                                };
-                            }
-                            return null;
-                        }
-                      // console.log(processDetail[i].key + JSON.stringify(x));
-                        final[processDetail[i].key] = (x);
-                    }
-                        console.log(final);*/
                     Meteor.call('processDetail',processDetail, function (err, data) {
+                        if (!err) {
+                            console.log("sucess");
+                            $(".modal-content").unmask();
+                        } else {
+                            console.log(err);
+                        }
+                    });
+                   var product = $("#product").val();
+                       var type = $("#type").val();
+                    var input = parseInt($("#rawMaterialPackets").val()) * 65 + parseInt($("#rawMaterialPackets").val());
+                    var preoutput = $("#output").text();
+                    var outputkgs = preoutput.replace(/[^[+-A-Z]/g,'');
+                    var output =  parseInt($("#rawMaterialPackets").val()) * 65 + parseInt($("#rawMaterialPackets").val()) + parseInt(outputkgs);
+                    console.log(input,output);
+                    var pro = { _id:"0",product:product,type:type,input:input,output:output}
+                    Meteor.call('process',pro, function (err, data) {
                         if (!err) {
                             console.log("sucess");
                             $(".modal-content").unmask();

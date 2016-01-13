@@ -114,11 +114,27 @@ if (Meteor.isServer) {
                         }
                     return null;
                     }
- // console.log(processDetail[i].key + JSON.stringify(x));
                 final[data[i].key] = (x);
             }
             console.log(final);
             ProcessDetail.insert(final);
+
+        },
+
+        process: function(data) {
+            var _id;
+            Counters.update({_id: "processId"}, {$inc: {SequenceValue: 1}});
+            var ret = Counters.findOne({_id: "processId"});
+            var id = ret.SequenceValue.toString();
+            console.log(id);
+            console.log(data);
+            Process.insert({
+                _id:id,
+                product:data.product,
+                type:data.type,
+                input:data.input,
+                output:data.output
+            })
 
         },
         getPurchaseList: function () {
