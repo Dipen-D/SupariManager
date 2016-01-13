@@ -13,7 +13,7 @@
         <div class="form-group">
             <div class="col-lg-4 col-sm-5 col-xs-12">
                 <select class="bigFonts" style="width: 100%;" ng-model="purchaseEntry.PurchaseAccountNames"
-                        value="{{purchaseEntry.PurchaseAccountNames}}" id="select">
+                        value="{{purchaseEntry.PurchaseAccountNames}}" id="selectAccount">
                     <option value="">Select an account</option>
                     <option ng-repeat="accountName in PurchaseAccountNames"
                             value="{{accountName.Name}}">
@@ -24,8 +24,8 @@
         </div>
         <div class="form-group">
             <div class="col-sm-10">
-                <select class="bigFonts" ng-model="purchaseEntry.product" value="{{purchaseEntry.product}}">
-                    <option ng-repeat="product in ProductNames"
+                <select class="bigFonts" ng-model="purchaseEntry.product" value="{{purchaseEntry.product}}" id="selectType">
+                   <option ng-repeat="product in ProductNames"
                             value="{{product.Name}}">
                         {{product.Name}}
                     </option>
@@ -36,8 +36,8 @@
         <div class="form-group">
             <div class="col-lg-4 col-sm-5 col-xs-12">
                 <select class="bigFonts" style="width: 100%;" ng-model="purchaseEntry.type"
-                        value="{{purchaseEntry.type}}">
-                    <option value="">Select a type</option>
+                        value="{{purchaseEntry.type}}" id="selectProductType">
+                   <option value="">Select a type</option>
                     <option ng-repeat="type in ProductTypes"
                             value="{{type.Name}}">
                         {{type.Name}}
@@ -50,14 +50,14 @@
             <div class="col-sm-3 col-xs-7 input-bags">
                 <div class="input-group"><input type="number" ng-model="purchaseEntry.bags"
                                                 class="form-control bigFonts" pattern="\d*" placeholder="Bags"
-                                                aria-describedby="basic-addon2">
+                                                aria-describedby="basic-addon2" id="bags">
                     <span class="input-group-addon" id="basic-addon2">x 65 KG</span>
                 </div>
             </div>
             <div class="col-sm-3 col-xs-5">
                 <div class="input-group"><input type="number" ng-model="purchaseEntry.packets"
                                                 class="form-control bigFonts" pattern="\d*" placeholder="Packet"
-                                                aria-describedby="basic-addon2">
+                                                aria-describedby="basic-addon2" id="packets">
                     <span class="input-group-addon" id="basic-addon2"> KG</span>
                 </div>
             </div>
