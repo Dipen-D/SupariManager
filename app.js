@@ -12,6 +12,7 @@ Purchase = new Mongo.Collection("Purchase");
 ProcessDetail = new Mongo.Collection("ProcessDetail");
 ProcessList = new Mongo.Collection("ProcessList");
 Process = new Mongo.Collection("Process");
+Sales = new Mongo.Collection("Sales");
 
 if (Meteor.isClient) {
     angular.module('supariApp', [
@@ -288,7 +289,7 @@ if (Meteor.isClient) {
                     console.log("Fetch data...");
                     Meteor.call('getPurchaseEntry',this.purchaseId, function (err, data) {
                         if (!err) {
-                           console.log(data);
+                            console.log(data);
                             $("#selectAccount").val(data[0].PurchaseAccountName);
                             $("#selectType").val(data[0].Type);
                             $("#selectProductType").val(data[0].ProductType);
@@ -376,7 +377,6 @@ if (Meteor.isClient) {
                         }
                     });
                 }
-
             }
         }
     });
@@ -387,7 +387,9 @@ if (Meteor.isClient) {
             templateUrl: 'sales-entry.html',
             controllerAs: 'salesEntry',
             controller: function ($scope, $reactive, $meteor) {
-                    $reactive(this).attach($scope);
+                $reactive(this).attach($scope);
+                var salesDetail = [];
+
 
                 Meteor.call('getProductMainTypes', function (err, data) {
                     if (!err) {
@@ -400,15 +402,15 @@ if (Meteor.isClient) {
                     }
                 });
                 Meteor.call('getSalesAccountName', function (err, data) {
-                        if (!err) {
-                            $scope.SalesAccountNames = data;
-                            if (!$scope.$$phase) {
-                                $scope.$digest();
-                            }
-                        } else {
-                            console.log(err);
+                    if (!err) {
+                        $scope.SalesAccountNames = data;
+                        if (!$scope.$$phase) {
+                            $scope.$digest();
                         }
-                    });
+                    } else {
+                        console.log(err);
+                    }
+                });
                 Meteor.call('getBrandName', function (err, data) {
                     if (!err) {
                         $scope.BrandTypes = data;
@@ -482,6 +484,8 @@ if (Meteor.isClient) {
                         obj += "</tr>";
                     }
                     $.each(data, function (index, value) {
+                        console.log("code here");
+
                         var weight = calculateWeight(value[3], value[4]);
                         totalWeight += weight;
                         totalBags += getValidValue(value[3]);
@@ -495,6 +499,18 @@ if (Meteor.isClient) {
                         //obj += "<span class='glyphicon glyphicon-remove-circle clearIcon'></span>";
                         obj += "</td>";
                         obj += "</tr>";
+                        var dataObjSales = {
+                            type:value[1],
+                            brand:value[0],
+                            detail:value[2],
+                            weight:weight,
+                            bags:value[3],
+                            packets:value[4],
+                            totalBags:totalBags
+                        };
+
+                        salesDetail.push(dataObjSales);
+
                     });
                     if (data.length > 0) {
                         obj += "<tr class=''>";
@@ -655,16 +671,29 @@ if (Meteor.isClient) {
                 }
                 $scope.salesave = function () {
                     console.log("Yes");
-                    var salesAccountName =  $('#accountName').val() ;
-                    var  transportName = $('#transportName').val();
+                    var date = $("#datepicker").val();
+                    var salesAccountName = $('#accountName').val();
+                    var transportName = $('#transportName').val();
                     var product = $('#product').val();
-                    var brand = $('#brand').val();
-                    var type = $('#type').val();
-                    var subType = $('#subType').val();
-                    var bags = $('#bags').val();
-                    var packet = $('#packet').val();
+                    var data = {
+                        _id: "0",
+                        CreatedDate: date,
+                        salesAccountName: salesAccountName,
+                        TransportName: transportName,
+                        Product: product
+                    }
+                    console.log(salesDetail);
 
+                    Meteor.call('SalesEntry',salesDetail,data, function (err, data) {
+                        if (!err) {
+                            console.log("sucess");
+                            $(".modal-content").unmask();
+                        } else {
+                            console.log(err);
+                        }
+                    });
                 }
+
 
                 $(document).ready(function () {
                     $('#add').click(function () {
@@ -741,18 +770,31 @@ if (Meteor.isClient) {
                     }
                     return x1 + x2;
                 }
-                this.users =
-                    [{date: "12/16", account: "M.S.A", transport: "V.T.Co", bags: 1000},
-                        {date: "12/15", account: "M.M", transport: "N.P.T", bags: 20},
-                        {date: "12/14", account: "Sudesh", transport: "V.T.Co", bags: 70},
-                        {date: "12/13", account: "R.S.A", transport: "N.P.T", bags: 68},
-                        {date: "12/12", account: "Sudesh", transport: "V.T.Co", bags: 6000},
-                        {date: "12/11", account: "M.M", transport: "N.P.T", bags: 50}];
-                this.predicate = 'date';
-                this.reverse = true;
-                this.order = function (predicate) {
-                    this.reverse = (this.predicate === predicate) ? !this.reverse : false;
-                    this.predicate = predicate;
+
+                $scope.reverse = true;
+                $scope.order = function (predicate) {
+                    $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+                    $scope.predicate = predicate;
+                }
+                Meteor.call('getSalesList', function (err, data) {
+                    if (!err) {
+                        $scope.Sales = data;
+                        if (!$scope.$$phase) {
+                            $scope.$digest();
+                        }
+                    } else {
+                        console.log(err);
+                    }
+                });
+                $scope.delete = function (id) {
+                    console.log(id);
+                    Meteor.call('deleteSaleEntry',id, function (err, data) {
+                        if (!err) {
+                            console.log("delete");
+                        } else {
+                            console.log(err);
+                        }
+                    });
                 }
             }]
         }
@@ -764,7 +806,7 @@ if (Meteor.isClient) {
             templateUrl: 'purchase-list.html',
             controllerAs: 'purchaseList',
             controller: ['$scope', function ($scope, $stateParams) {
-               $scope.weight = function (nStr) { //regulerExpression function add coma(,) in price range
+                $scope.weight = function (nStr) { //regulerExpression function add coma(,) in price range
                     nStr += '';
                     x = nStr.split('.');
                     x1 = x[0];
@@ -812,7 +854,7 @@ if (Meteor.isClient) {
             templateUrl: 'process-list.html',
             controllerAs: 'processList',
             controller: ['$scope', function ($scope, $stateParams) {
-                this.weight = function (nStr) { //regulerExpression function add coma(,) in price range
+                $scope.weight = function (nStr) { //regulerExpression function add coma(,) in price range
                     nStr += '';
                     x = nStr.split('.');
                     x1 = x[0];
@@ -823,10 +865,9 @@ if (Meteor.isClient) {
                     }
                     return x1 + x2;
                 }
-                Meteor.call('getProcessList', function (err, data,data1) {
+                Meteor.call('getProcessList', function (err, data) {
                     if (!err) {
-                        $scope.ProcessDetail = data;
-                        $scope.Process = data1;
+                        $scope.Process = data;
                         if (!$scope.$$phase) {
                             $scope.$digest();
                         }
@@ -834,19 +875,21 @@ if (Meteor.isClient) {
                         console.log(err);
                     }
                 });
-                this.users =
-                    [
-                        {date: "12/16", type: "DC", product: "supari", input: 6000, output: "6500"},
-                        {date: "12/15", type: "N", product: "Mari", input: 660, output: "660"},
-                        {date: "12/14", type: "N", product: "supari", input: 660, output: "670"},
-                        {date: "12/13", type: "C", product: "Mari", input: 6900, output: "6800"},
-                        {date: "12/12", type: "DC", product: "supari", input: 650, output: "650"},
-                        {date: "12/11", type: "N", product: "Mari", input: 650, output: "650"}];
-                this.predicate = 'date';
-                this.reverse = true;
-                this.order = function (predicate) {
-                    this.reverse = (this.predicate === predicate) ? !this.reverse : false;
-                    this.predicate = predicate;
+                $scope.delete = function (id) {
+                    console.log(id);
+                    Meteor.call('deleteProcessEntry',id, function (err, data) {
+                        if (!err) {
+                            console.log("delete");
+                        } else {
+                            console.log(err);
+                        }
+                    });
+                }
+                $scope.predicate = 'date';
+                $scope.reverse = true;
+                $scope.order = function (predicate) {
+                    $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+                    $scope.predicate = predicate;
                 }
 
             }]

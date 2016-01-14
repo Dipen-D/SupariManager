@@ -59,15 +59,15 @@ if (Meteor.isServer) {
             console.log(id);
             console.log(data);
             Purchase.insert({
-                    _id:id,
-                    CreatedDate:data.date,
-                    LastModifiedDate:data.date,
-                    PurchaseAccountName:data.account,
-                    Type:data.product,
-                    ProductType:data.producttype,
-                    Bags:data.bags,
-                    Packets:data.packets,
-                    kgs:data.kgs
+                _id:id,
+                CreatedDate:data.date,
+                LastModifiedDate:data.date,
+                PurchaseAccountName:data.account,
+                Type:data.product,
+                ProductType:data.producttype,
+                Bags:data.bags,
+                Packets:data.packets,
+                kgs:data.kgs
             });
 
         },
@@ -92,38 +92,41 @@ if (Meteor.isServer) {
             var id = ret.SequenceValue.toString();
             var object ={};
             console.log(id);
-             var final = {_id:id,
-                            CreatedDate:datapro.date,
-                            LastModifiedDate:datapro.date,
-                            Product:datapro.product,
-                            Type:datapro.type,
-                            Input:datapro.input,
-                            Output:datapro.output};
-                    for(i=0;i<data.length;i++) {
-                        var x = data[i].key;
-                        x = get(data,x);
-                        function get(array, pouch) {
-                            var found;
-                             array.some(function (entry) {
-                                 if (entry.key == pouch) {
-                                     found = entry;
-                                     return true;
-                                 }
-                             });
-                        if (found) {
-                             // Found it, create an object with the properties we want
-                             return {
-                                 Bags: found.bags,
-                                 Packets: found.packets,
-                                 Weight: found.value
-                             };
+            var final = {_id:id,
+                CreatedDate:datapro.date,
+                LastModifiedDate:datapro.date,
+                Product:datapro.product,
+                Type:datapro.type,
+                Input:datapro.input,
+                Output:datapro.output
+            };
+            for(i=0;i<data.length;i++) {
+                var x = data[i].key;
+                x = get(data,x);
+                function get(array, pouch) {
+                    var found;
+                    array.some(function (entry) {
+                        if (entry.key == pouch) {
+                            found = entry;
+                            return true;
                         }
-                    return null;
+                    });
+                    if (found) {
+                        // Found it, create an object with the properties we want
+                        return {
+                            Bags: found.bags,
+                            Packets: found.packets,
+                            Weight: found.value
+                        };
                     }
+                    return null;
+                }
                 final[data[i].key] = (x);
             }
             console.log(final);
             Process.insert(final);
+
+
 
         },
         getPurchaseList: function () {
@@ -140,9 +143,69 @@ if (Meteor.isServer) {
             return x;
         },
         getProcessList: function() {
-            var processlist = Purchase.find({},{fields: {'CreatedDate': 1,'Type':1,'Product':1,Input:1,'_id': 1,'Output':1}}).fetch();
+            var processlist = Process.find({},{fields: {'CreatedDate': 1,'Type':1,'Product':1,Input:1,'_id': 1,'Output':1}}).fetch();
             return processlist;
+        },
+        deleteProcessEntry : function(id) {
+            Process.remove({
+                _id:id
+            });
+        },
+        SalesEntry : function(data,datapro) {
+            var _id;
+            Counters.update({_id: "salesId"}, {$inc: {SequenceValue: 1}});
+            var ret = Counters.findOne({_id: "salesId"});
+            var id = ret.SequenceValue.toString();
+            var object ={};
+            console.log(id);
+            var final = {
+                _id:id,
+                CreatedDate: datapro.CreatedDate,
+                salesAccountName: datapro.salesAccountName,
+                TransportName: datapro.TransportName,
+                Product: datapro.Product,
+                TotalBags:datapro.totalBags
+            };
+            for (i = 0; i < data.length; i++) {
+                var x = data[i].type;
+                x = get(data, x);
+                function get(array, pouch) {
+                    var found;
+                    array.some(function (entry) {
+                        if (entry.type == pouch) {
+                            found = entry;
+                            return true;
+                        }
+                    });
+                    if (found) {
+                        // Found it, create an object with the properties we want
+                        return {
+                            Brand: found.brand,
+                            DetailType: found.detail,
+                            Bags: found.bags,
+                            Packets: found.packets,
+                            Weight: found.weight
+                        };
+                    }
+                    return null;
+                }
+
+                final[data[i].type] = (x);
+            }
+            console.log(final);
+            Sales.insert(final);
+
+        },
+        getSalesList: function() {
+            var sale = Sales.find({},{fields: {'CreatedDate': 1,'salesAccountName':1,'TransportName':1,TotalBags:1,'_id': 1}}).fetch();
+            return sale;
+        },
+        deleteSaleEntry : function(id) {
+            Sales.remove({
+                _id:id
+            });
         }
+
 
     });
 }

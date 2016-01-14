@@ -15,30 +15,30 @@
                 </td>
                 <td>
                     <div class="col-xs-3 col-lg-3">
-                        <b class="date-heading" ng-click="salesList.order('date')">Date</b><span class="sortorder"
-                                                                                                 ng-show="salesList.predicate === 'date'"
-                                                                                                 ng-class="{reverse:salesList.reverse}"></span>
+                        <b class="date-heading" ng-click="order('date')">Date</b><span class="sortorder"
+                                                                                                 ng-show="predicate === 'date'"
+                                                                                                 ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
                 <td>
                     <div class="col-xs-3 col-lg-3">
-                        <b class="account-heading" ng-click="salesList.order('account')">Account</b><span
-                            class="sortorder" ng-show="salesList.predicate === 'account'"
-                            ng-class="{reverse:salesList.reverse}"></span>
+                        <b class="account-heading" ng-click="order('account')">Account</b><span
+                            class="sortorder" ng-show="predicate === 'account'"
+                            ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
                 <td>
                     <div class="col-xs-3 col-lg-2">
-                        <b class="transport-heading" ng-click="salesList.order('transport')">Transport</b><span
-                            class="sortorder" ng-show="salesList.predicate === 'transport'"
-                            ng-class="{reverse:salesList.reverse}"></span>
+                        <b class="transport-heading" ng-click="order('transport')">Transport</b><span
+                            class="sortorder" ng-show="predicate === 'transport'"
+                            ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
                 <td>
                     <div class="col-xs-3 col-lg-2 sales-bags">
-                        <b class="bags-heading" ng-click="salesList.order('bags')">Bags</b><span class="sortorder"
-                                                                                                 ng-show="salesList.predicate === 'bags'"
-                                                                                                 ng-class="{reverse:salesList.reverse}"></span>
+                        <b class="bags-heading" ng-click="order('bags')">Bags</b><span class="sortorder"
+                                                                                                 ng-show="predicate === 'bags'"
+                                                                                                 ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
                 <td>
@@ -50,7 +50,7 @@
         </div>
     </div>
 
-    <div class="list" ng-repeat="user in salesList.users |  orderBy:salesList.predicate:salesList.reverse">
+    <div class="list" ng-repeat="user in Sales |  orderBy:predicate:reverse">
         <div class="item">
             <div class="item-swipe bigFonts">
                 <div class="col-xs-3 hidden-xs hidden-sm hidden-md col-lg-1">
@@ -60,27 +60,28 @@
                 </div>
                 <div class="col-xs-3 col-lg-3">
                     <div class="wrap">
-                        <span class="row1 date-fix date">{{user.date}} </span>
+                        <span class="row1 date-fix date">{{user.CreatedDate}} </span>
                     </div>
                 </div>
                 <div class="col-xs-3 col-lg-3">
                     <div class="wrap">
-                        <span class="row1 account-fix produc">{{user.account}}</span>
+                        <span class="row1 account-fix produc">{{user.salesAccountName}}</span>
                     </div>
                 </div>
                 <div class="col-xs-3 col-lg-2">
                     <div class="wrap">
-                        <span class="row1 transport-fix product">{{user.transport}}</span>
+                        <span class="row1 transport-fix product">{{user.TransportName}}</span>
                     </div>
                 </div>
                 <div class="col-xs-3 col-lg-2 extra">
                     <div class="wrap float-bags-right">
                         <span class="product bags-fix" data-placement="left" data-container="body" data-toggle="popover"
-                              title="10 X 65 + 10 = 650KG">{{salesList.bags(user.bags)}}</span>
+                              title="10 X 65 + 10 = 650KG">{{bags(user.Bags)}}</span>
                     </div>
                 </div>
-                <div class="col-xs-3 hidden-xs col-lg-1 extra">
+                <div class="col-xs-3 hidden-xs col-lg-1 extra"  ng-click="delete(user._id)">
                     <div class="wrap">
+                        <a class="id hidden">{{user._id}}</a>
                         <a class="delete" href='#'><span class='glyphicon glyphicon-trash'></span></a>
                     </div>
                 </div>
