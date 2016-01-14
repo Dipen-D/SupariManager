@@ -213,23 +213,18 @@ if (Meteor.isClient) {
                     }
 
 
-                    Meteor.call('processDetail',processDetail, function (err, data) {
-                        if (!err) {
-                            console.log("sucess");
-                            $(".modal-content").unmask();
-                        } else {
-                            console.log(err);
-                        }
-                    });
-                   var product = $("#product").val();
-                       var type = $("#type").val();
-                    var input = parseInt($("#rawMaterialPackets").val()) * 65 + parseInt($("#rawMaterialPackets").val());
+
+                    var date = $("#datePicker").val();
+                    var product = $("#product").val();
+                    var type = $("#type").val();
+                    var input = parseInt($("#rawMaterialBags").val()) * 65 + parseInt($("#rawMaterialPackets").val());
                     var preoutput = $("#output").text();
                     var outputkgs = preoutput.replace(/[^[+-A-Z]/g,'');
-                    var output =  parseInt($("#rawMaterialPackets").val()) * 65 + parseInt($("#rawMaterialPackets").val()) + parseInt(outputkgs);
+                    var output =  parseInt($("#rawMaterialBags").val()) * 65 + parseInt($("#rawMaterialPackets").val()) + parseInt(outputkgs);
                     console.log(input,output);
-                    var pro = { _id:"0",product:product,type:type,input:input,output:output}
-                    Meteor.call('process',pro, function (err, data) {
+                    var pro = { _id:"0",date:date,product:product,type:type,input:input,output:output}
+
+                    Meteor.call('process',processDetail,pro,function (err, data) {
                         if (!err) {
                             console.log("sucess");
                             $(".modal-content").unmask();
@@ -828,6 +823,17 @@ if (Meteor.isClient) {
                     }
                     return x1 + x2;
                 }
+                Meteor.call('getProcessList', function (err, data,data1) {
+                    if (!err) {
+                        $scope.ProcessDetail = data;
+                        $scope.Process = data1;
+                        if (!$scope.$$phase) {
+                            $scope.$digest();
+                        }
+                    } else {
+                        console.log(err);
+                    }
+                });
                 this.users =
                     [
                         {date: "12/16", type: "DC", product: "supari", input: 6000, output: "6500"},
@@ -842,6 +848,7 @@ if (Meteor.isClient) {
                     this.reverse = (this.predicate === predicate) ? !this.reverse : false;
                     this.predicate = predicate;
                 }
+
             }]
         }
     });

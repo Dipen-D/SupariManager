@@ -84,15 +84,21 @@ if (Meteor.isServer) {
             })
 
         },
-        processDetail: function(data){
+        process: function(data,datapro){
 
             var _id;
-            Counters.update({_id: "processDetailId"}, {$inc: {SequenceValue: 1}});
-            var ret = Counters.findOne({_id: "processDetailId"});
+            Counters.update({_id: "processId"}, {$inc: {SequenceValue: 1}});
+            var ret = Counters.findOne({_id: "processId"});
             var id = ret.SequenceValue.toString();
             var object ={};
             console.log(id);
-             var final = {_id:id};
+             var final = {_id:id,
+                            CreatedDate:datapro.date,
+                            LastModifiedDate:datapro.date,
+                            Product:datapro.product,
+                            Type:datapro.type,
+                            Input:datapro.input,
+                            Output:datapro.output};
                     for(i=0;i<data.length;i++) {
                         var x = data[i].key;
                         x = get(data,x);
@@ -107,9 +113,9 @@ if (Meteor.isServer) {
                         if (found) {
                              // Found it, create an object with the properties we want
                              return {
-                                 bags: found.bags,
-                                 packets: found.packets,
-                                 weight: found.value
+                                 Bags: found.bags,
+                                 Packets: found.packets,
+                                 Weight: found.value
                              };
                         }
                     return null;
@@ -117,24 +123,7 @@ if (Meteor.isServer) {
                 final[data[i].key] = (x);
             }
             console.log(final);
-            ProcessDetail.insert(final);
-
-        },
-
-        process: function(data) {
-            var _id;
-            Counters.update({_id: "processId"}, {$inc: {SequenceValue: 1}});
-            var ret = Counters.findOne({_id: "processId"});
-            var id = ret.SequenceValue.toString();
-            console.log(id);
-            console.log(data);
-            Process.insert({
-                _id:id,
-                product:data.product,
-                type:data.type,
-                input:data.input,
-                output:data.output
-            })
+            Process.insert(final);
 
         },
         getPurchaseList: function () {
@@ -149,6 +138,10 @@ if (Meteor.isServer) {
         getPurchaseEntry: function (id) {
             var x = Purchase.find({_id:id}).fetch();
             return x;
+        },
+        getProcessList: function() {
+            var processlist = Purchase.find({},{fields: {'CreatedDate': 1,'Type':1,'Product':1,Input:1,'_id': 1,'Output':1}}).fetch();
+            return processlist;
         }
 
     });
