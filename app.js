@@ -183,7 +183,7 @@ if (Meteor.isClient) {
                     $.each(data, function (index, value) {
                         var weight = getTotalWeightForProduct(value.Name);
                         var dataObj = {
-                            key:value.Name,
+                            Subtypename:value.Name,
                             bags:Math.round(weight/65),
                             packets:weight-Math.round(65*Math.round(weight/65)),
                             value:weight
@@ -198,6 +198,7 @@ if (Meteor.isClient) {
                             obj += "</tr>";
                             processDetail.push(dataObj);
                         }
+                        console.log(processDetail);
 
                     });
                     var adjustmentClass = (adjustment >= 0 ) ? "text-success" : "text-danger";
@@ -214,6 +215,18 @@ if (Meteor.isClient) {
                     Meteor.call('getProcessEntry', this.processId, function (err, data) {
                         if (!err) {
                             console.log(data);
+                            for(i=0;i<data.length;i++) {
+                                $("#product").val(data[0].Product);
+                                $("#type").val(data[0].Type);
+                                $("#rawMaterialBags").val(Math.round(data[0].Input/65));
+                                $("#rawMaterialPackets").val(data[0].Input-parseInt(Math.round(data[0].Input/65)*65));
+
+                                for (j = 0; j < data[i].Info.length; j++) {
+                                    console.log(data[i].Info[j].Subtypename);
+                                  //  $("[data-name='data[i].Info[j].Subtypename']").find();
+
+                                }
+                            }
                         } else {
                             console.log(err);
                         }

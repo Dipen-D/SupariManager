@@ -98,9 +98,10 @@ if (Meteor.isServer) {
                 Product:datapro.product,
                 Type:datapro.type,
                 Input:datapro.input,
-                Output:datapro.output
+                Output:datapro.output,
+                Info:data
             };
-            for(i=0;i<data.length;i++) {
+           /* for(i=0;i<data.length;i++) {
                 var x = data[i].key;
                 x = get(data,x);
                 function get(array, pouch) {
@@ -122,7 +123,7 @@ if (Meteor.isServer) {
                     return null;
                 }
                 final[data[i].key] = (x);
-            }
+            }*/
             console.log(final);
             Process.insert(final);
 
@@ -172,7 +173,7 @@ if (Meteor.isServer) {
             };
             console.log(final);
             for (i = 0; i < data.length; i++) {
-                var x = data[i].type;
+              var x = data[i].type;
                 x = get(data, x);
                 function get(array, pouch) {
                     var found;
@@ -198,6 +199,7 @@ if (Meteor.isServer) {
                 final[data[i].type] = (x);
             }
             console.log(final);
+            console.log(data);
             Sales.insert(final);
 
         },

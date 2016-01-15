@@ -26,6 +26,7 @@
                     <option value="">Select a type</option>
                     <option ng-repeat="maintype in ProductMainTypes"
                             value="{{maintype.Name}}">
+
                         {{maintype.Name}}
                     </option>
                 </select>
@@ -54,7 +55,7 @@
         </div>
         <hr/>
         <div id="entryFields">
-            <div class="form-group" ng-repeat="type in SupariTypes" ng-hide="(processEntry.product != 'Supari')">
+            <div class="form-group" ng-repeat="type in SupariTypes" ng-hide="(processEntry.product != 'Supari')" data-name="{{type.Name}}">
                 <label for="" class="col-sm-2 col-xs-12  control-label">{{type.Name}}</label>
                 <div class="col-sm-3 col-xs-7 input-bags">
                     <div class="input-group">
