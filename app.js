@@ -47,6 +47,14 @@ if (Meteor.isClient) {
                 url: '/purchase/:purchaseId',
                 template: '<purchase-entry></purchase-entry>'
             })
+            .state('processEditEntry', {
+                url: '/process/:processId',
+                template: '<process-entry></process-entry>'
+            })
+            .state('salesEditEntry', {
+                url: '/sales/:salesId',
+                template: '<sales-entry></sales-entry>'
+            })
             .state('purchaseList', {
                 url: '/purchaselist',
                 template: '<purchase-list></purchase-list>'
@@ -59,7 +67,7 @@ if (Meteor.isClient) {
             restrict: 'E',
             templateUrl: 'process-entry.html',
             controllerAs: 'processEntry',
-            controller: function ($scope, $reactive, $meteor) {
+            controller: function ($scope, $reactive, $meteor, $stateParams) {
                 $reactive(this).attach($scope);
                 // var data = [];
                 var processDetail = [];
@@ -199,41 +207,45 @@ if (Meteor.isClient) {
                     obj += "</tr>";
                     $('#recieptContainer').html(obj);
                 };
-                $scope.processcancel = function () {
-                    console.log("No");
-                }
-                $scope.processsave = function () {
-                    console.log("Yes");
-                    var x = {};
-                    var x1 = [];
-                    $(".modal-content").mask("");
-
-
-                    for(i=0;i<processDetail.length;i++){
-                        x1.push(processDetail[i].key);
-                    }
-
-
-
-                    var date = $("#datePicker").val();
-                    var product = $("#product").val();
-                    var type = $("#type").val();
-                    var input = parseInt($("#rawMaterialBags").val()) * 65 + parseInt($("#rawMaterialPackets").val());
-                    var preoutput = $("#output").text();
-                    var outputkgs = preoutput.replace(/[^[+-A-Z]/g,'');
-                    var output =  parseInt($("#rawMaterialBags").val()) * 65 + parseInt($("#rawMaterialPackets").val()) + parseInt(outputkgs);
-                    console.log(input,output);
-                    var pro = { _id:"0",date:date,product:product,type:type,input:input,output:output}
-
-                    Meteor.call('process',processDetail,pro,function (err, data) {
+                this.processId = $stateParams.processId;
+                if (!!this.processId) {
+                    console.log(this.processId);
+                    console.log("Fetch data...");
+                    Meteor.call('getProcessEntry', this.processId, function (err, data) {
                         if (!err) {
-                            console.log("sucess");
-                            $(".modal-content").unmask();
+                            console.log(data);
                         } else {
                             console.log(err);
                         }
                     });
+                }
+                    $scope.processcancel = function () {
+                        console.log("No");
+                    }
+                    $scope.processsave = function () {
+                        console.log("Yes");
+                        var x = {};
+                        var x1 = [];
+                        $(".modal-content").mask("");
 
+                        var date = $("#datePicker").val();
+                        var product = $("#product").val();
+                        var type = $("#type").val();
+                        var input = parseInt($("#rawMaterialBags").val()) * 65 + parseInt($("#rawMaterialPackets").val());
+                        var preoutput = $("#output").text();
+                        var outputkgs = preoutput.replace(/[^[+-A-Z]/g, '');
+                        var output = parseInt($("#rawMaterialBags").val()) * 65 + parseInt($("#rawMaterialPackets").val()) + parseInt(outputkgs);
+                        console.log(input, output);
+                        var pro = {_id: "0", date: date, product: product, type: type, input: input, output: output}
+
+                        Meteor.call('process', processDetail, pro, function (err, data) {
+                            if (!err) {
+                                console.log("sucess");
+                                $(".modal-content").unmask();
+                            } else {
+                                console.log(err);
+                            }
+                        });
                 }
             }
         }
@@ -386,7 +398,7 @@ if (Meteor.isClient) {
             restrict: 'E',
             templateUrl: 'sales-entry.html',
             controllerAs: 'salesEntry',
-            controller: function ($scope, $reactive, $meteor) {
+            controller: function ($scope, $reactive, $meteor, $stateParams) {
                 $reactive(this).attach($scope);
                 var salesDetail = [];
 
@@ -575,7 +587,7 @@ if (Meteor.isClient) {
                     if (data.length > 0) {
                         obj += "<div class='totalBagsContainer col-lg-12'>";
                         obj += "<span scope='row'>Total Bags</span>";
-                        obj += "<span class='flRight'>" + add_commasInAmount(totalBags) + "</span>";
+                        obj += "<span class='flRight' id='tbags'>" + add_commasInAmount(totalBags) + "</span>";
                         obj += "</div>";
                         obj += "<div class='recieptFooter col-lg-12'>";
                         obj += "<span scope='row'>Total</span>";
@@ -666,33 +678,49 @@ if (Meteor.isClient) {
                         }
                     });
                 }
-                $scope.salecancel = function () {
-                    console.log("No");
-                }
-                $scope.salesave = function () {
-                    console.log("Yes");
-                    var date = $("#datepicker").val();
-                    var salesAccountName = $('#accountName').val();
-                    var transportName = $('#transportName').val();
-                    var product = $('#product').val();
-                    var data = {
-                        _id: "0",
-                        CreatedDate: date,
-                        salesAccountName: salesAccountName,
-                        TransportName: transportName,
-                        Product: product
-                    }
-                    console.log(salesDetail);
-
-                    Meteor.call('SalesEntry',salesDetail,data, function (err, data) {
+                this.salesId = $stateParams.salesId;
+                if (!!this.salesId) {
+                    console.log(this.salesId);
+                    console.log("Fetch data...");
+                    Meteor.call('getSalesEntry', this.salesId, function (err, data) {
                         if (!err) {
-                            console.log("sucess");
-                            $(".modal-content").unmask();
+
                         } else {
                             console.log(err);
                         }
                     });
+                    $scope.salecancel = function () {
+                        console.log("No");
+                    }
+                    $scope.salesave = function () {
+                        console.log("Yes");
+                        var date = $("#datepicker").val();
+                        var salesAccountName = $('#accountName').val();
+                        var transportName = $('#transportName').val();
+                        var product = $('#product').val();
+                        var totalbags = $('#tbags').text();
+                        var data = {
+                            _id: "0",
+                            CreatedDate: date,
+                            salesAccountName: salesAccountName,
+                            TransportName: transportName,
+                            Product: product,
+                            TotalBags: totalbags
+                        }
+                        console.log(salesDetail);
+
+
+                        Meteor.call('SalesEntry', salesDetail, data, function (err, data) {
+                            if (!err) {
+                                console.log("sucess");
+                                $(".modal-content").unmask();
+                            } else {
+                                console.log(err);
+                            }
+                        });
+                    }
                 }
+
 
 
                 $(document).ready(function () {
@@ -759,7 +787,7 @@ if (Meteor.isClient) {
             templateUrl: 'sales-list.html',
             controllerAs: 'salesList',
             controller: ['$scope', function ($scope, $stateParams) {
-                this.bags = function (nStr) { //regulerExpression function add coma(,) in price range
+                $scope.bags = function (nStr) { //regulerExpression function add coma(,) in price range
                     nStr += '';
                     x = nStr.split('.');
                     x1 = x[0];

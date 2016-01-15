@@ -91,7 +91,8 @@
                 </div>
             </div>
             <div class="item-back">
-                <button class="action first btn-delete delete" type="button">
+                <button class="action first btn-delete delete" type="button"  ng-click="delete(user._id)">
+                    <a class="id hidden">{{user._id}}</a>
                     <i class="fa fa-trash-o"></i>
                 </button>
                 <button class="action second btn-check" type="button">

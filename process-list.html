@@ -51,7 +51,8 @@
             <div class="item-swipe bigFonts">
                 <div class="col-xs-3 col-lg-1 hidden-xs hidden-md hidden-sm">
                     <div class="wrap">
-                        <a class="redirect" href='/process'><span class='glyphicon glyphicon-edit'></span></a>
+                        <a class="id hidden">{{user._id}}</a>
+                        <a class="redirect" href='/process/{{user._id}}'><span class='glyphicon glyphicon-edit'></span></a>
                     </div>
                 </div>
                 <div class="col-xs-4 col-lg-4">
@@ -83,7 +84,8 @@
                 </div>
             </div>
             <div class="item-back">
-                <button class="action first btn-delete" type="button">
+                <button class="action first btn-delete" type="button" ng-click="delete(user._id)">
+                    <a class="id hidden">{{user._id}}</a>
                     <i class="fa fa-trash-o"></i>
                 </button>
                 <button class="action second btn-check" type="button">

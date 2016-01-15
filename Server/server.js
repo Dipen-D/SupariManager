@@ -151,6 +151,10 @@ if (Meteor.isServer) {
                 _id:id
             });
         },
+        getProcessEntry: function (id) {
+            var x = Process.find({_id:id}).fetch();
+            return x;
+        },
         SalesEntry : function(data,datapro) {
             var _id;
             Counters.update({_id: "salesId"}, {$inc: {SequenceValue: 1}});
@@ -164,8 +168,9 @@ if (Meteor.isServer) {
                 salesAccountName: datapro.salesAccountName,
                 TransportName: datapro.TransportName,
                 Product: datapro.Product,
-                TotalBags:datapro.totalBags
+                TotalBags:datapro.TotalBags
             };
+            console.log(final);
             for (i = 0; i < data.length; i++) {
                 var x = data[i].type;
                 x = get(data, x);
@@ -197,13 +202,17 @@ if (Meteor.isServer) {
 
         },
         getSalesList: function() {
-            var sale = Sales.find({},{fields: {'CreatedDate': 1,'salesAccountName':1,'TransportName':1,TotalBags:1,'_id': 1}}).fetch();
+            var sale = Sales.find({},{fields: {'CreatedDate': 1,'salesAccountName':1,'TransportName':1,'TotalBags':1,'_id': 1}}).fetch();
             return sale;
         },
         deleteSaleEntry : function(id) {
             Sales.remove({
                 _id:id
             });
+        },
+        getSalesEntry: function (id) {
+            var x = Sales.find({_id:id}).fetch();
+            return x;
         }
 
 
