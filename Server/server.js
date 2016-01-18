@@ -113,29 +113,7 @@ if (Meteor.isServer) {
                 Output:datapro.output,
                 Info:data
             };
-           /* for(i=0;i<data.length;i++) {
-                var x = data[i].key;
-                x = get(data,x);
-                function get(array, pouch) {
-                    var found;
-                    array.some(function (entry) {
-                        if (entry.key == pouch) {
-                            found = entry;
-                            return true;
-                        }
-                    });
-                    if (found) {
-                        // Found it, create an object with the properties we want
-                        return {
-                            Bags: found.bags,
-                            Packets: found.packets,
-                            Weight: found.value
-                        };
-                    }
-                    return null;
-                }
-                final[data[i].key] = (x);
-            }*/
+
             console.log(final);
             Process.insert(final);
 
@@ -168,6 +146,9 @@ if (Meteor.isServer) {
             var x = Process.find({_id:id}).fetch();
             return x;
         },
+        EditSalesEntry : (function(data,datapro,id) {
+
+        },
         SalesEntry : function(data,datapro) {
             var _id;
             Counters.update({_id: "salesId"}, {$inc: {SequenceValue: 1}});
@@ -181,10 +162,11 @@ if (Meteor.isServer) {
                 salesAccountName: datapro.salesAccountName,
                 TransportName: datapro.TransportName,
                 Product: datapro.Product,
-                TotalBags:datapro.TotalBags
+                TotalBags:datapro.TotalBags,
+                Info:data
             };
             console.log(final);
-            for (i = 0; i < data.length; i++) {
+            /*for (i = 0; i < data.length; i++) {
               var x = data[i].type;
                 x = get(data, x);
                 function get(array, pouch) {
@@ -207,11 +189,9 @@ if (Meteor.isServer) {
                     }
                     return null;
                 }
-
                 final[data[i].type] = (x);
-            }
+            }*/
             console.log(final);
-            console.log(data);
             Sales.insert(final);
 
         },
@@ -228,7 +208,5 @@ if (Meteor.isServer) {
             var x = Sales.find({_id:id}).fetch();
             return x;
         }
-
-
     });
 }
