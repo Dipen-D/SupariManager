@@ -84,6 +84,18 @@ if (Meteor.isServer) {
             })
 
         },
+        EditProcessEntry :function(data,datapro,id){
+          Process.update({_id:id},
+              {  CreatedDate:datapro.date,
+              LastModifiedDate:datapro.date,
+              Product:datapro.product,
+              Type:datapro.type,
+              Input:datapro.input,
+              Output:datapro.output,
+              Info:data
+          })
+            console.log(id);
+        },
         process: function(data,datapro){
 
             var _id;

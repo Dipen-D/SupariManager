@@ -73,7 +73,7 @@
                 </div>
             </div>
 
-            <div class="form-group" ng-repeat="type in MariTypes" ng-hide="(processEntry.product != 'Mari')">
+            <div class="form-group" ng-repeat="type in MariTypes" ng-hide="(processEntry.product != 'Mari')" data-name="{{type.Name}}">
                 <label for="" class="col-sm-2 col-xs-12  control-label">{{type.Name}}</label>
                 <div class="col-sm-3 col-xs-7 input-bags">
                     <div class="input-group">
