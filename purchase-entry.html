@@ -14,14 +14,10 @@
             <div class="col-lg-4 col-sm-5 col-xs-12">
                <select class="bigFonts" style="width: 100%;" ng-model="AccountName" >
                     <option value="">Select an account</option>
-                    <option ng-repeat="accountName in PurchaseAccountNames" value="{{accountName.Name}}">
+                    <option ng-repeat="accountName in PurchaseAccountNames" value="{{accountName.Name}}" id="selectAccount">
                         {{accountName.Name}}
                     </option>
                </select>
-                <!-- <select class="bigFonts" ng-model="name" id="selectAccount" ng-options="accountName.Name for accountName in PurchaseAccountNames track by accountName.Name">
-                     <option value="">Select an account</option>
-
-                 </select>-->
             </div>
         </div>
         <div class="form-group">
@@ -37,8 +33,7 @@
 
         <div class="form-group">
             <div class="col-lg-4 col-sm-5 col-xs-12">
-                <select class="bigFonts" style="width: 100%;" ng-model="purchaseEntry.type"
-                        value="{{purchaseEntry.type}}" id="selectProductType">
+                <select class="bigFonts" style="width: 100%;" ng-model="type" id="selectProductType">
                    <option value="">Select a type</option>
                     <option ng-repeat="type in ProductTypes"
                             value="{{type.Name}}">
@@ -50,14 +45,14 @@
 
         <div class="form-group">
             <div class="col-sm-3 col-xs-7 input-bags">
-                <div class="input-group"><input type="number" ng-model="purchaseEntry.bags"
+                <div class="input-group"><input type="number" ng-model="bagsinput"
                                                 class="form-control bigFonts" pattern="\d*" placeholder="Bags"
                                                 aria-describedby="basic-addon2" id="bags">
                     <span class="input-group-addon" id="basic-addon2">x 65 KG</span>
                 </div>
             </div>
             <div class="col-sm-3 col-xs-5">
-                <div class="input-group"><input type="number" ng-model="purchaseEntry.packets"
+                <div class="input-group"><input type="number" ng-model="packetsinput"
                                                 class="form-control bigFonts" pattern="\d*" placeholder="Packet"
                                                 aria-describedby="basic-addon2" id="packets">
                     <span class="input-group-addon" id="basic-addon2"> KG</span>
@@ -101,19 +96,19 @@
                     </tr>
                     <tr>
                         <td scope="row">Type</td>
-                        <td>{{purchaseEntry.type}}</td>
+                        <td>{{type}}</td>
                     </tr>
                     <tr>
                         <td scope="row">Bags</td>
-                        <td>{{purchaseEntry.getValidValue(purchaseEntry.bags)}}</td>
+                        <td>{{bagsinput}}</td>
                     </tr>
                     <tr>
                         <td scope="row">Packets</td>
-                        <td>{{purchaseEntry.getValidValue(purchaseEntry.packets)}}</td>
+                        <td>{{packetsinput}}</td>
                     </tr>
                     <tr class="info">
                         <td>Total KG</td>
-                        <td>{{purchaseEntry.calculateWeight()}} KG</td>
+                        <td>{{bagsinput * 65 + packetsinput }} KG</td>
                     </tr>
                     </tbody>
                 </table>

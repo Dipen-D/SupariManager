@@ -71,8 +71,9 @@ if (Meteor.isServer) {
             });
 
         },
-        EditPurchaseEntry : function(data){
-            Purchase.update({
+        EditPurchaseEntry : function(data,id){
+            Purchase.update({_id:id},
+            {
                 CreatedDate:data.date,
                 LastModifiedDate:data.date,
                 PurchaseAccountName:data.account,
