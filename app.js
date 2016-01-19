@@ -592,7 +592,6 @@ if (Meteor.isClient) {
                         obj += "</tr>";
                     }
                     $.each(data, function (index, value) {
-                        console.log("code here");
 
                         var weight = calculateWeight(value[3], value[4]);
                         totalWeight += weight;
@@ -607,7 +606,7 @@ if (Meteor.isClient) {
                         //obj += "<span class='glyphicon glyphicon-remove-circle clearIcon'></span>";
                         obj += "</td>";
                         obj += "</tr>";
-                        var dataObjSales = {
+                       var dataObjSales = {
                             Subtypename: value[1],
                             brand: value[0],
                             detail: value[2],
@@ -673,7 +672,15 @@ if (Meteor.isClient) {
                         obj += '</div>';
                         obj += '</div>';
 
-
+                        /* var dataObjSales = {
+                         Subtypename: value[1],
+                         brand: value[0],
+                         detail: value[2],
+                         weight: weight,
+                         bags: value[3],
+                         packets: value[4],
+                         };
+                         salesDetail.push(dataObjSales);*/
                     });
                     if (data.length > 0) {
                         obj += "<div class='totalBagsContainer col-lg-12'>";
@@ -742,17 +749,20 @@ if (Meteor.isClient) {
                     val = (isNaN(val) || val == "") ? 0 : parseInt(val);
                     return val;
                 };
-
+                var clearAllFields = function(){
+                    $("#accountName,#transportName,#type,#brand,#subType,#bags,#packet").val('');
+                };
                 var resetAll = function () {
                     data = [];
                     fillModalHtml();
                     fillRecieptHtml();
                     clearInputs();
+
                 };
 
                 var deleteItemDesktopsalesEntry = function () {
                     $('body').on('click tap', '.delete-salesEntry', function (e) {
-                        e.preventDefault();
+                       // e.preventDefault();
                         var that = $(this);
                         var index = $(this).parent().parent().index();
                         console.log(index);
@@ -761,7 +771,7 @@ if (Meteor.isClient) {
                         }
                         if ($('.row').length > 5) {
                             that.parent().parent().closest('.row').remove();
-                        }
+                    }
                         else {
                             that.parent().parent().closest('.row').remove();
                             $('.recieptContainer').hide();
@@ -779,7 +789,6 @@ if (Meteor.isClient) {
                     Meteor.call('getSalesEntry', this.salesId, function (err, salesData) {
                         if (!err) {
                             console.log(salesData);
-
                             for (i = 0; i < salesData.length; i++) {
                                 $("#accountName").val(salesData[i].salesAccountName);
                                 $("#transportName").val(salesData[i].TransportName);
@@ -798,10 +807,8 @@ if (Meteor.isClient) {
                             }
                             fillRecieptHtml();
                             $scope.salecancel = function () {
-                                console.log("No");
                             }
                             $scope.salesave = function () {
-                                console.log("Yes");
                                 var date = $("#datepicker").val();
                                 var salesAccountName = $('#accountName').val();
                                 var transportName = $('#transportName').val();
@@ -815,7 +822,6 @@ if (Meteor.isClient) {
                                     Product: product,
                                     TotalBags: totalbags
                                 }
-                                console.log(salesDetail);
                                 Meteor.call('EditSalesEntry', salesDetail, po, id, function (err, data) {
                                     if (!err) {
                                         console.log("sucess");
@@ -824,21 +830,15 @@ if (Meteor.isClient) {
                                         console.log(err);
                                     }
                                 });
-                            }
+                                resetAll();
+                                clearAllFields();
 
+                            }
 
                         } else {
                             console.log(err);
                         }
                     });
-                    $scope.form = function () {
-                        console.log("set");
-
-                    }
-
-                    $scope.salecancel = function () {
-                        console.log("No");
-                    }
                     $scope.salesave = function () {
                         console.log("Yes");
                         var date = $("#datepicker").val();
@@ -854,11 +854,11 @@ if (Meteor.isClient) {
                             Product: product,
                             TotalBags: totalbags
                         }
-                        console.log(salesDetail);
+
                     }
 
                 }
-                $scope.salesave = function () {
+               $scope.salesave = function () {
                     console.log("Yes");
                     var date = $("#datepicker").val();
                     var salesAccountName = $('#accountName').val();
@@ -884,6 +884,8 @@ if (Meteor.isClient) {
                             console.log(err);
                         }
                     });
+                   resetAll();
+                   clearAllFields();
                 }
 
 
@@ -940,6 +942,7 @@ if (Meteor.isClient) {
                         //fillRecieptHtml();
                         $(this).parent().parent().remove();
                     })
+
                 });
 
             }

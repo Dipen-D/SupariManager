@@ -146,7 +146,17 @@ if (Meteor.isServer) {
             var x = Process.find({_id:id}).fetch();
             return x;
         },
-        EditSalesEntry : (function(data,datapro,id) {
+
+        EditSalesEntry :function(data,datapro,id){
+            Sales.update({_id:id},
+                {
+                    CreatedDate: datapro.CreatedDate,
+                    salesAccountName: datapro.salesAccountName,
+                    TransportName: datapro.TransportName,
+                    Product: datapro.Product,
+                    TotalBags: datapro.TotalBags,
+                    Info:data
+                })
 
         },
         SalesEntry : function(data,datapro) {
