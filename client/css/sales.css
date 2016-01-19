@@ -91,3 +91,7 @@ a.delete-salesEntry {
     padding-left: 14px;
     color: red;
 }
+
+.mobile-sales-delete{
+	background-color: #b22222;
+}

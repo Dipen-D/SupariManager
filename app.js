@@ -662,7 +662,7 @@ if (Meteor.isClient) {
                         obj += '<span class="flRight">' + add_commasInAmount(value[3]) + ' X 65 + ' + getValidValue(value[4]) + ' = ' + add_commasInAmount(weight) + '</span>';
                         obj += '</div>';
                         obj += '<div class="item-back">';
-                        obj += '<button class="action first btn-delete" type="button"><i class="fa fa-trash-o"></i></button>';
+                        obj += '<button class="action first  mobile-sales-delete" type="button"><i class="fa fa-trash-o"></i></button>';
                         obj += '</div>';
                         obj += '</div>';
 
@@ -779,6 +779,7 @@ if (Meteor.isClient) {
                         }
                     });
                 }
+
                 var data = [];
                 var fill = [];
                 this.salesId = $stateParams.salesId;
@@ -916,6 +917,7 @@ if (Meteor.isClient) {
                         fillModalHtml();
                     });
                     deleteItemDesktopsalesEntry();
+
                     $('#accountName').on('change', function () {
                         resetAll();
                     });
@@ -932,7 +934,7 @@ if (Meteor.isClient) {
                         swipeEnd: function () {
                         },
                     });
-                    $('body').on('click tap', '.btn-delete', function (e) {
+                   /* $('body').on('click tap', '.btn-delete', function (e) {
                         e.preventDefault();
                         var that = this;
                         var index = ($(this).parent().parent().index()) - 1;
@@ -941,7 +943,24 @@ if (Meteor.isClient) {
                         }
                         //fillRecieptHtml();
                         $(this).parent().parent().remove();
-                    })
+                    })*/
+                    $('body').on('click tap', '.mobile-sales-delete', function (e) {
+                        // e.preventDefault();
+                        var that = $(this);
+                        var index = $(this).parent().parent().index();
+                        console.log(index);
+                        if (index > -1) {
+                            data.splice(index, 1);
+                        }
+                        if ($('.row').length > 5) {
+                            that.parent().parent().closest('.row').remove();
+                        }
+                        else {
+                            that.parent().parent().closest('.row').remove();
+                            $('.recieptContainer').hide();
+                            $('#saveBtnsales').hide();
+                        }
+                    });
 
                 });
 
