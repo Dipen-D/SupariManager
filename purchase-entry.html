@@ -12,9 +12,9 @@
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-lg-4 col-sm-5 col-xs-12">
-               <select class="bigFonts" style="width: 100%;" ng-model="AccountName" >
+               <select class="bigFonts" style="width: 100%;" ng-model="AccountName" id="selectAccount">
                     <option value="">Select an account</option>
-                    <option ng-repeat="accountName in PurchaseAccountNames" value="{{accountName.Name}}" id="selectAccount">
+                    <option ng-repeat="accountName in PurchaseAccountNames" value="{{accountName.Name}}" >
                         {{accountName.Name}}
                     </option>
                </select>
@@ -62,8 +62,8 @@
 
         <div class="form-group">
             <div class="col-sm-10">
-                <button type="submit" class="btn btn-success btn-block btn-block-xs bigFonts" data-toggle="modal"
-                        data-target="#summary-modal">Save
+                <button type="submit" class="btn btn-success btn-block btn-block-xs bigFonts purchase-save" data-toggle="modal"
+                        data-target="" ng-click="savePurchaseEntry()">Save
                 </button>
             </div>
         </div>
@@ -100,11 +100,11 @@
                     </tr>
                     <tr>
                         <td scope="row">Bags</td>
-                        <td>{{bagsinput}}</td>
+                        <td>{{getValidValue(bagsinput)}}</td>
                     </tr>
                     <tr>
                         <td scope="row">Packets</td>
-                        <td>{{packetsinput}}</td>
+                        <td>{{getValidValue(packetsinput)}}</td>
                     </tr>
                     <tr class="info">
                         <td>Total KG</td>
