@@ -12,18 +12,16 @@
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-lg-4 col-sm-5 col-xs-12">
-                <select class="bigFonts" style="width: 100%;" ng-model="purchaseEntry.PurchaseAccountNames"
-                        value="{{purchaseEntry.PurchaseAccountNames}}" id="selectAccount">
+               <select class="bigFonts" style="width: 100%;" ng-model="AccountName" >
                     <option value="">Select an account</option>
-                    <option ng-repeat="accountName in PurchaseAccountNames"
-                            value="{{accountName.Name}}">
+                    <option ng-repeat="accountName in PurchaseAccountNames" value="{{accountName.Name}}">
                         {{accountName.Name}}
                     </option>
-                </select>
-               <!-- <select class="bigFonts" ng-model="name" id="selectAccount" ng-options="accountName.Name for accountName in PurchaseAccountNames">
-                    <option value="">Select an account</option>
+               </select>
+                <!-- <select class="bigFonts" ng-model="name" id="selectAccount" ng-options="accountName.Name for accountName in PurchaseAccountNames track by accountName.Name">
+                     <option value="">Select an account</option>
 
-                </select>-->
+                 </select>-->
             </div>
         </div>
         <div class="form-group">
@@ -99,7 +97,7 @@
                     </tr>
                     <tr>
                         <td scope="row">Account</td>
-                        <td>{{purchaseEntry.PurchaseAccountNames}}</td>
+                        <td>{{AccountName}}</td>
                     </tr>
                     <tr>
                         <td scope="row">Type</td>

@@ -377,18 +377,20 @@ if (Meteor.isClient) {
 
                 this.purchaseId = $stateParams.purchaseId;
                 if (!!this.purchaseId) {
-                    console.log(this.purchaseId);
-                    console.log("Fetch data...");
                     Meteor.call('getPurchaseEntry', this.purchaseId, function (err, data) {
                         if (!err) {
                             console.log(data);
-                            //   $("#selectAccount").val(data[0].PurchaseAccountName);
+                            //$("#selectAccount").val(data[0].PurchaseAccountName);
                             var name = data[0].PurchaseAccountName;
-                            this.purchaseEntry.PurchaseAccountNames = name;
+                            $scope.AccountName = name;
+
                             $("#selectType").val(data[0].Type);
                             $("#selectProductType").val(data[0].ProductType);
                             $("#bags").val(data[0].Bags);
                             $("#packets").val(data[0].Packets);
+                            if (!$scope.$$phase) {
+                                $scope.$digest();
+                            }
                         } else {
                             console.log(err);
                         }
