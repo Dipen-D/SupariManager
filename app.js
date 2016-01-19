@@ -180,9 +180,9 @@ if (Meteor.isClient) {
                     var data1;
                     var totalWeight = 0;
                     var data = ($('#product').val() == 'Supari') ? $scope.SupariTypes : $scope.MariTypes;
-                    var rawMaterialBags = (isNaN($('#rawMaterialBags').val())) ? 0 : $('#rawMaterialBags').val();
-                    var rawMaterialPackets = (isNaN($('#rawMaterialPackets').val())) ? 0 : $('#rawMaterialPackets').val();
-                    var rawMaterial = parseInt(rawMaterialBags * 65) + parseInt(rawMaterialPackets);
+                    var rawMaterialBags = (isNaN($('#rawMaterialBags').val()) || $('#rawMaterialBags').val() == "") ? 0 : $('#rawMaterialBags').val();
+                    var rawMaterialPackets = (isNaN($('#rawMaterialPackets').val()) || $('#rawMaterialPackets').val()== ""  ) ? 0 : $('#rawMaterialPackets').val();
+                    var rawMaterial =(parseInt(rawMaterialBags * 65) + parseInt(rawMaterialPackets));
                     obj += "<tr class='info'>";
                     obj += "<th scope='row'>Product</th>";
                     obj += "<td>" + $('#product').val() + "</td>";
@@ -287,24 +287,6 @@ if (Meteor.isClient) {
 
                 }
 
-                $scope.processsave = function () {
-                    var x = {};
-                    var x1 = [];
-                    $(".modal-content").mask("");
-
-                    var date = $("#datePicker").val();
-                    var product = $("#product").val();
-                    var type = $("#type").val();
-                    var input = parseInt($("#rawMaterialBags").val()) * 65 + parseInt($("#rawMaterialPackets").val());
-                    var preoutput = $("#output").text();
-                    var outputkgs = preoutput.replace(/[^[+-A-Z]/g, '');
-                    var output = parseInt($("#rawMaterialBags").val()) * 65 + parseInt($("#rawMaterialPackets").val()) + parseInt(outputkgs);
-
-                    var pro = {_id: "0", date: date, product: product, type: type, input: input, output: output}
-                    resetprocess();
-
-
-                }
                 $scope.processsave = function () {
                     var x = {};
                     var x1 = [];
@@ -613,7 +595,7 @@ if (Meteor.isClient) {
                         obj += "<tr>";
                         obj += "<td scope='row'>" + value[1] + " - " + value[0] + " - " + value[2] + "</td>";
                         obj += "<td>";
-                        obj += add_commasInAmount(value[3]) + ' X 65 + ' + value[4] + '<br/> = ' + add_commasInAmount(weight) + ' k.g.';
+                        obj += add_commasInAmount(getValidValue(value[3])) + ' X 65 + ' + getValidValue(value[4]) + '<br/> = ' + add_commasInAmount(weight) + ' k.g.';
                         //obj += "<span class='glyphicon glyphicon-remove-circle clearIcon'></span>";
                         obj += "</td>";
                         obj += "</tr>";
