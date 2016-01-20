@@ -689,7 +689,7 @@ if (Meteor.isClient) {
 
                         obj += '<div class="del-row">';
                         obj += '<div class="list">';
-                        obj += '<div class="item col-lg-11  hidden-sm hidden-md row-wise">';
+                        obj += '<div class="item col-lg-11 row-wise">';
                         obj += '<div class="item-swipe swipefix">';
                         obj += '<div class="marginTop18 paddingLeft10">';
                         obj += '<span>' + value[1] + ' ' + value[0] + ' ' + value[2] + '</span>';
@@ -996,11 +996,22 @@ if (Meteor.isClient) {
                 $scope.delete = function (id) {
                     Meteor.call('deleteSaleEntry', id, function (err, data) {
                         if (!err) {
+                            $scope.updateProcessObj(id);
                         } else {
                             console.log(err);
                         }
                     });
-                }
+                };
+                $scope.updateProcessObj = function(id){
+                    for (var i= 0; i< $scope.Sales.length; i++) {
+                        if ($scope.Sales[i]._id == id) {
+                            $scope.Sales.splice(i,1);
+                        }
+                    }
+                    if (!$scope.$$phase) {
+                        $scope.$digest();
+                    }
+                };
             }]
         }
     });
@@ -1047,12 +1058,24 @@ if (Meteor.isClient) {
                     Meteor.call('deletePurchaseEntry', id, function (err, data) {
                         if (!err) {
                             $("html").mask("");
+                            $scope.updateProcessObj(id);
                         } else {
                             console.log(err);
                         }
                         $("html").unmask();
                     });
-                }
+                };
+
+                $scope.updateProcessObj = function(id){
+                    for (var i= 0; i< $scope.Purchase.length; i++) {
+                        if ($scope.Purchase[i]._id == id) {
+                            $scope.Purchase.splice(i,1);
+                        }
+                    }
+                    if (!$scope.$$phase) {
+                        $scope.$digest();
+                    }
+                };
 
             }]
         }
@@ -1091,6 +1114,7 @@ if (Meteor.isClient) {
                 $scope.delete = function (id) {
                     Meteor.call('deleteProcessEntry', id, function (err, data) {
                         if (!err) {
+                            $scope.updateProcessObj(id);
                         } else {
                             console.log(err);
                         }
@@ -1101,7 +1125,17 @@ if (Meteor.isClient) {
                 $scope.order = function (predicate) {
                     $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
                     $scope.predicate = predicate;
-                }
+                };
+                $scope.updateProcessObj = function(id){
+                    for (var i= 0; i< $scope.Process.length; i++) {
+                        if ($scope.Process[i]._id == id) {
+                            $scope.Process.splice(i,1);
+                        }
+                    }
+                    if (!$scope.$$phase) {
+                        $scope.$digest();
+                    }
+                };
 
             }]
         }

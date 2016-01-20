@@ -92,3 +92,7 @@
 .list:nth-child(odd) .item .item-swipe{
 	background-color: #f2f5f7;
 }
+
+.mobile-sales-delete{
+	background: #FF0000;
+}
