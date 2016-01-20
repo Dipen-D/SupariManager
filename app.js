@@ -972,6 +972,10 @@ if (Meteor.isClient) {
                     }
                     return x1 + x2;
                 }
+                $scope.trim = function(x){
+                    x = x.substring(0,5);
+                    return x;
+                };
                 $scope.predicate = 'date';
                 $scope.reverse = true;
                 $scope.order = function (predicate) {
@@ -1017,6 +1021,10 @@ if (Meteor.isClient) {
                     }
                     return x1 + x2;
                 }
+                $scope.trim = function(x){
+                    x = x.substring(0,5);
+                    return x;
+                };
                 $scope.predicate = 'date';
                 $scope.reverse = true;
                 $scope.order = function (predicate) {
@@ -1065,6 +1073,10 @@ if (Meteor.isClient) {
                     }
                     return x1 + x2;
                 }
+                $scope.trim = function(x){
+                    x = x.substring(0,5);
+                    return x;
+                };
                 Meteor.call('getProcessList', function (err, data) {
                     if (!err) {
                         $scope.Process = data;
