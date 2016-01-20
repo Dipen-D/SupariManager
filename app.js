@@ -1107,6 +1107,7 @@ if (Meteor.isClient) {
                         if (!$scope.$$phase) {
                             $scope.$digest();
                         }
+                        $('[data-toggle="popover"]').popover();
                     } else {
                         console.log(err);
                     }
