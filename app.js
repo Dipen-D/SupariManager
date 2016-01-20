@@ -818,7 +818,7 @@ if (Meteor.isClient) {
                             }
                             fillRecieptHtml();
                             $scope.salesave = function () {
-                                var date = $("#datepicker").val();
+                                var date = $("#datePicker").val();
                                 var salesAccountName = $('#accountName').val();
                                 var transportName = $('#transportName').val();
                                 var product = $('#product').val();
@@ -849,7 +849,7 @@ if (Meteor.isClient) {
                         }
                     });
                     $scope.salesave = function () {
-                        var date = $("#datepicker").val();
+                        var date = $("#datePicker").val();
                         var salesAccountName = $('#accountName').val();
                         var transportName = $('#transportName').val();
                         var product = $('#product').val();
@@ -865,7 +865,7 @@ if (Meteor.isClient) {
                     }
                 }
                 $scope.salesave = function () {
-                    var date = $("#datepicker").val();
+                    var date = $("#datePicker").val();
                     var salesAccountName = $('#accountName').val();
                     var transportName = $('#transportName').val();
                     var product = $('#product').val();
