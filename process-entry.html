@@ -5,8 +5,8 @@
             <h1>Process</h1>
         </div>
         <div class="col-xs-6">
-            <input type="text" class="form-control bigFonts" id="datePicker" readonly placeholder="Date" value="01/15"
-                   style="margin-top: 15px;"/>
+            <input id="datePicker" ng-model="datePicker" type="text" class="form-control bigFonts" placeholder="Date"
+                   style="margin-top: 15px;">
         </div>
     </div>
 
@@ -106,7 +106,7 @@
             <label for="" class="col-sm-1 col-xs-6">Adj</label>
             <div class=" col-sm-2 col-xs-6 input-bags">
                 <div class="input-group">
-                    <label for="" class=" input-group-addon control-label1 text-right totalStyle" ng-class="{'text-danger' : (processEntry.getAdjustment() < 0), 'text-success' : (processEntry.getAdjustment() >= 0)} ">{{processEntry.getAdjustment()}} KG</label>
+                    <label for="" id="output" class=" input-group-addon control-label1 text-right totalStyle" ng-class="{'text-danger' : (processEntry.getAdjustment() < 0), 'text-success' : (processEntry.getAdjustment() >= 0)} ">{{processEntry.getAdjustment()}} KG</label>
                 </div>
             </div>
         </div>

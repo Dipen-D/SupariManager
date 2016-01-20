@@ -15,29 +15,29 @@
                 </td>
                 <td>
                     <div class="col-xs-3 col-lg-3 headerStyle">
-                        <b class="date-heading" ng-click="order('date')">Date</b><span class="sortorder"
-                                                                                                 ng-show="predicate === 'date'"
+                        <b class="date-heading" ng-click="order('CreatedDate')">Date</b><span class="sortorder"
+                                                                                                 ng-show="predicate === 'CreatedDate'"
                                                                                                  ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
                 <td>
                     <div class="col-xs-3 col-lg-3 headerStyle">
-                        <b class="account-heading" ng-click="order('account')">Account</b><span
-                            class="sortorder" ng-show="predicate === 'account'"
+                        <b class="account-heading" ng-click="order('salesAccountName')">Account</b><span
+                            class="sortorder" ng-show="predicate === 'salesAccountName'"
                             ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
                 <td>
                     <div class="col-xs-3 col-lg-2 headerStyle">
-                        <b class="transport-heading" ng-click="order('transport')">Transport</b><span
-                            class="sortorder" ng-show="predicate === 'transport'"
+                        <b class="transport-heading" ng-click="order('TransportName')">Transport</b><span
+                            class="sortorder" ng-show="predicate === 'TransportName'"
                             ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
                 <td>
                     <div class="col-xs-3 col-lg-2 sales-bags headerStyle">
-                        <b class="bags-heading" ng-click="order('bags')">Bags</b><span class="sortorder"
-                                                                                                 ng-show="predicate === 'bags'"
+                        <b class="bags-heading" ng-click="order('TotalBags')">Bags</b><span class="sortorder"
+                                                                                                 ng-show="predicate === 'TotalBags'"
                                                                                                  ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="col-xs-3 col-lg-3">
                     <div class="wrap">
-                        <span class="row1 account-fix produc">{{user.salesAccountName}}</span>
+                        <span class="row1 account-fix product">{{user.salesAccountName}}</span>
                     </div>
                 </div>
                 <div class="col-xs-3 col-lg-2">
