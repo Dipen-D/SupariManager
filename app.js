@@ -249,6 +249,7 @@ if (Meteor.isClient) {
                                 $("#type").val(data[0].Type);
                                 $("#rawMaterialBags").val(Math.round(data[0].Input / 65)).change();
                                 $("#rawMaterialPackets").val(data[0].Input - parseInt(Math.round(data[0].Input / 65) * 65)).change();
+                                $("#datePicker").val(data[0].CreatedDate);
 
                                 for (j = 0; j < data[i].Info.length; j++) {
                                     var name = (data[i].Info[j].Subtypename);
@@ -267,9 +268,13 @@ if (Meteor.isClient) {
                                 var preoutput = $("#output").text();
                                 var outputkgs = preoutput.replace(/[^[+-A-Z]/g, '');
                                 var output = parseInt($("#rawMaterialBags").val()) * 65 + parseInt($("#rawMaterialPackets").val()) + parseInt(outputkgs);
+                                var dates = new Date();
+                                var datestring = ("0" + (dates.getMonth() + 1).toString()).substr(-2) + "/" + ("0" + dates.getDate().toString()).substr(-2)  + "/" + (dates.getFullYear().toString()).substr(0);
+                                var mdate = datestring;
                                 var po = {
                                     id: id,
                                     date: date,
+                                    mdate:mdate,
                                     product: product,
                                     type: type,
                                     input: input,
@@ -424,6 +429,9 @@ if (Meteor.isClient) {
                             var packets = ($scope.packetsinput);
                             var kgs = bags * 65 + packets;
                             var date = ($scope.datePicker);
+                            var dates = new Date();
+                            var datestring = ("0" + (dates.getMonth() + 1).toString()).substr(-2) + "/" + ("0" + dates.getDate().toString()).substr(-2)  + "/" + (dates.getFullYear().toString()).substr(0);
+                            var mdate = datestring;
                             var data = {
                                 _id: id,
                                 account: accountname,
@@ -432,8 +440,10 @@ if (Meteor.isClient) {
                                 date: date,
                                 bags: bags,
                                 packets: packets,
-                                producttype: producttype
+                                producttype: producttype,
+                                mdate:mdate
                             }
+                            console.log(data);
                             Meteor.call('EditPurchaseEntry', data, id, function (err, data) {
                                 if (!err) {
                                     $(".modal-content").unmask();
@@ -804,6 +814,7 @@ if (Meteor.isClient) {
                                 $("#accountName").val(salesData[i].salesAccountName);
                                 $("#transportName").val(salesData[i].TransportName);
                                 $("#product").val(salesData[i].Product);
+                                $("#datePicker").val(salesData[i].CreatedDate);
                                 for (j = 0; j < salesData[i].Info.length; j++) {
                                     var brand = salesData[i].Info[j].brand;
                                     var type = salesData[i].Info[j].Subtypename;
@@ -816,6 +827,7 @@ if (Meteor.isClient) {
 
 
                             }
+                            console.log(salesData);
                             fillRecieptHtml();
                             $scope.salesave = function () {
                                 var date = $("#datePicker").val();
@@ -823,13 +835,17 @@ if (Meteor.isClient) {
                                 var transportName = $('#transportName').val();
                                 var product = $('#product').val();
                                 var totalbags = $('#tbags').text();
+                                var dates = new Date();
+                                var datestring = ("0" + (dates.getMonth() + 1).toString()).substr(-2) + "/" + ("0" + dates.getDate().toString()).substr(-2)  + "/" + (dates.getFullYear().toString()).substr(0);
+                                var mdate = datestring;
                                 var po = {
                                     _id: id,
                                     CreatedDate: date,
                                     salesAccountName: salesAccountName,
                                     TransportName: transportName,
                                     Product: product,
-                                    TotalBags: totalbags
+                                    TotalBags: totalbags,
+                                    mdate:mdate
                                 }
                                 Meteor.call('EditSalesEntry', salesDetail, po, id, function (err, data) {
                                     if (!err) {
@@ -848,21 +864,6 @@ if (Meteor.isClient) {
                             console.log(err);
                         }
                     });
-                    $scope.salesave = function () {
-                        var date = $("#datePicker").val();
-                        var salesAccountName = $('#accountName').val();
-                        var transportName = $('#transportName').val();
-                        var product = $('#product').val();
-                        var totalbags = $('#tbags').text();
-                        var data = {
-                            _id: "0",
-                            CreatedDate: date,
-                            salesAccountName: salesAccountName,
-                            TransportName: transportName,
-                            Product: product,
-                            TotalBags: totalbags
-                        }
-                    }
                 }
                 $scope.salesave = function () {
                     var date = $("#datePicker").val();

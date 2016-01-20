@@ -75,7 +75,7 @@ if (Meteor.isServer) {
             Purchase.update({_id:id},
             {
                 CreatedDate:data.date,
-                LastModifiedDate:data.date,
+                LastModifiedDate:data.mdate,
                 PurchaseAccountName:data.account,
                 Type:data.product,
                 ProductType:data.producttype,
@@ -88,7 +88,7 @@ if (Meteor.isServer) {
         EditProcessEntry :function(data,datapro,id){
           Process.update({_id:id},
               {  CreatedDate:datapro.date,
-              LastModifiedDate:datapro.date,
+              LastModifiedDate:datapro.mdate,
               Product:datapro.product,
               Type:datapro.type,
               Input:datapro.input,
@@ -107,7 +107,7 @@ if (Meteor.isServer) {
             console.log(id);
             var final = {_id:id,
                 CreatedDate:datapro.date,
-                LastModifiedDate:datapro.date,
+                LastModifiedDate:datapro.mdate,
                 Product:datapro.product,
                 Type:datapro.type,
                 Input:datapro.input,
@@ -152,6 +152,7 @@ if (Meteor.isServer) {
             Sales.update({_id:id},
                 {
                     CreatedDate: datapro.CreatedDate,
+                    LastModifiedDate:datapro.mdate,
                     salesAccountName: datapro.salesAccountName,
                     TransportName: datapro.TransportName,
                     Product: datapro.Product,
