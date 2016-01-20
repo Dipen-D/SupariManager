@@ -96,15 +96,15 @@
 	
 	<div class="form-horizontal">
         <div class="form-group ng-scope row">
-            <label for="" class="col-sm-2 col-xs-6 text-right total-Label">Total</label>
-            <div class="col-sm-3 col-xs-6 input-bags">
+            <label for="" class="col-sm-2 col-xs-2 text-right total-Label">Total</label>
+            <div class="col-sm-3 col-xs-10 input-bags">
                 <div class="input-group">
                     <label class="input-group-addon totalStyle control-label1">{{processEntry.getTotalWeight()}} KG</label>
                 </div>
             </div>
 
-            <label for="" class="col-sm-1 col-xs-6">Adj</label>
-            <div class=" col-sm-2 col-xs-6 input-bags">
+            <label for="" class="col-sm-1 col-xs-2 text-right total-Label">Adj</label>
+            <div class=" col-sm-2 col-xs-10 input-bags">
                 <div class="input-group">
                     <label for="" id="output" class=" input-group-addon control-label1 text-right totalStyle" ng-class="{'text-danger' : (processEntry.getAdjustment() < 0), 'text-success' : (processEntry.getAdjustment() >= 0)} ">{{processEntry.getAdjustment()}} KG</label>
                 </div>

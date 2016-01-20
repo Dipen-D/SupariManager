@@ -111,10 +111,13 @@ ul.dropdown-menu>li:first-child {
     padding: 8px 15px;
 }
 }
-@media (max-width: 768px) {
+
+
 .total-Label {
-    padding-right: 150px;
+    padding-top: 10px;
 }
+.tableHeader b {
+	cursor: pointer;
 }
 /************ styles for Procees sale and purchase*************/
 
@@ -161,8 +164,9 @@ h1, h2, h3, h4, h5, h6
 	background-color : white; 
 	text-align : right;
 	font-weight : bold;
-	padding-top:10px;
+	padding:10px;
 }
+
 /**************************** Styles for processlist and puchaselist and sale list*******************/
 .tableHeader  /*For background color in header of table*/
 {
