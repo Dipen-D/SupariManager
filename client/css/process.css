@@ -1,20 +1,250 @@
-.edit-del{
-	padding:15px 10px;
+@import url(http://fonts.googleapis.com/css?family=Lato:400,900,300,700);
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic);
+/***************** Styles for Header **************************/
+nav.navbar{
+	background-color: #FFF;
+	border-radius: 0;
+	width: 100%;
+	border-width: 0;
+	border-bottom: 1px solid #e7e7e7;
+}
+.header-button{
+	background-color: #1ABB9C !important;
+	width: 40px;
+	height: 40px;
+	
+}
+.btn:hover {
+	background-color: #17A78B;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #FFF;
+	width: 18px;
 }
 
-.del-row .item-swipe.swipefix {
-    padding: 15px 10px;
-}
-.receipt.row {
-    margin-left: 0px;
-    margin-right: 0px;
-}
-.del-row .row {
-    margin-left: 0px;
-    margin-right: 0px;
+.header-nav {
+	padding-top: 30px;
+	padding-bottom: 30px;
+	padding-left: 15px;
+	padding-right: 15px;
+	Height: auto !important;
 }
 
-#saveBtnsales
+.header-img {
+	max-width: 300px;
+	width: 162px;
+	height: 40px;
+	margin-right: 10px;
+	
+}
+
+.header-body {
+	
+	padding-top: 80px !important;
+}
+
+.navbar-brand {
+	padding: 5px 15px;
+}
+
+
+
+.navbar-default .navbar-nav>li>a {
+	color: #506A85;
+	text-transform: uppercase;
+	font-size: 15px;
+	font-weight: bold;
+}
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover, 
+ .navbar-default .navbar-nav>li>a:hover {
+	color: #1ABB9C;
+	background-color: #F5F7FA !important;
+	
+}
+
+
+ul>li>a.dropdown-toggle{
+	display: block;
+}
+.navbar-default .navbar-nav .open .dropdown-menu {
+	
+	background-color: #F5F7FA;
+    border: 1px solid #E6E9ED;
+    border-bottom-width: 2px;
+    border-bottom-color: #CED2D6;
+	/*padding: 0;
+    margin: 0;*/
+    width: auto;
+	line-height: 0px;
+	border-top-width: 0px !important;
+	
+}
+
+ul.dropdown-menu>li {
+	border-top: 1px solid #E6E9ED;
+}
+
+ul.dropdown-menu>li:first-child {
+	border-top: none;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu>li>a {
+	padding: 13px 20px;
+    color: #73879C;
+    text-transform: uppercase;
+    font-weight: 700;
+    white-space: normal;
+	font-size: 14px;
+	margin-top: 2px;
+	
+	background-color: #F5F7FA;
+	
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu>li>a:hover{
+	background-color: #1ABB9C;
+	color: #FFF;
+}
+
+.dropdown1>a :hover{
+	color: #1ABB9C;
+	background-color: #F5F7FA;
+}
+@media (max-width: 768px) {
+.navbar-brand {
+    padding: 8px 15px;
+}
+}
+@media (max-width: 768px) {
+.total-Label {
+    padding-right: 150px;
+}
+}
+/************ styles for Procees sale and purchase*************/
+body
 {
-	display:none;
+	font-family: 'Source Sans Pro', sans-serif;
+	color: #506A85;
+	background-color : #fff;
+	font-size: 18px;
+    line-height: 130%;
+}
+h1 
+{
+	
+    font-size: 40px;
+    line-height: 130%;
+    margin-bottom: 20px;
+}
+h1, h2, h3, h4, h5, h6 
+{
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.025em;
+ 
+}
+.addonStyle /* it shows style in all  add-on*/ 
+{
+	background-color : #506A85;
+	height : 34x;
+	color : white;
+	font-weight : bold;
+}
+
+.control-label1
+{
+	font-size : 16px;
+	color : #506A85;
+	
+}
+.selectWidth /*width for drop down menu*/
+{
+	width : 100%;
+}
+.inputDate /*margin for date input in mobile view*/
+{
+	margin-top : 15px;
+}
+.totalStyle
+{
+	border : 0;
+	background-color : white; 
+	text-align : right;
+	font-weight : bold;
+	padding-top:10px;
+}
+/**************************** Styles for processlist and puchaselist and sale list*******************/
+.tableHeader  /*For background color in header of table*/
+{
+	background-color : #506A85;
+	color : white;
+	
+}
+.headerStyle /*for padding in table*/
+{
+	padding-top : 16px;
+	padding-left: 5px;
+}
+.list:nth-child(even){background-color : white;}
+.list:nth-child(odd){background-color : #f2f5f7;}
+
+/*********************** styles for modal *****************************/
+.modal-title {
+	color: #506A85;
+}
+.btn-default {
+	background-color: #FA6C65;
+	border: none;
+	font-weight: 500;
+	text-transform: uppercase;
+	color: #FFF;
+}
+.btn-success{
+	background-color: #3F8DBF;
+	border: none;
+	font-weight: 500;
+	text-transform: uppercase;
+	color: #FFF;
+}
+.btn-default.focus,
+.btn-default:focus,
+.btn-default.active.focus, 
+.btn-default.active:focus,
+.btn-default.active:hover,
+.btn-default:active.focus, 
+.btn-default:active:focus,
+.btn-default:active:hover,
+.btn-default:hover, 
+.btn-default.active, 
+.btn-default:active ,
+.btn-default:active:hover{
+	background-color: #CC3300;
+	color: #FFF;
+	border: none;
+}
+.btn-success.focus,
+.btn-success:focus,
+.btn-success.active.focus, 
+.btn-success.active:focus, 
+.btn-success.active:hover, 
+.btn-success:active.focus, 
+.btn-success:active:focus, 
+.btn-success:active:hover,
+.btn-success:hover,
+.btn-success.active,
+.btn-success:active ,
+.btn-success:active:hover{
+	background-color: #3399FF;
+	color: #FFF;
+	border: none;
+}
+.table {
+	font-weight: 400;
+	font-size: 15px;
+}
+.table>tbody>tr.info>td {
+	background-color: #F2F5F7;
+}
+.text-success {
+    color: #506A85;
 }

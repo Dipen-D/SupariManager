@@ -2,7 +2,7 @@
 <div class="container">
     <div class="page-header row">
         <div class="col-xs-6">
-            <h1 style="font-size:22px;font-weight:700;">Process</h1>
+            <h1>Process</h1>
         </div>
         <div class="col-xs-6">
             <input type="text" class="form-control bigFonts" id="datePicker" readonly placeholder="Date" value="01/15"
@@ -41,7 +41,7 @@
                     <input type="number" id="rawMaterialBags" ng-model="processEntry.rawMaterialBags" pattern="\d*"
                            class="form-control bigFonts " placeholder="Bags" aria-describedby="basic-addon2" min="0"
                            max="999"/>
-                    <span class="input-group-addon">x 65 KG</span>
+                    <span class="input-group-addon addonStyle">x 65 KG</span>
                 </div>
             </div>
             <div class="col-sm-3 col-xs-5">
@@ -49,7 +49,7 @@
                     <input type="number" id="rawMaterialPackets" ng-model="processEntry.rawMaterialPackets"
                            pattern="\d*" class="form-control bigFonts " placeholder="Packet"
                            aria-describedby="basic-addon2" min="0" max="65"/>
-                    <span class="input-group-addon"> KG</span>
+                    <span class="input-group-addon addonStyle"> KG</span>
                 </div>
             </div>
         </div>
@@ -61,14 +61,14 @@
                     <div class="input-group">
                         <input type="number" id="{{type.Name + 'Bags'}}" pattern="\d*" class="form-control bigFonts "
                                placeholder="Bags" aria-describedby="basic-addon2"/>
-                        <span class="input-group-addon">x 65 KG</span>
+                        <span class="input-group-addon addonStyle">x 65 KG</span>
                     </div>
                 </div>
                 <div class="col-sm-3 col-xs-5">
                     <div class="input-group">
                         <input type="number" id="{{type.Name + 'Packets'}}" pattern="\d*" class="form-control bigFonts "
                                placeholder="Packet" aria-describedby="basic-addon2"/>
-                        <span class="input-group-addon"> KG</span>
+                        <span class="input-group-addon addonStyle"> KG</span>
                     </div>
                 </div>
             </div>
@@ -79,32 +79,40 @@
                     <div class="input-group">
                         <input type="number" id="{{type.Name + 'Bags'}}" pattern="\d*" class="form-control bigFonts"
                                placeholder="Bags" aria-describedby="basic-addon2"/>
-                        <span class="input-group-addon">x 65 KG</span>
+                        <span class="input-group-addon addonStyle">x 65 KG</span>
                     </div>
                 </div>
                 <div class="col-sm-3 col-xs-5">
                     <div class="input-group">
                         <input type="number" id="{{type.Name + 'Packets'}}" pattern="\d*" class="form-control bigFonts"
                                placeholder="Packet" aria-describedby="basic-addon2"/>
-                        <span class="input-group-addon"> KG</span>
+                        <span class="input-group-addon addonStyle"> KG</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <hr/>
-    <div class="form-group form-group-sm">
-        <label for="" class="col-sm-2 col-xs-6  control-label">Total</label>
-        <label for="" class="col-sm-2 col-xs-6  control-label text-right" id="input">{{processEntry.getTotalWeight()}} KG</label>
+	
+	<div class="form-horizontal">
+        <div class="form-group ng-scope row">
+            <label for="" class="col-sm-2 col-xs-6 text-right total-Label">Total</label>
+            <div class="col-sm-3 col-xs-6 input-bags">
+                <div class="input-group">
+                    <label class="input-group-addon totalStyle control-label1">{{processEntry.getTotalWeight()}} KG</label>
+                </div>
+            </div>
+
+            <label for="" class="col-sm-1 col-xs-6">Adj</label>
+            <div class=" col-sm-2 col-xs-6 input-bags">
+                <div class="input-group">
+                    <label for="" class=" input-group-addon control-label1 text-right totalStyle" ng-class="{'text-danger' : (processEntry.getAdjustment() < 0), 'text-success' : (processEntry.getAdjustment() >= 0)} ">{{processEntry.getAdjustment()}} KG</label>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="form-group form-group-sm">
-        <label for="" class="col-sm-2 col-xs-6  control-label">Adj</label>
-        <label for="" class="col-sm-2 col-xs-6  control-label text-right" id="output"
-               ng-class="{'text-danger' : (processEntry.getAdjustment() < 0), 'text-success' : (processEntry.getAdjustment() >= 0)}">{{processEntry.getAdjustment()}}
-            KG</label>
-    </div>
-
+	<hr />
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <button id="saveBtn" type="submit" class="btn btn-success btn-block btn-block-xs bigFonts"

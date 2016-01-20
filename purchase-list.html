@@ -2,48 +2,49 @@
 <div class="container">
     <div class="page-header row">
         <div class="container">
-            <h1 style="font-size:22px;font-weight:700;">Purchase List</h1>
+            <h1>Purchase List</h1>
         </div>
     </div>
     <div class="list">
-        <div class="item1 item purchaselist">
+        <div class="tableHeader item">
             <tr>
                 <td>
-                    <div class="col-xs-3 col-lg-1 hidden-xs hidden-md hidden-sm">
+                    <div class="col-xs-3 col-lg-1 hidden-xs hidden-md hidden-sm headerStyle">
                         <b>Edit</b>
                     </div>
                 </td>
                 <td>
-                    <div class="col-xs-3 col-lg-3 heading-date">
+                    <div class="col-xs-3 col-lg-3 heading-date headerStyle">
                         <b class="date-heading" ng-click="order('CreatedDate')">Date</b><span class="sortorder"
                                                                                                     ng-show="predicate === 'CreatedDate'"
                                                                                                     ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
                 <td>
-                    <div class="col-xs-3 col-lg-3 heading-prdouct">
+                    <div class="col-xs-3 col-lg-3 heading-prdouct headerStyle">
                         <b ng-click="order('Type')">Product</b><span class="sortorder"
                                                                                      ng-show="predicate === 'Type'"
                                                                                      ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
                 <td>
-                    <div class="col-xs-3 col-lg-2 heading-account">
+                    <div class="col-xs-3 col-lg-2 heading-account headerStyle">
                         <b ng-click="order('PurchaseAccountName')">Account</b><span class="sortorder"
                                                                                      ng-show="predicate === 'PurchaseAccountName'"
                                                                                      ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
                 <td>
-                    <div class="col-xs-3 col-lg-2 heading-weight">
+                    <div class="col-xs-3 col-lg-2 heading-weight headerStyle">
                         <b ng-click="order('kgs')">Weight</b><span class="sortorder"
                                                                                    ng-show="predicate === 'kgs'"
-                                                                                   ng-class="{reverse:reverse}"></span><br>
+                                                                                   ng-class="{reverse:reverse}"></span>
+                        <br class="visible-xs">
                         <b class="purchase-kg">(KG)</b>
                     </div>
                 </td>
                 <td>
-                    <div class="col-xs-3 col-lg-1 hidden-xs hidden-sm hidden-md">
+                    <div class="col-xs-3 col-lg-1 hidden-xs hidden-sm hidden-md headerStyle">
                         <b>Delete</b>
                     </div>
                 </td>

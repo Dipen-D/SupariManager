@@ -3,7 +3,7 @@
 .list .item {
  border-bottom: 1px solid #E1E1E1;
   position: relative;
-  
+  height: 62px;
 }
 .list .item1
 {
@@ -61,8 +61,4 @@ b.transport-heading
 .wrap.float-bags-right {
     float: right;
     padding: 17px;
-}
-/*cursor pointer for header */
-.item1.item.saleslist b {
-    cursor: pointer;
 }

@@ -47,9 +47,7 @@
 .recieptContainerModal td{
 	vertical-align:middle !important;
 }
-#saveBtna{
-	display:none;
-}
+
 .recieptHeader{
 	background-color: #d9edf7;
 	padding: 15px 10px;
@@ -68,30 +66,29 @@
 	}
 }
 
+.edit-del
+{
+	padding-top:16px;
+}
+
 
 /******************* Swipe to delete **********************/
 .list .item {
   border-bottom: 1px solid #e1e1e1;
   height: 50px;
 }
-/*.list .item .item-swipe {
+.list .item .item-swipe {
   background: #ffffff;
-  padding: 15px 10px;
   z-index: 1;
-}*/
+}
 .item-swipe.swipefix {
     margin-left: 0px !important;
 }
-/*.list .item .item-swipe.open {
+.list .item .item-swipe.open {
     padding: 11px !Important;
-}*/
-
-/******************Delete icon ********************/
-a.delete-salesEntry {
-    padding-left: 14px;
-    color: red;
 }
 
-.mobile-sales-delete{
-	background-color: #b22222;
+
+.list:nth-child(odd) .item .item-swipe{
+	background-color: #f2f5f7;
 }

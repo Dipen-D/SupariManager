@@ -1,72 +1,58 @@
 /******************* Swipe to delete **********************/
+
+
 .list .item {
  border-bottom: 1px solid #E1E1E1;
   position: relative;
   height: 62px;
 }
-.list .item1 
+.list .item1
 {
 	padding:10px;
 	background:#d9edf7;
 	margin-left:-22px;
-	height:58px;
-}
-.item1.item.processlist {
-    height: 58px;
+	height:58px
 }
 .amount
 {
 	width: 82px;
     margin-left: -12px;
 }
+.heading-weight
+{
+	text-align:right;
+	white-space:normal;
+}
+
 
 .extra
 {	padding-right:0px;
     padding-left: 8px;
 }
 
-span.row1.input-fix
+span.row1.name-content
 {
-	margin-left:-15px;
+	margin-left:-5px;
 }
-span.row1.type-fix
+span.row1.type-content
 {
-	margin-left: -15px;
+	margin-left:-2px;
 }
-span.row1.date-fix
+span.row1.date-content
 {
 	margin-left:5px;
+}
+span.weight-content
+{
+	margin-left:3px;
 }
 
 b.date-heading
 {
 	margin:5px;
 }
-b.product-heading {
-    margin-left: -10px;
-}
-b.input-heading {
-    margin-left: -12px;
-}
-b.output-heading {
-    margin-left: 0px;
-}
-.kgs
-{
-	margin-left: 17px;
-}
 
-.wrap.float-input-output-right {
+.wrap.float-right {
     float: right;
     padding: 17px;
-    padding-right: 0px;
-}
-
-.input-output-heading
-{
-	text-align:right;
-}
-/*cursor pointer for header */
-.item1.item.processlist b {
-    cursor: pointer;
 }

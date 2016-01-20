@@ -247,3 +247,7 @@ a.redirect
    padding: 0px;
 }
 /*------------------------------------------------------------To make digits right aligned------------------------------------------*/
+
+.displayNone{
+    display: none;
+}

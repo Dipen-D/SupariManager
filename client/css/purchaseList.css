@@ -21,6 +21,7 @@
 .heading-weight
 {
 	text-align:right;
+	white-space:normal;
 }
 
 
@@ -50,21 +51,7 @@ b.date-heading
 {
 	margin:5px;
 }
-
-.purchase-kg
-{
-	    margin-left: 8px;
-}
 .wrap.float-right {
     float: right;
     padding: 17px;
-}
-
-/*Header */
-.item1.item.purchaselist {
-    height: 60px;
-}
-/*Cursor pointer for header */
-.item1.item.purchaselist b {
-    cursor: pointer;
 }

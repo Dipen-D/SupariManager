@@ -2,47 +2,47 @@
 <div class="container">
     <div class="page-header row">
         <div class="container">
-            <h1 style="font-size:22px;font-weight:700;">Sales List</h1>
+            <h1>Sales List</h1>
         </div>
     </div>
     <div class="list">
-        <div class="item1 item saleslist">
+        <div class="tableHeader item">
             <tr>
                 <td>
-                    <div class="col-xs-3 hidden-xs hidden-sm hidden-md col-lg-1">
+                    <div class="col-xs-3 hidden-xs hidden-sm hidden-md col-lg-1 headerStyle">
                         <b>Edit</b>
                     </div>
                 </td>
                 <td>
-                    <div class="col-xs-3 col-lg-3">
+                    <div class="col-xs-3 col-lg-3 headerStyle">
                         <b class="date-heading" ng-click="order('date')">Date</b><span class="sortorder"
                                                                                                  ng-show="predicate === 'date'"
                                                                                                  ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
                 <td>
-                    <div class="col-xs-3 col-lg-3">
+                    <div class="col-xs-3 col-lg-3 headerStyle">
                         <b class="account-heading" ng-click="order('account')">Account</b><span
                             class="sortorder" ng-show="predicate === 'account'"
                             ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
                 <td>
-                    <div class="col-xs-3 col-lg-2">
+                    <div class="col-xs-3 col-lg-2 headerStyle">
                         <b class="transport-heading" ng-click="order('transport')">Transport</b><span
                             class="sortorder" ng-show="predicate === 'transport'"
                             ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
                 <td>
-                    <div class="col-xs-3 col-lg-2 sales-bags">
+                    <div class="col-xs-3 col-lg-2 sales-bags headerStyle">
                         <b class="bags-heading" ng-click="order('bags')">Bags</b><span class="sortorder"
                                                                                                  ng-show="predicate === 'bags'"
                                                                                                  ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
                 <td>
-                    <div class="col-xs-3 hidden-xs hidden-sm hidden-md col-lg-1">
+                    <div class="col-xs-3 hidden-xs hidden-sm hidden-md col-lg-1 headerStyle">
                         <b>Delete</b>
                     </div>
                 </td>
