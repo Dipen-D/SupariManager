@@ -7,6 +7,17 @@ nav.navbar{
 	width: 100%;
 	border-width: 0;
 	border-bottom: 1px solid #e7e7e7;
+	-webkit-box-shadow: 0px 7px 10px 0px rgba(50, 50, 50, 0.25);
+	-moz-box-shadow:    0px 7px 10px 0px rgba(50, 50, 50, 0.25);
+	box-shadow:         0px 7px 10px 0px rgba(50, 50, 50, 0.25);
+}
+
+.tableContainer{
+
+}
+
+.glyphicon-edit{
+	margin-left: 25px;
 }
 .header-button{
 	background-color: #1ABB9C !important;
@@ -22,21 +33,6 @@ nav.navbar{
 	width: 18px;
 }
 
-.header-nav {
-	padding-top: 30px;
-	padding-bottom: 30px;
-	padding-left: 15px;
-	padding-right: 15px;
-	Height: auto !important;
-}
-
-.header-img {
-	max-width: 300px;
-	width: 162px;
-	height: 40px;
-	margin-right: 10px;
-	
-}
 
 .header-body {
 	
@@ -121,14 +117,7 @@ ul.dropdown-menu>li:first-child {
 }
 }
 /************ styles for Procees sale and purchase*************/
-body
-{
-	font-family: 'Source Sans Pro', sans-serif;
-	color: #506A85;
-	background-color : #fff;
-	font-size: 18px;
-    line-height: 130%;
-}
+
 h1 
 {
 	
@@ -146,9 +135,10 @@ h1, h2, h3, h4, h5, h6
 .addonStyle /* it shows style in all  add-on*/ 
 {
 	background-color : #506A85;
-	height : 34x;
+	height : 34px;
 	color : white;
 	font-weight : bold;
+	border: 0;
 }
 
 .control-label1
@@ -247,4 +237,13 @@ h1, h2, h3, h4, h5, h6
 }
 .text-success {
     color: #506A85;
+}
+
+h1 {
+	background-color: #000;
+	color: transparent;
+	text-shadow: 0px 2px 3px rgba(255,255,255,0.5);
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
 }

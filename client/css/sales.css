@@ -11,6 +11,8 @@
 }
 .input-group .form-control{
 	margin: 0px 0 !important;
+	padding: 2px;
+	padding-left: 7px;
 }
 
 .addBtn{
@@ -49,7 +51,6 @@
 }
 
 .recieptHeader{
-	background-color: #d9edf7;
 	padding: 15px 10px;
 }
 
@@ -57,7 +58,6 @@
 	padding: 15px 10px;
 }
 .recieptFooter{
-	background-color: #d9edf7;
 	padding: 15px 10px;
 }
 @media (max-width: 768px) {

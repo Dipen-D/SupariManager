@@ -2,7 +2,7 @@
 <div class="container">
     <div class="page-header row">
         <div class="col-xs-6">
-            <h1 style="font-size:22px;font-weight:700;">Sale</h1>
+            <h1>Sales</h1>
         </div>
         <div class="col-xs-6">
             <input id="datepicker" type="text" class="form-control bigFonts" readonly placeholder="Date"
@@ -79,14 +79,14 @@
                         <div class="input-group"><input id="bags" type="number" pattern="\d*" min="0" max="999"
                                                         class="form-control bigFonts" placeholder="Bags"
                                                         aria-describedby="basic-addon2">
-                            <span class="input-group-addon" id="basic-addon2">x 65 KG</span>
+                            <span class="input-group-addon addonStyle" id="basic-addon2">x 65 KG</span>
                         </div>
                     </div>
                     <div class="col-sm-3 col-xs-5">
                         <div class="input-group"><input id="packet" type="number" pattern="\d*" min="0" max="65"
                                                         class="form-control bigFonts" placeholder="Packet"
                                                         aria-describedby="basic-addon2">
-                            <span class="input-group-addon" id="basic-addon2"> KG</span>
+                            <span class="input-group-addon addonStyle" id="basic-addon2"> KG</span>
                         </div>
                     </div>
                 </div>
@@ -102,15 +102,16 @@
 
         <hr/>
         <div>
-            <div class="table table-bordered recieptContainer">
+            <div class="table recieptContainer">
                 <div class="list">
                 </div>
+                <img src='images/shadow.png' class='width100'/>
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button id="saveBtnsales" type="submit" class="btn btn-success btn-block btn-block-xs bigFonts"
+                <button id="saveBtnsales" type="submit" class="btn btn-success btn-block btn-block-xs bigFonts displayNone"
                         data-toggle="modal" data-target="#summary-modal">Save
                 </button>
             </div>

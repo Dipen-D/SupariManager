@@ -630,12 +630,12 @@ if (Meteor.isClient) {
                     var totalBags = 0;
                     var totalPackets = 0;
                     if (data.length > 0) {
-                        obj += '<div class="receipt row">';
-                        obj += '<div class="recieptHeader col-lg-11">';
+                        obj += '<div class="receipt recieptHeader row tableHeader">';
+                        obj += '<div class=" col-lg-11">';
                         obj += '<span scope="row">ITEM</span>';
                         obj += '<span class="flRight">Weight</span>';
                         obj += '</div>';
-                        obj += '<div class="recieptHeader col-lg-1 hidden-xs hidden-md hidden-sm">Delete</div>';
+                        obj += '<div class="col-lg-1 hidden-xs hidden-md hidden-sm text-right">Delete</div>';
                         obj += '</div>';
                     }
                     $.each(data, function (index, value) {
@@ -648,18 +648,20 @@ if (Meteor.isClient) {
                         totalPackets += getValidValue(value[4]);
 
                         obj += '<div class="del-row">';
-                        obj += '<div class="row">';
+                        obj += '<div class="list">';
                         obj += '<div class="item col-lg-11  hidden-sm hidden-md row-wise">';
                         obj += '<div class="item-swipe swipefix">';
+                        obj += '<div class="marginTop18 paddingLeft10">';
                         obj += '<span>' + value[1] + ' ' + value[0] + ' ' + value[2] + '</span>';
                         obj += '<span class="flRight">' + add_commasInAmount(value[3]) + ' X 65 + ' + getValidValue(value[4]) + ' = ' + add_commasInAmount(weight) + '</span>';
+                        obj += '</div>';
                         obj += '</div>';
                         obj += '<div class="item-back">';
                         obj += '<button class="action first  mobile-sales-delete" type="button"><i class="fa fa-trash-o"></i></button>';
                         obj += '</div>';
                         obj += '</div>';
 
-                        obj += '<div class="item edit-del col-lg-1 hidden-sm hidden-md hidden-xs">';
+                        obj += '<div class="item edit-del col-lg-1 hidden-sm hidden-md hidden-xs text-right">';
                         obj += '<a class="delete-salesEntry" href="#" ><span class="glyphicon glyphicon-trash"></span></a>';
                         obj += '</div>';
                         obj += '</div>';
@@ -670,7 +672,7 @@ if (Meteor.isClient) {
                         obj += "<span scope='row'>Total Bags</span>";
                         obj += "<span class='flRight' id='tbags'>" + add_commasInAmount(totalBags) + "</span>";
                         obj += "</div>";
-                        obj += "<div class='recieptFooter col-lg-12'>";
+                        obj += "<div class='recieptFooter col-lg-12 tableHeader'>";
                         obj += "<span scope='row'>Total</span>";
                         obj += "<span class='flRight'>" + add_commasInAmount(totalWeight) + " k.g.</span>";
                         obj += "</div>";
