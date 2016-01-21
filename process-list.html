@@ -2,7 +2,14 @@
 <div class="container">
     <div class="page-header row">
         <div class="container">
-            <h1>Process List</h1>
+            <div class="row">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                    <h1>Process List</h1>
+                </div>
+                <div class="directEntry col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                    <button type="submit" class="btn btn-success btn-block btn-block-xs bigFonts" ng-click="ProcessEntry()">New Entry</button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="list">
@@ -15,7 +22,7 @@
                     </div>
                 </td>
                 <td>
-                    <div class="col-xs-4 col-lg-4 headerStyle">
+                    <div class="col-xs-3 col-lg-4 headerStyle">
                         <b class="date-heading" ng-click="order('CreatedDate')">Date</b><span class="sortorder"
                                                                                                    ng-show="predicate === 'CreatedDate'"
                                                                                                    ng-class="{reverse:reverse}"></span>
@@ -29,7 +36,7 @@
                     </div>
                 </td>
                 <td>
-                    <div class="col-xs-4 col-lg-3 input-output-heading headerStyle">
+                    <div class="col-xs-5 col-lg-3 input-output-heading headerStyle">
                         <b class="input-heading" ng-click="order('Input')">Input/Output</b><span
                             class="sortorder" ng-show="predicate === 'Input'"
                             ng-class="{reverse:reverse}"></span>
@@ -50,13 +57,13 @@
     <div class="list" ng-repeat="user in Process |  orderBy:predicate:reverse">
         <div class="item">
             <div class="item-swipe bigFonts">
-                <div class="col-xs-3 col-lg-1 hidden-xs hidden-md hidden-sm">
+                <div class="col-xs-3 col-lg-1 hidden-xs hidden-md hidden-sm" ng-click="load(user._id)">
                     <div class="wrap">
                         <a class="id hidden">{{user._id}}</a>
                         <a class="redirect" href='/process/{{user._id}}'><span class='glyphicon glyphicon-edit'></span></a>
                     </div>
                 </div>
-                <div class="col-xs-4 col-lg-4">
+                <div class="col-xs-3 col-lg-4">
                     <div class="wrap">
                         <span class="row1 date-fix date">{{trim(user.CreatedDate)}} </span>
                     </div>
@@ -66,14 +73,14 @@
                         <span class="row1 type-fix product">{{user.Product}}-{{user.Type}}</span>
                     </div>
                 </div>
-                <div class="col-xs-4 col-lg-3">
+                <div class="col-xs-5 col-lg-3">
                     <div class="wrap float-input-output-right">
 
                         <span class="row1 input-fix product" data-placement="left" data-container="body"
                               data-toggle="popover"
-                              title="10 X 65 + 10 = 650KG">{{weight(user.Input)}}</span>/<span
+                              title={{pop(user.Input)}}>{{weight(user.Input)}}</span>/<span
                             class="product output-fix" data-placement="left" data-container="body" data-toggle="popover"
-                            title="10 X 65 + 10 = 650KG">{{weight(user.Output)}}</span>
+                            title={{pop(user.Output)}}>{{weight(user.Output)}}</span>
 
                     </div>
                 </div>

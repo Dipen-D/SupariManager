@@ -2,7 +2,14 @@
 <div class="container">
     <div class="page-header row">
         <div class="container">
-            <h1>Purchase List</h1>
+            <div class="row">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                    <h1>Purchase List</h1>
+                </div>
+                <div class="directEntry col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                     <button type="submit" class="btn btn-success btn-block btn-block-xs bigFonts" ng-click="Purchase1()">New Entry</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -58,10 +65,10 @@
         <div class="list" ng-repeat="user in Purchase |  orderBy:predicate:reverse">
             <div class="item">
                 <div class="item-swipe bigFonts">
-                    <div class="col-xs-3 col-lg-1 hidden-xs hidden-md hidden-sm">
+                    <div class="col-xs-3 col-lg-1 hidden-xs hidden-md hidden-sm" ng-click="load(user._id)">
                         <div class="wrap">
                             <a class="id hidden">{{user._id}}</a>
-                            <a class="redirect" href='/purchase/{{user._id}}'><span class='glyphicon glyphicon-edit'></span></a>
+                           <a class="redirect" href='/purchase/{{user._id}}'><span class='glyphicon glyphicon-edit'></span></a>
                         </div>
                     </div>
                     <div class="col-xs-3 col-lg-3">
@@ -83,7 +90,7 @@
                         <div class="wrap float-right">
                             <span class="weight weight-fix" data-placement="left" data-container="body"
                                   data-toggle="popover"
-                                  title="10 X 65 + 10 = 650KG">{{weight(user.kgs)}}</span>
+                                  title={{pop(user.kgs)}}>{{weight(user.kgs)}}</span>
                         </div>
                     </div>
                     <div class="col-xs-3 col-lg-1 extra hidden-md"  ng-click="delete(user._id)">
@@ -94,7 +101,7 @@
                     </div>
                 </div>
                 <div class="item-back">
-                    <button class="action first btn-delete delete" type="button"  ng-click="delete(user._id)">
+                    <button class="action first btn-delete delete" type="button"  >
                         <a class="id hidden">{{user._id}}</a>
                         <i class="fa fa-trash-o"></i>
                     </button>
@@ -105,5 +112,31 @@
             </div>
         </div>
         <img src="images/shadow.png" class="listShadow"/>
+    </div>
+</div>
+<div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Delete Entry</h4>
+            </div>
+            <div class="modal-body">
+               Are You Sure ?
+            </div>
+            <div class="modal-footer">
+                <div class="col-xs-6">
+                    <button type="button" class="btn btn-default bigFonts no" data-dismiss="modal" style="width: 100%;" ng-click="no()">
+                        No
+                    </button>
+                </div>
+                <div class="col-xs-6">
+                    <button type="button" class="btn btn-success bigFonts yes" data-dismiss="modal" style="width: 100%;" ng-click="delete(user._id)">
+                        Yes
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

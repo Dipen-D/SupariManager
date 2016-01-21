@@ -184,8 +184,8 @@ if (Meteor.isClient) {
                     var data1;
                     var totalWeight = 0;
                     var data = ($('#product').val() == 'Supari') ? $scope.SupariTypes : $scope.MariTypes;
-                    var rawMaterialBags = (isNaN($('#rawMaterialBags').val()) || $('#rawMaterialBags').val() == "") ? 0 : $('#rawMaterialBags').val();
-                    var rawMaterialPackets = (isNaN($('#rawMaterialPackets').val()) || $('#rawMaterialPackets').val()== ""  ) ? 0 : $('#rawMaterialPackets').val();
+                    var rawMaterialBags = (isNaN($('#rawMaterialBags').val()) || $('#rawMaterialBags').val() == "" ||$('#rawMaterialBags').val()== null ) ? 0 : $('#rawMaterialBags').val();
+                    var rawMaterialPackets = (isNaN($('#rawMaterialPackets').val()) || $('#rawMaterialPackets').val()== "" ||$('#rawMaterialPackets').val()== null   ) ? 0 : $('#rawMaterialPackets').val();
                     var rawMaterial =(parseInt(rawMaterialBags * 65) + parseInt(rawMaterialPackets));
                     obj += "<tr class='info'>";
                     obj += "<th scope='row'>Product</th>";
@@ -208,11 +208,10 @@ if (Meteor.isClient) {
                         var weight = getTotalWeightForProduct(value.Name);
                         var dataObj = {
                             Subtypename: value.Name,
-                            bags: Math.round(weight / 65),
-                            packets: weight - Math.round(65 * Math.round(weight / 65)),
+                            bags: Math.floor(weight / 65),
+                            packets: weight - Math.floor(65 * Math.floor(weight / 65)),
                             value: weight
                         };
-
 
                         if (weight > 0) {
                             totalWeight += weight;
@@ -247,8 +246,8 @@ if (Meteor.isClient) {
                             for (i = 0; i < data.length; i++) {
                                 $("#product").val(data[0].Product).change();
                                 $("#type").val(data[0].Type);
-                                $("#rawMaterialBags").val(Math.round(data[0].Input / 65)).change();
-                                $("#rawMaterialPackets").val(data[0].Input - parseInt(Math.round(data[0].Input / 65) * 65)).change();
+                                $("#rawMaterialBags").val(Math.floor(data[0].Input / 65)).change();
+                                $("#rawMaterialPackets").val(data[0].Input - parseInt(Math.floor(data[0].Input / 65) * 65)).change();
                                 $("#datePicker").val(data[0].CreatedDate);
 
                                 for (j = 0; j < data[i].Info.length; j++) {
@@ -305,11 +304,10 @@ if (Meteor.isClient) {
                     var date = $("#datePicker").val();
                     var product = $("#product").val();
                     var type = $("#type").val();
-                    var input = parseInt($("#rawMaterialBags").val()) * 65 + parseInt($("#rawMaterialPackets").val());
+                    var input = $scope.getValidValue(parseInt($("#rawMaterialBags").val())) * 65 + $scope.getValidValue(parseInt($("#rawMaterialPackets").val()));
                     var preoutput = $("#output").text();
                     var outputkgs = preoutput.replace(/[^[+-A-Z]/g, '');
-                    var output = parseInt($("#rawMaterialBags").val()) * 65 + parseInt($("#rawMaterialPackets").val()) + parseInt(outputkgs);
-                    console.log(input, output);
+                    var output = $scope.getValidValue(parseInt($("#rawMaterialBags").val())) * 65 + $scope.getValidValue(parseInt($("#rawMaterialPackets").val())) + $scope.getValidValue(parseInt(outputkgs));
                     var pro = {_id: "0", date: date, product: product, type: type, input: input, output: output}
 
                     Meteor.call('process', processDetail, pro, function (err, data) {
@@ -527,7 +525,6 @@ if (Meteor.isClient) {
                 $reactive(this).attach($scope);
                 var salesDetail = [];
 
-
                 Meteor.call('getProductMainTypes', function (err, data) {
                     if (!err) {
                         $scope.ProductMainTypes = data;
@@ -635,8 +632,12 @@ if (Meteor.isClient) {
                         obj += "<tr>";
                         obj += "<td scope='row'>" + value[1] + " - " + value[0] + " - " + value[2] + "</td>";
                         obj += "<td>";
-                        obj += add_commasInAmount(getValidValue(value[3])) + ' X 65 + ' + getValidValue(value[4]) + '<br/> = ' + add_commasInAmount(weight) + ' k.g.';
-                        //obj += "<span class='glyphicon glyphicon-remove-circle clearIcon'></span>";
+                        if (getValidValue(value[4]) > 0) {
+                            obj += add_commasInAmount(getValidValue(value[3])) + ' X 65 + ' + getValidValue(value[4]) + '<br/> = ' + add_commasInAmount(weight) + ' k.G';
+                            //obj += "<span class='glyphicon glyphicon-remove-circle clearIcon'></span>";
+                        }
+                        else
+                        obj += add_commasInAmount(getValidValue(value[3])) + ' X 65 '  + '<br/> = ' + add_commasInAmount(weight) + ' k.G';
                         obj += "</td>";
                         obj += "</tr>";
                         var dataObjSales = {
@@ -659,7 +660,7 @@ if (Meteor.isClient) {
                         obj += "</tr>";
                         obj += "<tr class='info'>";
                         obj += "<td scope='row'>Total</td>";
-                        obj += "<td>" + add_commasInAmount(totalWeight) + " k.g.</td>";
+                        obj += "<td>" + add_commasInAmount(totalWeight) + " k.G</td>";
                         obj += "</tr>";
                     }
                     $('.recieptContainerModal').html(obj);
@@ -693,7 +694,11 @@ if (Meteor.isClient) {
                         obj += '<div class="item-swipe swipefix">';
                         obj += '<div class="marginTop18 paddingLeft10">';
                         obj += '<span>' + value[1] + ' ' + value[0] + ' ' + value[2] + '</span>';
-                        obj += '<span class="flRight">' + add_commasInAmount(value[3]) + ' X 65 + ' + getValidValue(value[4]) + ' = ' + add_commasInAmount(weight) + '</span>';
+                        if(getValidValue(value[4]) > 0) {
+                            obj += '<span class="flRight">' + add_commasInAmount(value[3]) + ' X 65 + ' + getValidValue(value[4]) + ' = ' + add_commasInAmount(weight) + '</span>';
+                        }
+                        else
+                        obj += '<span class="flRight">' + add_commasInAmount(value[3]) + ' X 65  ' + ' = ' + add_commasInAmount(weight) + '</span>';
                         obj += '</div>';
                         obj += '</div>';
                         obj += '<div class="item-back">';
@@ -714,7 +719,7 @@ if (Meteor.isClient) {
                         obj += "</div>";
                         obj += "<div class='recieptFooter col-lg-12 tableHeader'>";
                         obj += "<span scope='row'>Total</span>";
-                        obj += "<span class='flRight'>" + add_commasInAmount(totalWeight) + " k.g.</span>";
+                        obj += "<span class='flRight'>" + add_commasInAmount(totalWeight) + " k.G</span>";
                         obj += "</div>";
                         $('.recieptContainer').show();
                     }
@@ -973,9 +978,23 @@ if (Meteor.isClient) {
                     }
                     return x1 + x2;
                 }
+                $scope.SaleEntry = function(){
+                    $("html").mask('');
+                    window.location.href="/sales";
+                }
                 $scope.trim = function(x){
                     x = x.substring(0,5);
                     return x;
+                };
+                $scope.load = function(id){
+                    $("html").mask('');
+                    window.location.href = '/sales/' + id;
+
+                };
+                $scope.pop = function(x){
+                    var bags = Math.floor(x/65);
+                    var packets = x -  Math.floor(x/65) * 65;
+                    return bags + ' ' + '*' + ' ' + '65' + ' ' + '+' + ' ' + packets + ' ' + '=' + ' ' + x  ;
                 };
                 $scope.predicate = 'date';
                 $scope.reverse = true;
@@ -989,6 +1008,7 @@ if (Meteor.isClient) {
                         if (!$scope.$$phase) {
                             $scope.$digest();
                         }
+                        $('[data-toggle="popover"]').popover();
                     } else {
                         console.log(err);
                     }
@@ -1012,6 +1032,7 @@ if (Meteor.isClient) {
                         $scope.$digest();
                     }
                 };
+
             }]
         }
     });
@@ -1022,6 +1043,7 @@ if (Meteor.isClient) {
             templateUrl: 'purchase-list.html',
             controllerAs: 'purchaseList',
             controller: ['$scope', function ($scope, $stateParams) {
+                $("html").mask("");
                 $scope.weight = function (nStr) { //regulerExpression function add coma(,) in price range
                     nStr += '';
                     x = nStr.split('.');
@@ -1033,6 +1055,20 @@ if (Meteor.isClient) {
                     }
                     return x1 + x2;
                 }
+                $scope.Purchase1 = function(){
+                    $("html").mask('');
+                    window.location.href = "/purchase";
+                }
+                $scope.load = function(id){
+                    $("html").mask('');
+                    window.location.href = '/purchase/' + id;
+
+                }
+                $scope.pop = function(x){
+                    var bags = Math.floor(x/65);
+                    var packets = x -  Math.floor(x/65) * 65;
+                    return bags + ' ' + '*' + ' ' + '65' + ' ' + '+' + ' ' + packets + ' ' + '=' + ' ' + x  ;
+                };
                 $scope.trim = function(x){
                     x = x.substring(0,5);
                     return x;
@@ -1049,10 +1085,12 @@ if (Meteor.isClient) {
                         if (!$scope.$$phase) {
                             $scope.$digest();
                         }
+                        $('[data-toggle="popover"]').popover();
                     } else {
                         console.log(err);
                     }
                 });
+
 
                 $scope.delete = function (id) {
                     Meteor.call('deletePurchaseEntry', id, function (err, data) {
@@ -1076,7 +1114,7 @@ if (Meteor.isClient) {
                         $scope.$digest();
                     }
                 };
-
+                
             }]
         }
     });
@@ -1097,9 +1135,23 @@ if (Meteor.isClient) {
                     }
                     return x1 + x2;
                 }
+                $scope.ProcessEntry = function(){
+                    $("html").mask("");
+                    window.location.href="/process";
+                }
                 $scope.trim = function(x){
                     x = x.substring(0,5);
                     return x;
+                };
+                $scope.load = function(id){
+                    $("html").mask('');
+                    window.location.href = '/process/' + id;
+
+                };
+                $scope.pop = function(x){
+                    var bags = Math.floor(x/65);
+                    var packets = x -  Math.floor(x/65) * 65;
+                    return bags + ' ' + '*' + ' ' + '65' + ' ' + '+' + ' ' + packets + ' ' + '=' + ' ' + x  ;
                 };
                 Meteor.call('getProcessList', function (err, data) {
                     if (!err) {
@@ -1143,6 +1195,7 @@ if (Meteor.isClient) {
     });
 
     $(function () {
+
         $("body").hide();
         $("html").mask("");
         $('.item-swipe').swipeTo({
@@ -1221,10 +1274,14 @@ if (Meteor.isClient) {
         });
     }
     var checkitem = function () {
+        if(($('.item-swipe').length) === 0){
+            $(".tableHeader").hide();
+        }
         if ($(".item").length === 1) {
             $(".item").hide();
             $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
         }
+
     }
 
 }

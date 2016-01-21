@@ -2,7 +2,14 @@
 <div class="container">
     <div class="page-header row">
         <div class="container">
-            <h1>Sales List</h1>
+            <div class="row">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                    <h1>Sales List</h1>
+                </div>
+                <div class="directEntry col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                    <button type="submit" class="btn btn-success btn-block btn-block-xs bigFonts" ng-click="SaleEntry()">New Entry</button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="list">
@@ -53,7 +60,7 @@
     <div class="list" ng-repeat="user in Sales |  orderBy:predicate:reverse">
         <div class="item">
             <div class="item-swipe bigFonts">
-                <div class="col-xs-3 hidden-xs hidden-sm hidden-md col-lg-1">
+                <div class="col-xs-3 hidden-xs hidden-sm hidden-md col-lg-1" ng-click="load(user._id)">
                     <div class="wrap">
                         <a class="id hidden">{{user._id}}</a>
                         <a class="redirect" href='/sales/{{user._id}}'><span class='glyphicon glyphicon-edit'></span></a>
@@ -77,7 +84,7 @@
                 <div class="col-xs-3 col-lg-2 extra">
                     <div class="wrap float-bags-right">
                         <span class="product bags-fix" data-placement="left" data-container="body" data-toggle="popover"
-                              title="10 X 65 + 10 = 650KG">{{bags(user.TotalBags)}}</span>
+                              title="">{{bags(user.TotalBags)}}</span>
                     </div>
                 </div>
                 <div class="col-xs-3 hidden-xs col-lg-1 extra"  ng-click="delete(user._id)">
