@@ -328,6 +328,6 @@ a.redirect
 }
 @media(max-width: 768px){
     .directEntry{
-        margin-top:0px;
+        margin-top:20px;
     }
 }

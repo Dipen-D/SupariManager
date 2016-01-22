@@ -236,11 +236,11 @@ h1, h2, h3, h4, h5, h6
 	font-weight: 400;
 	font-size: 15px;
 }
-.table>tbody>tr.info>td {
+.table>tbody>tr.info>th {
 	background-color: #F2F5F7;
 }
-.text-success {
-    color: #506A85;
+.table>tbody>tr.info>td{
+	background-color: #F2F5F7;
 }
 
 h1 {
@@ -250,4 +250,9 @@ h1 {
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
 	background-clip: text;
+}
+
+.process-Entry
+{
+	margin-bottom: 0px;
 }

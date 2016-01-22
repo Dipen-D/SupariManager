@@ -135,9 +135,12 @@ if (Meteor.isClient) {
                     adjustment = this.getTotalWeight() - ((rawMaterialBags * 65) + rawMaterialPackets)
                     return (isNaN(adjustment)) ? 0 : adjustment;
                 };
-                $('#entryFields').on('blur', 'input', function () {
+              $('#entryFields').on('blur', 'input', function () {
                     $scope.$apply();
                 });
+                setInterval(function(){
+                    $scope.$apply();
+                }, 1000);
 
                 var getTotalWeightForProduct = function (_this) {
                     var find = '\\.';
@@ -235,7 +238,7 @@ if (Meteor.isClient) {
                     $("#rawMaterialBags,#rawMaterialPackets").val('');
                     $("#Mari1Bags,#Mari2Bags,#Mari2Packets,#Mari1Packets").val('');
                     $("#GFBags,#GFPackets,#JFBags,#JFPackets,#JamBags,#JamPackets,#JiniBags,#JiniPackets,#LindiBags,#LindiPackets,#MFBags,#MFPackets,#MMFBags,#MMFPackets,#MoroBags,#MoroPackets,#MotiBags,#MotiPackets,#RFBags,#RFPackets,#SFBags,#SFPackets,#SevarBags,#SevarPackets").val('');
-                    $("#output").text("0 KG");
+                   // $("#output").text("0 KG");
 
                 }
                 this.processId = $stateParams.processId;
@@ -318,6 +321,8 @@ if (Meteor.isClient) {
                         }
                     });
                     resetprocess();
+                    $("html").mask("");
+                    window.location.href = "/processlist";
                 }
                 $(document).ready(function () {
 
@@ -381,7 +386,7 @@ if (Meteor.isClient) {
 
                 };
                 var IsValidInputs = function () {
-                    if (ValidateInputField('selectAccount')  && ValidateInputField('selectProductType') && ValidateInputField('bags')) {
+                    if (ValidateInputField('selectAccount')  && ValidateInputField('selectProductType') && (ValidateInputField('bags'))) {
                         return true;
                     }
                     return false;
@@ -499,6 +504,8 @@ if (Meteor.isClient) {
                         }
                     });
                     clearPurchaseFields();
+                    $("html").mask("");
+                    window.location.href = "/purchaselist";
                 }
                 $(document).ready(function () {
 
@@ -797,11 +804,11 @@ if (Meteor.isClient) {
                         if (index > -1) {
                             data.splice(index, 1);
                         }
-                        if ($('.row').length > 5) {
-                            that.parent().parent().closest('.row').remove();
+                        if ($('.list').length > 2) {
+                            that.parent().parent().remove();
                         }
                         else {
-                            that.parent().parent().closest('.row').remove();
+                            that.parent().parent().remove();
                             $('.recieptContainer').hide();
                             $('#saveBtnsales').hide();
                         }
@@ -894,6 +901,8 @@ if (Meteor.isClient) {
                     });
                     resetAll();
                     clearAllFields();
+                    $("html").mask("");
+                    window.location.href = "/saleslist";
                 }
 
 
@@ -994,7 +1003,15 @@ if (Meteor.isClient) {
                 $scope.pop = function(x){
                     var bags = Math.floor(x/65);
                     var packets = x -  Math.floor(x/65) * 65;
-                    return bags + ' ' + '*' + ' ' + '65' + ' ' + '+' + ' ' + packets + ' ' + '=' + ' ' + x  ;
+                    var stringObj = bags + ' * 65 ';
+                    var packetObj =  packets;
+
+                    if(packets == 0){
+                        return stringObj + ' = ' +  x;
+                    }
+                    else{
+                        return stringObj + packetObj + ' = ' +  x;
+                    }
                 };
                 $scope.predicate = 'date';
                 $scope.reverse = true;
@@ -1002,11 +1019,19 @@ if (Meteor.isClient) {
                     $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
                     $scope.predicate = predicate;
                 }
+                $(".tableHeader,.listShadow").hide();
                 Meteor.call('getSalesList', function (err, data) {
                     if (!err) {
                         $scope.Sales = data;
                         if (!$scope.$$phase) {
                             $scope.$digest();
+                        }
+                        if(data.length == 0){
+                            $(".tableHeader,.listShadow").hide();
+                            $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
+                        }
+                        else {
+                            $(".tableHeader").show();
                         }
                         $('[data-toggle="popover"]').popover();
                     } else {
@@ -1014,14 +1039,36 @@ if (Meteor.isClient) {
                     }
                 });
                 $scope.delete = function (id) {
-                    Meteor.call('deleteSaleEntry', id, function (err, data) {
-                        if (!err) {
-                            $scope.updateProcessObj(id);
-                        } else {
-                            console.log(err);
-                        }
+                    $("#delete-modal").modal('show');
+                    var that = $(this);
+                    $(".yes").click(function () {
+                        that.parent().parent().parent().parent().remove();
+                        $("html").unmask();
+
+                        Meteor.call('deleteSaleEntry', id, function (err, data) {
+                            if (!err) {
+                                $scope.updateProcessObj(id);
+                            } else {
+                                console.log(err);
+                            }
+                        });
                     });
-                };
+                }
+                $scope.deleteMobile = function (id) {
+                    $("#delete-modal").modal('show');
+                    var that = $(this);
+                    $(".yes").click(function () {
+                        that.parent().parent().parent().remove();
+                        $("html").unmask();
+                        Meteor.call('deleteSaleEntry', id, function (err, data) {
+                            if (!err) {
+                                $scope.updateProcessObj(id);
+                            } else {
+                                console.log(err);
+                            }
+                        });
+                    });
+                }
                 $scope.updateProcessObj = function(id){
                     for (var i= 0; i< $scope.Sales.length; i++) {
                         if ($scope.Sales[i]._id == id) {
@@ -1030,6 +1077,10 @@ if (Meteor.isClient) {
                     }
                     if (!$scope.$$phase) {
                         $scope.$digest();
+                    }
+                    if($(".item").length === 1){
+                        $(".tableHeader").hide();
+                        $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
                     }
                 };
 
@@ -1059,15 +1110,24 @@ if (Meteor.isClient) {
                     $("html").mask('');
                     window.location.href = "/purchase";
                 }
-                $scope.load = function(id){
+               /* $scope.load = function(id){
                     $("html").mask('');
-                    window.location.href = '/purchase/' + id;
+                    window.location.href = '/purchase/'+id;
 
-                }
-                $scope.pop = function(x){
+                }*/
+
+                 $scope.pop = function(x){
                     var bags = Math.floor(x/65);
                     var packets = x -  Math.floor(x/65) * 65;
-                    return bags + ' ' + '*' + ' ' + '65' + ' ' + '+' + ' ' + packets + ' ' + '=' + ' ' + x  ;
+                    var stringObj = bags + ' * 65 ';
+                    var packetObj =  packets;
+
+                    if(packets == 0){
+                        return stringObj + ' = ' +  x;
+                    }
+                    else{
+                        return stringObj + packetObj + ' = ' +  x;
+                    }
                 };
                 $scope.trim = function(x){
                     x = x.substring(0,5);
@@ -1079,30 +1139,67 @@ if (Meteor.isClient) {
                     $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
                     $scope.predicate = predicate;
                 }
+                $(".tableHeader,.listShadow").hide();
                 Meteor.call('getPurchaseList', function (err, data) {
+
                     if (!err) {
                         $scope.Purchase = data;
                         if (!$scope.$$phase) {
                             $scope.$digest();
                         }
+                        if(data.length == 0){
+                            $(".tableHeader,.listShadow").hide();
+                            $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
+                        }
+                        else {
+                            $(".tableHeader").show();
+                        }
                         $('[data-toggle="popover"]').popover();
                     } else {
                         console.log(err);
                     }
+
+
                 });
 
 
                 $scope.delete = function (id) {
-                    Meteor.call('deletePurchaseEntry', id, function (err, data) {
-                        if (!err) {
-                            $("html").mask("");
-                            $scope.updateProcessObj(id);
-                        } else {
-                            console.log(err);
-                        }
+                    $("#delete-modal").modal('show');
+                        var that = $(this);
+                    $(".yes").click(function(){
+                        that.parent().parent().parent().parent().remove();
                         $("html").unmask();
+                        Meteor.call('deletePurchaseEntry', id, function (err, data) {
+                            if (!err) {
+                                $("html").mask("");
+                                $scope.updateProcessObj(id);
+                            } else {
+                                console.log(err);
+                            }
+                            $("html").unmask();
+                        });
                     });
                 };
+
+                $scope.deleteMobile = function (id) {
+                    $("#delete-modal").modal('show');
+                    var that = $(this);
+                    $(".yes").click(function(){
+                        that.parent().parent().parent().parent().remove();
+                        $("html").unmask();
+                        Meteor.call('deletePurchaseEntry', id, function (err, data) {
+                            if (!err) {
+                                $("html").mask("");
+                                $scope.updateProcessObj(id);
+                            } else {
+                                console.log(err);
+                            }
+                            $("html").unmask();
+                        });
+                    });
+
+                };
+
 
                 $scope.updateProcessObj = function(id){
                     for (var i= 0; i< $scope.Purchase.length; i++) {
@@ -1113,8 +1210,12 @@ if (Meteor.isClient) {
                     if (!$scope.$$phase) {
                         $scope.$digest();
                     }
+                    if($scope.Purchase.length == 0){
+                        $(".tableHeader").hide();
+                        $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
+                    }
                 };
-                
+
             }]
         }
     });
@@ -1143,21 +1244,37 @@ if (Meteor.isClient) {
                     x = x.substring(0,5);
                     return x;
                 };
-                $scope.load = function(id){
+                /*$scope.mobileEdit = function(id){
                     $("html").mask('');
                     window.location.href = '/process/' + id;
 
-                };
+                };*/
                 $scope.pop = function(x){
                     var bags = Math.floor(x/65);
                     var packets = x -  Math.floor(x/65) * 65;
-                    return bags + ' ' + '*' + ' ' + '65' + ' ' + '+' + ' ' + packets + ' ' + '=' + ' ' + x  ;
+                    var stringObj = bags + ' * 65 ';
+                    var packetObj =  packets;
+
+                    if(packets == 0){
+                        return stringObj + ' = ' +  x;
+                    }
+                    else{
+                        return stringObj + packetObj + ' = ' +  x;
+                    }
                 };
+                $(".tableHeader,.listShadow").hide();
                 Meteor.call('getProcessList', function (err, data) {
                     if (!err) {
                         $scope.Process = data;
                         if (!$scope.$$phase) {
                             $scope.$digest();
+                        }
+                        if(data.length == 0){
+                            $(".tableHeader,.listShadow").hide();
+                            $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
+                        }
+                        else {
+                            $(".tableHeader").show();
                         }
                         $('[data-toggle="popover"]').popover();
                     } else {
@@ -1165,6 +1282,11 @@ if (Meteor.isClient) {
                     }
                 });
                 $scope.delete = function (id) {
+                    $("#delete-modal").modal('show');
+                    var that = $(this);
+                    $(".yes").click(function(){
+                        that.parent().parent().parent().parent().remove();
+                        $("html").unmask();
                     Meteor.call('deleteProcessEntry', id, function (err, data) {
                         if (!err) {
                             $scope.updateProcessObj(id);
@@ -1172,7 +1294,25 @@ if (Meteor.isClient) {
                             console.log(err);
                         }
                     });
+                     });
                 }
+                    $scope.deleteMobile = function (id) {
+                        $("#delete-modal").modal('show');
+                        var that = $(this);
+                        $(".yes").click(function () {
+                            that.parent().parent().parent().remove();
+                            $("html").unmask();
+
+
+                            Meteor.call('deleteProcessEntry', id, function (err, data) {
+                                if (!err) {
+                                    $scope.updateProcessObj(id);
+                                } else {
+                                    console.log(err);
+                                }
+                            });
+                        });
+                    }
                 $scope.predicate = 'date';
                 $scope.reverse = true;
                 $scope.order = function (predicate) {
@@ -1188,6 +1328,10 @@ if (Meteor.isClient) {
                     if (!$scope.$$phase) {
                         $scope.$digest();
                     }
+                    if($(".item").length === 1){
+                        $(".tableHeader").hide();
+                        $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
+                    }
                 };
 
             }]
@@ -1197,7 +1341,7 @@ if (Meteor.isClient) {
     $(function () {
 
         $("body").hide();
-        $("html").mask("");
+       $("html").mask("");
         $('.item-swipe').swipeTo({
 
             //default options
@@ -1223,10 +1367,10 @@ if (Meteor.isClient) {
             });
         });
         close();
-        deleteItem();
+       // deleteItem();
         editItem();
         editItemDesktop();
-        deleteItemDesktop();
+      //  deleteItemDesktop();
 
         window.onload = function () {
             $("html").unmask();
@@ -1241,39 +1385,44 @@ if (Meteor.isClient) {
         });
     }
     // function to delete items
-    var deleteItem = function () {
+  /*  var deleteItem = function () {
         $('body').on('click tap', '.btn-delete', function (e) {
-            e.preventDefault();
             var that = $(this);
-            that.parent().parent().remove();
+                $(this).parent().parent().parent().remove()
+            $("html").unmask();
             checkitem();
         });
-    }
+    }*/
     //Function to edit item
     var editItem = function () {
         $('body').on('click tap', '.btn-check', function (e) {
+            $("html").mask("");
             var href = $(".redirect").attr("href");
             window.location = href;
         });
     }
-    var deleteItemDesktop = function () {
+  /*var deleteItemDesktop = function () {
+
         $('body').on('click tap', '.delete', function (e) {
-            $("html").mask("");
-            e.preventDefault();
             var that = $(this);
-            that.parent().parent().parent().parent().remove();
-            $("html").unmask();
-            checkitem();
+            $("#delete-modal").modal('show');
+            $(".yes").click(function(){
+                that.parent().parent().parent().parent().remove();
+                $("html").unmask();
+                checkitem();
+            })
+
         });
-    }
+    }*/
 
     var editItemDesktop = function () {
         $('body').on('click tap', '.redirect', function (e) {
+            $("html").mask("");
             e.preventDefault();
             window.location = '/sales';
         });
     }
-    var checkitem = function () {
+   /* var checkitem = function () {
         if(($('.item-swipe').length) === 0){
             $(".tableHeader").hide();
         }
@@ -1282,6 +1431,6 @@ if (Meteor.isClient) {
             $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
         }
 
-    }
+    }*/
 
 }

@@ -50,6 +50,7 @@ span.weight-content
 b.date-heading
 {
 	margin:5px;
+	margin-right: 0px;
 }
 .wrap.float-right {
     float: right;

@@ -3,10 +3,10 @@
     <div class="page-header row">
         <div class="container">
             <div class="row">
-                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-7">
                     <h1>Purchase List</h1>
                 </div>
-                <div class="directEntry col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                <div class="directEntry col-lg-2 col-md-2 col-sm-2 col-xs-5">
                      <button type="submit" class="btn btn-success btn-block btn-block-xs bigFonts" ng-click="Purchase1()">New Entry</button>
                 </div>
             </div>
@@ -65,10 +65,10 @@
         <div class="list" ng-repeat="user in Purchase |  orderBy:predicate:reverse">
             <div class="item">
                 <div class="item-swipe bigFonts">
-                    <div class="col-xs-3 col-lg-1 hidden-xs hidden-md hidden-sm" ng-click="load(user._id)">
+                    <div class="col-xs-3 col-lg-1 hidden-xs hidden-md hidden-sm" ng-click="">
                         <div class="wrap">
-                            <a class="id hidden">{{user._id}}</a>
-                           <a class="redirect" href='/purchase/{{user._id}}'><span class='glyphicon glyphicon-edit'></span></a>
+                            <a class="id desk hidden">{{user._id}}</a>
+                         <a class="redirect" href='/purchase/{{user._id}}'><span class='glyphicon glyphicon-edit'></span></a>
                         </div>
                     </div>
                     <div class="col-xs-3 col-lg-3">
@@ -98,23 +98,26 @@
                             <a class="id hidden">{{user._id}}</a>
                             <a class="delete" href='#'><span class='glyphicon glyphicon-trash'></span></a>
                         </div>
+
                     </div>
                 </div>
                 <div class="item-back">
-                    <button class="action first btn-delete delete" type="button"  >
+                    <button class="action first btn-delete " type="button" ng-click="deleteMobile(user._id)">
                         <a class="id hidden">{{user._id}}</a>
                         <i class="fa fa-trash-o"></i>
                     </button>
                     <button class="action second btn-check" type="button">
+                       <a class="id hidden" href='/purchase/{{user._id}}'>{{user._id}}</a>
                         <i class="fa fa-edit"></i>
                     </button>
                 </div>
             </div>
+
         </div>
         <img src="images/shadow.png" class="listShadow"/>
     </div>
 </div>
-<div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+<div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="false" >
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -123,16 +126,17 @@
                 <h4 class="modal-title">Delete Entry</h4>
             </div>
             <div class="modal-body">
-               Are You Sure ?
+                Are You Sure ?
             </div>
             <div class="modal-footer">
                 <div class="col-xs-6">
-                    <button type="button" class="btn btn-default bigFonts no" data-dismiss="modal" style="width: 100%;" ng-click="no()">
+                    <button type="button" class="btn btn-default bigFonts no" data-dismiss="modal" style="width: 100%;">
                         No
                     </button>
                 </div>
                 <div class="col-xs-6">
-                    <button type="button" class="btn btn-success bigFonts yes" data-dismiss="modal" style="width: 100%;" ng-click="delete(user._id)">
+                    <a class="id hidden">{{user._id}}</a>
+                    <button type="button" class="btn btn-success bigFonts yes" data-dismiss="modal"  style="width: 100%;" ng-click="">
                         Yes
                     </button>
                 </div>
