@@ -331,3 +331,7 @@ a.redirect
         margin-top:20px;
     }
 }
+
+a.redirected {
+    color: white;
+}

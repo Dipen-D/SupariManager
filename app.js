@@ -1,3 +1,4 @@
+
 PurchaseAccountNames = new Mongo.Collection("PurchaseAccountName");
 SalesAccountNames = new Mongo.Collection("SalesAccountName");
 SupariTypes = new Mongo.Collection("SupariTypeMaster");
@@ -13,13 +14,14 @@ ProcessDetail = new Mongo.Collection("ProcessDetail");
 ProcessList = new Mongo.Collection("ProcessList");
 Process = new Mongo.Collection("Process");
 Sales = new Mongo.Collection("Sales");
+Login = new Mongo.Collection("Login");
 
 if (Meteor.isClient) {
     angular.module('supariApp', [
         'angular-meteor',
         'ui.router'
     ]);
-
+    var cookie = 0;
     angular.module('supariApp').config(function ($urlRouterProvider, $stateProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
         $stateProvider
@@ -58,9 +60,42 @@ if (Meteor.isClient) {
             .state('purchaseList', {
                 url: '/purchaselist',
                 template: '<purchase-list></purchase-list>'
-            });
+            })
+            .state('loginList',{
+             url:'/loginlist',
+             template:'<login-list></login-list>'
+        });
         $urlRouterProvider.otherwise("/saleslist");
     });
+    angular.module('supariApp').directive('loginList', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'login-list.html',
+            controllerAs: 'loginList',
+            controller: function ($scope, $reactive, $meteor, $stateParams) {
+
+                $scope.submit = function () {
+                    var x =$("#pass").val();
+                    Meteor.call('getAccess',x, function (err, data) {
+                        if (!err) {
+                            if(data == true)
+                            {
+                               var cookie = 1;
+                                window.location.href = "/processlist";
+                            }
+                            }
+                            if (!$scope.$$phase) {
+                                $scope.$digest();
+                            }
+
+                    });
+
+                }
+            }
+        }
+    });
+
+
 
     angular.module('supariApp').directive('processEntry', function () {
         return {
@@ -69,6 +104,7 @@ if (Meteor.isClient) {
             controllerAs: 'processEntry',
             controller: function ($scope, $reactive, $meteor, $stateParams) {
                 $reactive(this).attach($scope);
+
                 // var data = [];
                 var processDetail = [];
                 var p = [];
@@ -327,6 +363,7 @@ if (Meteor.isClient) {
                 $(document).ready(function () {
 
 
+
                     $('select').on('change', function () {
                         $(this).removeClass("invalidInput");
                     });
@@ -349,176 +386,182 @@ if (Meteor.isClient) {
             templateUrl: 'purchase-entry.html',
             controllerAs: 'purchaseEntry',
             controller: function ($scope, $reactive, $meteor, $stateParams) {
-                $reactive(this).attach($scope);
-                Meteor.call('getAccounts', function (err, data) {
-                    if (!err) {
-                        $scope.PurchaseAccountNames = data;
-                        if (!$scope.$$phase) {
-                            $scope.$digest();
+                if(cookie==1){
+                    $reactive(this).attach($scope);
+                    Meteor.call('getAccounts', function (err, data) {
+                        if (!err) {
+                            $scope.PurchaseAccountNames = data;
+                            if (!$scope.$$phase) {
+                                $scope.$digest();
+                            }
+                        } else {
+                            console.log(err);
                         }
-                    } else {
-                        console.log(err);
-                    }
-                });
-                Meteor.call('getProducts', function (err, data) {
-                    if (!err) {
-                        $scope.ProductNames = data;
-                        if (!$scope.$$phase) {
-                            $scope.$digest();
+                    });
+                    Meteor.call('getProducts', function (err, data) {
+                        if (!err) {
+                            $scope.ProductNames = data;
+                            if (!$scope.$$phase) {
+                                $scope.$digest();
+                            }
+                        } else {
+                            console.log(err);
                         }
-                    } else {
-                        console.log(err);
-                    }
-                });
-                Meteor.call('getProductTypes', function (err, data) {
-                    if (!err) {
-                        $scope.ProductTypes = data;
-                        if (!$scope.$$phase) {
-                            $scope.$digest();
+                    });
+                    Meteor.call('getProductTypes', function (err, data) {
+                        if (!err) {
+                            $scope.ProductTypes = data;
+                            if (!$scope.$$phase) {
+                                $scope.$digest();
+                            }
+                        } else {
+                            console.log(err);
                         }
-                    } else {
-                        console.log(err);
-                    }
-                });
-                var clearPurchaseFields = function () {
-                    $("#selectAccount,#selectProductType,#bags,#packets").val('');
-                    $("#selectType").val("Supari");
+                    });
+                    var clearPurchaseFields = function () {
+                        $("#selectAccount,#selectProductType,#bags,#packets").val('');
+                        $("#selectType").val("Supari");
 
-                };
-                var IsValidInputs = function () {
-                    if (ValidateInputField('selectAccount')  && ValidateInputField('selectProductType') && (ValidateInputField('bags'))) {
-                        return true;
-                    }
-                    return false;
-                };
-                var ValidateInputField = function (_this) {
-                    if (IsEmpty(_this)) {
-                        $('#' + _this).addClass("invalidInput");
+                    };
+                    var IsValidInputs = function () {
+                        if (ValidateInputField('selectAccount')  && ValidateInputField('selectProductType') && (ValidateInputField('bags'))) {
+                            return true;
+                        }
                         return false;
-                    } else {
-                        $('#' + _this).removeClass("invalidInput");
-                        return true;
-                    }
-                };
-                var IsEmpty = function (_this) {
-                    return ($('#' + _this).val() == "");
-                };
-                this.purchaseId = $stateParams.purchaseId;
-                if (!!this.purchaseId) {
-                    var id = this.purchaseId;
-                    Meteor.call('getPurchaseEntry', this.purchaseId, function (err, data) {
-                        if (!err) {
-                            if(data.length!=0) {
-                                $scope.datePicker = data[0].CreatedDate;
-                                var name = data[0].PurchaseAccountName;
-                                $scope.AccountName = name;
-                                $scope.type = data[0].ProductType
-                                $("#selectType").val(data[0].Type);
-                                $scope.bagsinput = data[0].Bags;
-                                $scope.packetsinput = data[0].Packets;
-                                if (!$scope.$$phase) {
-                                    $scope.$digest();
-                                }
-                            }
+                    };
+                    var ValidateInputField = function (_this) {
+                        if (IsEmpty(_this)) {
+                            $('#' + _this).addClass("invalidInput");
+                            return false;
                         } else {
-                            console.log(err);
+                            $('#' + _this).removeClass("invalidInput");
+                            return true;
                         }
-                        $scope.yes = function () {
-                            $(".modal-content").mask("");
-                            var product = ($scope.purchaseEntry.product);
-                            var producttype = ($scope.type);
-                            var accountname = ($scope.AccountName);
-                            var bags = ($scope.bagsinput);
-                            var packets = ($scope.packetsinput);
-                            var kgs = bags * 65 + packets;
-                            var date = ($scope.datePicker);
-                            var dates = new Date();
-                            var datestring = ("0" + (dates.getMonth() + 1).toString()).substr(-2) + "/" + ("0" + dates.getDate().toString()).substr(-2)  + "/" + (dates.getFullYear().toString()).substr(0);
-                            var mdate = datestring;
-                            var data = {
-                                _id: id,
-                                account: accountname,
-                                product: product,
-                                kgs: kgs,
-                                date: date,
-                                bags: bags,
-                                packets: packets,
-                                producttype: producttype,
-                                mdate:mdate
-                            }
-                            console.log(data);
-                            Meteor.call('EditPurchaseEntry', data, id, function (err, data) {
-                                if (!err) {
-                                    $(".modal-content").unmask();
-                                } else {
-                                    console.log(err);
+                    };
+                    var IsEmpty = function (_this) {
+                        return ($('#' + _this).val() == "");
+                    };
+                    this.purchaseId = $stateParams.purchaseId;
+                    if (!!this.purchaseId) {
+                        var id = this.purchaseId;
+                        Meteor.call('getPurchaseEntry', this.purchaseId, function (err, data) {
+                            if (!err) {
+                                if(data.length!=0) {
+                                    $scope.datePicker = data[0].CreatedDate;
+                                    var name = data[0].PurchaseAccountName;
+                                    $scope.AccountName = name;
+                                    $scope.type = data[0].ProductType
+                                    $("#selectType").val(data[0].Type);
+                                    $scope.bagsinput = data[0].Bags;
+                                    $scope.packetsinput = data[0].Packets;
+                                    if (!$scope.$$phase) {
+                                        $scope.$digest();
+                                    }
                                 }
-                            });
-                            clearPurchaseFields();
-                            $("#summary-modal").modal('hide');
-                            $("html").mask("");
-                            window.location.href = "/purchaselist";
-                        }
-                    });
+                            } else {
+                                console.log(err);
+                            }
+                            $scope.yes = function () {
+                                $(".modal-content").mask("");
+                                var product = ($scope.purchaseEntry.product);
+                                var producttype = ($scope.type);
+                                var accountname = ($scope.AccountName);
+                                var bags = ($scope.bagsinput);
+                                var packets = ($scope.packetsinput);
+                                var kgs = bags * 65 + packets;
+                                var date = ($scope.datePicker);
+                                var dates = new Date();
+                                var datestring = ("0" + (dates.getMonth() + 1).toString()).substr(-2) + "/" + ("0" + dates.getDate().toString()).substr(-2)  + "/" + (dates.getFullYear().toString()).substr(0);
+                                var mdate = datestring;
+                                var data = {
+                                    _id: id,
+                                    account: accountname,
+                                    product: product,
+                                    kgs: kgs,
+                                    date: date,
+                                    bags: bags,
+                                    packets: packets,
+                                    producttype: producttype,
+                                    mdate:mdate
+                                }
+                                console.log(data);
+                                Meteor.call('EditPurchaseEntry', data, id, function (err, data) {
+                                    if (!err) {
+                                        $(".modal-content").unmask();
+                                    } else {
+                                        console.log(err);
+                                    }
+                                });
+                                clearPurchaseFields();
+                                $("#summary-modal").modal('hide');
+                                $("html").mask("");
+                                window.location.href = "/purchaselist";
+                            }
+                        });
 
-                }
-                this.product = "Supari";
-                var x = $("#datePicker").datepicker({autoclose: true,
-                    todayHighlight: true}).datepicker("setDate", new Date()).val();
-                $scope.datePicker =  x;
-
-
-                $scope.getValidValue = function (val) {
-                    val = (isNaN(val) || val == "" || val == null) ? 0 : parseInt(val);
-                    return val;
-                };
-                this.calculateWeight = function () {
-                    var weight = (this.getValidValue(this.bags) * 65) + this.getValidValue(this.packets);
-                    return (isNaN(weight)) ? 0 : weight;
-                }
-                $scope.yes = function () {
-                    $(".modal-content").mask("");
-                    var product = ($scope.purchaseEntry.product);
-                    var producttype = ($scope.type);
-                    var accountname = ($scope.AccountName);
-                    var bags = $scope.getValidValue($scope.bagsinput);
-                    var packets = $scope.getValidValue($scope.packetsinput);
-                    var kgs = bags * 65 + packets;
-                    var date = ($scope.datePicker);
-                    var data = {
-                        _id: "0",
-                        account: accountname,
-                        product: product,
-                        kgs: kgs,
-                        date: date,
-                        bags: bags,
-                        packets: packets,
-                        producttype: producttype
                     }
-                    console.log(date);
-                    Meteor.call('purchaseEntry', data, function (err, data) {
-                        if (!err) {
-                            $(".modal-content").unmask();
-                        } else {
-                            console.log(err);
+                    this.product = "Supari";
+                    var x = $("#datePicker").datepicker({autoclose: true,
+                        todayHighlight: true}).datepicker("setDate", new Date()).val();
+                    $scope.datePicker =  x;
+
+
+                    $scope.getValidValue = function (val) {
+                        val = (isNaN(val) || val == "" || val == null) ? 0 : parseInt(val);
+                        return val;
+                    };
+                    this.calculateWeight = function () {
+                        var weight = (this.getValidValue(this.bags) * 65) + this.getValidValue(this.packets);
+                        return (isNaN(weight)) ? 0 : weight;
+                    }
+                    $scope.yes = function () {
+                        $(".modal-content").mask("");
+                        var product = ($scope.purchaseEntry.product);
+                        var producttype = ($scope.type);
+                        var accountname = ($scope.AccountName);
+                        var bags = $scope.getValidValue($scope.bagsinput);
+                        var packets = $scope.getValidValue($scope.packetsinput);
+                        var kgs = bags * 65 + packets;
+                        var date = ($scope.datePicker);
+                        var data = {
+                            _id: "0",
+                            account: accountname,
+                            product: product,
+                            kgs: kgs,
+                            date: date,
+                            bags: bags,
+                            packets: packets,
+                            producttype: producttype
                         }
-                    });
-                    clearPurchaseFields();
-                    $("html").mask("");
-                    window.location.href = "/purchaselist";
-                }
-                $(document).ready(function () {
+                        console.log(date);
+                        Meteor.call('purchaseEntry', data, function (err, data) {
+                            if (!err) {
+                                $(".modal-content").unmask();
+                            } else {
+                                console.log(err);
+                            }
+                        });
+                        clearPurchaseFields();
+                        $("html").mask("");
+                        window.location.href = "/purchaselist";
+                    }
+                    $(document).ready(function () {
 
-                    $('select').on('change', function () {
-                        $(this).removeClass("invalidInput");
-                    });
+                        $('select').on('change', function () {
+                            $(this).removeClass("invalidInput");
+                        });
 
-                });
-                $scope.savePurchaseEntry = function () {
-                    if (IsValidInputs()) {
-                        $("#summary-modal").modal('show');
+                    });
+                    $scope.savePurchaseEntry = function () {
+                        if (IsValidInputs()) {
+                            $("#summary-modal").modal('show');
+                        }
                     }
                 }
+                else{
+                    window.location.href="/loginlist";
+                }
+
             }
         }
     });
@@ -812,6 +855,7 @@ if (Meteor.isClient) {
                             $('.recieptContainer').hide();
                             $('#saveBtnsales').hide();
                         }
+                        fillRecieptHtml();
                     });
                 }
 
@@ -846,7 +890,7 @@ if (Meteor.isClient) {
                                 var salesAccountName = $('#accountName').val();
                                 var transportName = $('#transportName').val();
                                 var product = $('#product').val();
-                                var totalbags = $('#tbags').text();
+                                var totalbags = parseInt($('#tbags').text());
                                 var dates = new Date();
                                 var datestring = ("0" + (dates.getMonth() + 1).toString()).substr(-2) + "/" + ("0" + dates.getDate().toString()).substr(-2)  + "/" + (dates.getFullYear().toString()).substr(0);
                                 var mdate = datestring;
@@ -882,7 +926,7 @@ if (Meteor.isClient) {
                     var salesAccountName = $('#accountName').val();
                     var transportName = $('#transportName').val();
                     var product = $('#product').val();
-                    var totalbags = $('#tbags').text();
+                    var totalbags = parseInt($('#tbags').text());
                     var data = {
                         _id: "0",
                         CreatedDate: date,
@@ -951,18 +995,19 @@ if (Meteor.isClient) {
                     $('body').on('click tap', '.mobile-sales-delete', function (e) {
                         // e.preventDefault();
                         var that = $(this);
-                        var index = $(this).parent().parent().index();
+                        var index = $(this).parent().parent().parent().index();
                         if (index > -1) {
                             data.splice(index, 1);
                         }
-                        if ($('.row').length > 5) {
-                            that.parent().parent().closest('.row').remove();
+                        if ($('.list').length > 2) {
+                            that.parent().parent().parent().remove()
                         }
                         else {
-                            that.parent().parent().closest('.row').remove();
+                            that.parent().parent().parent().remove()
                             $('.recieptContainer').hide();
                             $('#saveBtnsales').hide();
                         }
+                        fillRecieptHtml();
                     });
 
                 });
@@ -1110,11 +1155,13 @@ if (Meteor.isClient) {
                     $("html").mask('');
                     window.location.href = "/purchase";
                 }
-               /* $scope.load = function(id){
-                    $("html").mask('');
-                    window.location.href = '/purchase/'+id;
+               $scope.loader = function(id){
+                   alert(id);
+                //   window.location.href = "http://stackoverflow.com";
+                   // $("html").mask('');
 
-                }*/
+
+                }
 
                  $scope.pop = function(x){
                     var bags = Math.floor(x/65);

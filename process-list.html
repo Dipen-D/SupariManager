@@ -96,8 +96,10 @@
                     <a class="id hidden">{{user._id}}</a>
                     <i class="fa fa-trash-o"></i>
                 </button>
-                <button class="action second btn-check" type="button">
-                    <i class="fa fa-edit"></i>
+                <button class="action second btn-check" type="button" ng-click="">
+                    <a class="id hidden">{{user._id}}</a>
+                    <a class="redirected" href='/process/{{user._id}}'> <i class="fa fa-edit"></i></a>
+
                 </button>
             </div>
         </div>

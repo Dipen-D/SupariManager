@@ -46,16 +46,16 @@
 
         <div class="form-group">
             <div class="col-sm-3 col-xs-7 input-bags">
-                <div class="input-group"><input type="number" ng-model="bagsinput"
+                <div class="input-group"><input type="number" min="0" max="999" ng-model="bagsinput"
                                                 class="form-control bigFonts" pattern="\d*" placeholder="Bags"
-                                                aria-describedby="basic-addon2" id="bags">
+                                                aria-describedby="basic-addon2"  id="bags">
                     <span class="input-group-addon addonStyle" id="basic-addon2">x 65 KG</span>
                 </div>
             </div>
             <div class="col-sm-3 col-xs-5">
                 <div class="input-group"><input type="number" ng-model="packetsinput"
                                                 class="form-control bigFonts" pattern="\d*" placeholder="Packet"
-                                                aria-describedby="basic-addon2" id="packets">
+                                                aria-describedby="basic-addon2" min="0" max="65" id="packets">
                     <span class="input-group-addon addonStyle" id="basic-addon2"> KG</span>
                 </div>
             </div>

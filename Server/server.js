@@ -118,8 +118,6 @@ if (Meteor.isServer) {
             console.log(final);
             Process.insert(final);
 
-
-
         },
         getPurchaseList: function () {
             var purchaselist = Purchase.find({},{fields: {'CreatedDate': 1,'Type':1,'PurchaseAccountName':1,kgs:1,'_id': 1,'ProductType':1}}).fetch();
@@ -219,6 +217,16 @@ if (Meteor.isServer) {
         getSalesEntry: function (id) {
             var x = Sales.find({_id:id}).fetch();
             return x;
+        },
+        getAccess: function(x) {
+            var processlist = Login.findOne({"name":x},{"_id":0});
+            if(processlist != null){
+                return true;
+                console.log("success");
+            }
+            else{
+              return false;
+            }
         }
     });
 }
