@@ -227,6 +227,22 @@ if (Meteor.isServer) {
             else{
               return false;
             }
+        },
+        getSession :function(){
+                Cookie.insert({"name":"test"});
+        },
+        getAccessVal : function(){
+            var processlist = Cookie.findOne({"name":"test"},{"_id":0});
+            if(processlist != null){
+                return true;
+                console.log("success");
+            }
+            else{
+                return false;
+            }
+        },
+        LoginDetails : function(data){
+            LoginDetails.insert(data);
         }
     });
 }

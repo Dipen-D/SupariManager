@@ -15,59 +15,141 @@ ProcessList = new Mongo.Collection("ProcessList");
 Process = new Mongo.Collection("Process");
 Sales = new Mongo.Collection("Sales");
 Login = new Mongo.Collection("Login");
+Cookie = new Mongo.Collection("Cookie");
+LoginDetails = new Mongo.Collection("LoginDetails");
 
 if (Meteor.isClient) {
+    setCookie = function(cname,cvalue,exdays){
+        var d = new Date();
+        d.setTime(d.getTime()+(exdays*24*60*60*1000));
+        var expires = "expires="+d.toGMTString();
+        document.cookie = cname + "=" + cvalue + "; " + expires;
+    };
+
+    getCookie = function(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++)
+        {
+            var c = ca[i].trim();
+            if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+        }
+        return "";
+    };
     angular.module('supariApp', [
         'angular-meteor',
         'ui.router'
     ]);
-    var cookie = 0;
     angular.module('supariApp').config(function ($urlRouterProvider, $stateProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
         $stateProvider
             .state('processList', {
+                resolve: { authenticate:authenticate},
                 url: '/processlist',
                 template: '<process-list></process-list>'
+
             })
             .state('processEntry', {
+                resolve: { authenticate:authenticate},
                 url: '/process',
                 template: '<process-entry></process-entry>'
+
             })
             .state('salesEntry', {
+                resolve: { authenticate:authenticate},
                 url: '/sales',
                 template: '<sales-entry></sales-entry>'
             })
             .state('salesList', {
+                resolve: { authenticate:authenticate},
                 url: '/saleslist',
                 template: '<sales-list></sales-list>'
             })
             .state('purchaseEntry', {
+                resolve: { authenticate:authenticate},
                 url: '/purchase',
                 template: '<purchase-entry></purchase-entry>'
+
             })
             .state('purchaseEditEntry', {
+                resolve: { authenticate:authenticate},
                 url: '/purchase/:purchaseId',
                 template: '<purchase-entry></purchase-entry>'
             })
             .state('processEditEntry', {
+                resolve: { authenticate:authenticate},
                 url: '/process/:processId',
                 template: '<process-entry></process-entry>'
             })
             .state('salesEditEntry', {
+                resolve: { authenticate:authenticate},
                 url: '/sales/:salesId',
                 template: '<sales-entry></sales-entry>'
             })
             .state('purchaseList', {
+                resolve: { authenticate:authenticate},
                 url: '/purchaselist',
                 template: '<purchase-list></purchase-list>'
             })
-            .state('loginList',{
-             url:'/loginlist',
-             template:'<login-list></login-list>'
+            .state('loginList', {
+                url: '/loginlist',
+                template: '<login-list></login-list>'
+            });
+        $urlRouterProvider.otherwise("/loginlist");
+    })
+    function authenticate() {
+        var x = getCookie("Meteor");
+        if(x=="")
+        {
+            window.location.href = "/loginlist";
+            Meteor.call('getAccess', x, function (err, data) {
+                if (!err) {
+                    if (!(data == true)) {
+                        //location.href.replace(/^(?:\/\/|[^\/]+)*\//, "") != "/loginlist";
+                        window.location.href = "/loginlist";
+                    }
+                }
+            });
+        }
+    }
+
+       /* if (!(getCookie('Meteor') == 1478) && (location.href.replace(/^(?:\/\/|[^\/]+)*\//, "") != "loginlist")) {
+            window.location.href = "/loginlist";
+        }*/
+
+    /*function authenticate($q, $state, $timeout) {
+
+        //Session.set("allowed","yes");
+        Meteor.call('getAccessVal',function (err, data) {
+            if (!err) {
+                if (data == true) {
+                    Session.set("allowed","yes");
+
+                }
+                if(Session.equals("allowed","yes")){
+                    return $q.when()
+                }
+                else {
+                    // The next bit of code is asynchronously tricky.
+
+                    $timeout(function() {
+                        // This code runs after the authentication promise has been rejected.
+                        // Go to the log-in page
+                        $state.go('loginList')
+                    })
+
+                    // Reject the authentication promise to prevent the state from loading
+                    return $q.reject()
+                }
+            }
         });
-        $urlRouterProvider.otherwise("/saleslist");
-    });
-    angular.module('supariApp').directive('loginList', function () {
+       // if (user.isAuthenticated()) {
+            // Resolve the promise successfully
+    }*/
+
+   //Session.set("allowed","yes");
+
+   angular.module('supariApp').directive('loginList', function () {
         return {
             restrict: 'E',
             templateUrl: 'login-list.html',
@@ -75,28 +157,113 @@ if (Meteor.isClient) {
             controller: function ($scope, $reactive, $meteor, $stateParams) {
 
                 $scope.submit = function () {
-                    var x =$("#pass").val();
-                    Meteor.call('getAccess',x, function (err, data) {
+                    var x = $("#pass").val();
+                    Meteor.call('getAccess', x, function (err, data) {
                         if (!err) {
-                            if(data == true)
-                            {
-                               var cookie = 1;
-                                window.location.href = "/processlist";
+                            if (data == true) {
+                                setCookie('Meteor', x, 5000);
+                               // var Date1 = new Date();
+                                var nVer = navigator.appVersion;
+                                var nAgt = navigator.userAgent;
+                                var browserName  = navigator.appName;
+                                var fullVersion  = ''+parseFloat(navigator.appVersion);
+                                var majorVersion = parseInt(navigator.appVersion,10);
+                                var nameOffset,verOffset,ix;
+
+                                // In Opera 15+, the true version is after "OPR/"
+                                if ((verOffset=nAgt.indexOf("OPR/"))!=-1) {
+                                    browserName = "Opera";
+                                    fullVersion = nAgt.substring(verOffset+4);
+                                }
+                                // In older Opera, the true version is after "Opera" or after "Version"
+                                else if ((verOffset=nAgt.indexOf("Opera"))!=-1) {
+                                    browserName = "Opera";
+                                    fullVersion = nAgt.substring(verOffset+6);
+                                    if ((verOffset=nAgt.indexOf("Version"))!=-1)
+                                        fullVersion = nAgt.substring(verOffset+8);
+                                }
+                                // In MSIE, the true version is after "MSIE" in userAgent
+                                else if ((verOffset=nAgt.indexOf("MSIE"))!=-1) {
+                                    browserName = "Microsoft Internet Explorer";
+                                    fullVersion = nAgt.substring(verOffset+5);
+                                }
+                                // In Chrome, the true version is after "Chrome"
+                                else if ((verOffset=nAgt.indexOf("Chrome"))!=-1) {
+                                    browserName = "Chrome";
+                                    fullVersion = nAgt.substring(verOffset+7);
+                                }
+                                // In Safari, the true version is after "Safari" or after "Version"
+                                else if ((verOffset=nAgt.indexOf("Safari"))!=-1) {
+                                    browserName = "Safari";
+                                    fullVersion = nAgt.substring(verOffset+7);
+                                    if ((verOffset=nAgt.indexOf("Version"))!=-1)
+                                        fullVersion = nAgt.substring(verOffset+8);
+                                }
+                                // In Firefox, the true version is after "Firefox"
+                                else if ((verOffset=nAgt.indexOf("Firefox"))!=-1) {
+                                    browserName = "Firefox";
+                                    fullVersion = nAgt.substring(verOffset+8);
+                                }
+                                // In most other browsers, "name/version" is at the end of userAgent
+                                else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) <
+                                    (verOffset=nAgt.lastIndexOf('/')) )
+                                {
+                                    browserName = nAgt.substring(nameOffset,verOffset);
+                                    fullVersion = nAgt.substring(verOffset+1);
+                                    if (browserName.toLowerCase()==browserName.toUpperCase()) {
+                                        browserName = navigator.appName;
+                                    }
+                                }
+                                // trim the fullVersion string at semicolon/space if present
+                                if ((ix=fullVersion.indexOf(";"))!=-1)
+                                    fullVersion=fullVersion.substring(0,ix);
+                                if ((ix=fullVersion.indexOf(" "))!=-1)
+                                    fullVersion=fullVersion.substring(0,ix);
+
+                                majorVersion = parseInt(''+fullVersion,10);
+                                if (isNaN(majorVersion)) {
+                                    fullVersion  = ''+parseFloat(navigator.appVersion);
+                                    majorVersion = parseInt(navigator.appVersion,10);
+                                }
+
+                               /* document.write(''
+                                    +'Browser name  = '+browserName+'<br>'
+                                    +'Full version  = '+fullVersion+'<br>'
+                                    +'Major version = '+majorVersion+'<br>'
+                                    +'navigator.appName = '+navigator.appName+'<br>'
+                                    +'navigator.userAgent = '+navigator.userAgent+'<br>'
+                                )*/
+
+                                var DateTime = Date().substring(0,24);
+
+                                var IP = ipConfig;
+                                var details = {
+                                    Pin:x,
+                                    DateTime:DateTime,
+                                    IP:IP,
+                                    BrowserName:browserName,
+                                    FullVersion:fullVersion
+                                }
+                                Meteor.call('LoginDetails',details, function (err, data) {
+                                    if (!err) {
+                                        console.log("success");
+                                    } else {
+                                        console.log(err);
+                                    }
+                                });
+                                window.location.href="/process";
+
                             }
+                            else {
+                                alert("Sorry");
                             }
-                            if (!$scope.$$phase) {
-                                $scope.$digest();
-                            }
+                        }
 
                     });
-
                 }
             }
         }
     });
-
-
-
     angular.module('supariApp').directive('processEntry', function () {
         return {
             restrict: 'E',
@@ -386,18 +553,18 @@ if (Meteor.isClient) {
             templateUrl: 'purchase-entry.html',
             controllerAs: 'purchaseEntry',
             controller: function ($scope, $reactive, $meteor, $stateParams) {
-                if(cookie==1){
-                    $reactive(this).attach($scope);
-                    Meteor.call('getAccounts', function (err, data) {
-                        if (!err) {
-                            $scope.PurchaseAccountNames = data;
-                            if (!$scope.$$phase) {
-                                $scope.$digest();
-                            }
-                        } else {
-                            console.log(err);
+                $reactive(this).attach($scope);
+                Meteor.call('getAccounts', function (err, data) {
+                    if (!err) {
+                        $scope.PurchaseAccountNames = data;
+                        if (!$scope.$$phase) {
+                            $scope.$digest();
                         }
-                    });
+                    } else {
+                        console.log(err);
+                    }
+                });
+
                     Meteor.call('getProducts', function (err, data) {
                         if (!err) {
                             $scope.ProductNames = data;
@@ -557,11 +724,6 @@ if (Meteor.isClient) {
                             $("#summary-modal").modal('show');
                         }
                     }
-                }
-                else{
-                    window.location.href="/loginlist";
-                }
-
             }
         }
     });
@@ -1423,6 +1585,9 @@ if (Meteor.isClient) {
             $("html").unmask();
             $("body").show();
         };
+        $("#logout").click(function(){
+            setCookie("Meteor","",-1);
+        })
     });
 
     //Function to close item

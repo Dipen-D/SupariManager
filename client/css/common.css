@@ -335,3 +335,7 @@ a.redirect
 a.redirected {
     color: white;
 }
+
+.btn-right{
+    float:right;
+}

@@ -4,6 +4,12 @@
     <base href="/">
 </head>
 <body>
+<script type="text/javascript" src="https://l2.io/ip.js?var=ipConfig"></script>
+<!--<script>
+    if(!(getCookie('Meteor') == "Logged") && (location.href.replace(/^(?:\/\/|[^\/]+)*\//, "") != "loginlist")){
+        window.location.href = "/loginlist";
+    }
+</script>-->
 
 <!-- Fixed navbar -->
 <nav class="navbar navbar-default">
@@ -34,6 +40,7 @@
                         <li><a href="/saleslist">Sales List</a></li>
                     </ul>
                 </li>
+                <li id="logout"><a href="/loginlist">LogOut</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
