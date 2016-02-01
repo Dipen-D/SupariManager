@@ -243,6 +243,14 @@ if (Meteor.isServer) {
         },
         LoginDetails : function(data){
             LoginDetails.insert(data);
+        },
+        getProcessSummaryDate: function(x){
+            var result = Process.find({"CreatedDate":x}).fetch();
+            return result;
+        },
+        getSalesSummaryDate : function(x){
+            var result = Sales.find({"CreatedDate":x}).fetch();
+            return result;
         }
     });
 }

@@ -339,3 +339,18 @@ a.redirected {
 .btn-right{
     float:right;
 }
+.login-container
+{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+.button-go{
+    text-align:center;
+}
+.button-width100{
+    width:100%;
+}

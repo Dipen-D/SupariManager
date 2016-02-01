@@ -94,11 +94,16 @@ if (Meteor.isClient) {
             .state('loginList', {
                 url: '/loginlist',
                 template: '<login-list></login-list>'
-            });
+            })
+        .state('Summary', {
+            url: '/summary',
+            template: '<summary></summary>'
+        });
+
         $urlRouterProvider.otherwise("/loginlist");
     })
     function authenticate() {
-        var x = getCookie("Meteor");
+        var x = getCookie("LoginUser");
         if(x=="")
         {
             window.location.href = "/loginlist";
@@ -117,37 +122,6 @@ if (Meteor.isClient) {
             window.location.href = "/loginlist";
         }*/
 
-    /*function authenticate($q, $state, $timeout) {
-
-        //Session.set("allowed","yes");
-        Meteor.call('getAccessVal',function (err, data) {
-            if (!err) {
-                if (data == true) {
-                    Session.set("allowed","yes");
-
-                }
-                if(Session.equals("allowed","yes")){
-                    return $q.when()
-                }
-                else {
-                    // The next bit of code is asynchronously tricky.
-
-                    $timeout(function() {
-                        // This code runs after the authentication promise has been rejected.
-                        // Go to the log-in page
-                        $state.go('loginList')
-                    })
-
-                    // Reject the authentication promise to prevent the state from loading
-                    return $q.reject()
-                }
-            }
-        });
-       // if (user.isAuthenticated()) {
-            // Resolve the promise successfully
-    }*/
-
-   //Session.set("allowed","yes");
 
    angular.module('supariApp').directive('loginList', function () {
         return {
@@ -161,8 +135,7 @@ if (Meteor.isClient) {
                     Meteor.call('getAccess', x, function (err, data) {
                         if (!err) {
                             if (data == true) {
-                                setCookie('Meteor', x, 5000);
-                               // var Date1 = new Date();
+                                setCookie('LoginUser', x, 5000);
                                 var nVer = navigator.appVersion;
                                 var nAgt = navigator.userAgent;
                                 var browserName  = navigator.appName;
@@ -261,6 +234,120 @@ if (Meteor.isClient) {
 
                     });
                 }
+            }
+        }
+    });
+    angular.module('supariApp').directive('summary', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'summary.html',
+            controllerAs: 'summary',
+            controller: function ($scope, $reactive, $meteor, $stateParams) {
+                $("#datePicker").datepicker({autoclose: true,
+                    todayHighlight: true});
+
+                $scope.Summary = function(){
+                    var x  = $("#datePicker").val()
+
+                    Meteor.call('getProcessSummaryDate',x, function (err, data) {
+                        if (!err) {
+                            $scope.Process = data;
+                            var sample = data;
+                            console.log(sample);
+                            var bags = 0;
+                            var packets =  0;
+                            var kgs = 0;
+                            for (i = 0; i < data.length; i++) {
+                                for (j = 0; j < data[i].Info.length; j++) {
+
+
+                                   /* $(".table-process").find('.'+data[i].Info[j].Subtypename).find("td").eq(1).text(data[i].Info[j].bags+'*65');
+                                    $(".table-process").find('.'+data[i].Info[j].Subtypename).find("td").eq(2).text('1*'+data[i].Info[j].packets);
+                                    $(".table-process").find('.'+data[i].Info[j].Subtypename).find("td").eq(3).text(data[i].Info[j].value);*/
+                                   $(".table-process tbody").append(
+                                        '<tr class="'+data[i].Info[j].Subtypename+'">' +
+                                            '<td>'+data[i].Type+ '-' +data[i].Info[j].Subtypename+'</td>' +
+                                            '<td>'+data[i].Info[j].bags+'</td>' +
+                                            '<td>'+data[i].Info[j].packets+'</td>' +
+                                            '<td>'+data[i].Info[j].value+'</td>' +
+                                        '</tr>'
+                                    );
+                                    bags= bags + data[i].Info[j].bags;
+                                    packets= packets +data[i].Info[j].packets
+                                    kgs= kgs + data[i].Info[j].value;
+
+                                }
+                            }
+                            $(".table-process tbody").append(
+                                '<tr class="Total">' +
+                                    '<td>'+"Total"+'</td>' +
+                                    '<td>'+bags+'</td>' +
+                                    '<td>'+packets+'</td>' +
+                                    '<td>'+kgs+'</td>' +
+                                '</tr>'
+                            );
+
+
+                        } else {
+                            console.log(err);
+                        }
+                    });
+                    Meteor.call('getSalesSummaryDate',x, function (err, data) {
+                        if (!err) {
+                            $scope.Process = data;
+                            var sample = data;
+                            console.log(sample);
+                            var bags = 0;
+                            var packets =  0;
+                            var kgs = 0;
+                            for (i = 0; i < data.length; i++) {
+                                for (j = 0; j < data[i].Info.length; j++) {
+
+
+                                    /* $(".table-process").find('.'+data[i].Info[j].Subtypename).find("td").eq(1).text(data[i].Info[j].bags+'*65');
+                                     $(".table-process").find('.'+data[i].Info[j].Subtypename).find("td").eq(2).text('1*'+data[i].Info[j].packets);
+                                     $(".table-process").find('.'+data[i].Info[j].Subtypename).find("td").eq(3).text(data[i].Info[j].value);*/
+                                    $(".table-loading tbody").append(
+                                        '<tr class="'+data[i].Info[j].Subtypename+'">' +
+                                        '<td>' +data[i].Info[j].Subtypename+ '-' +data[i].Info[j].brand+ '-' +data[i].Info[j].detail +'</td>' +
+                                        '<td>'+data[i].Info[j].bags+'</td>' +
+                                        '<td>'+data[i].Info[j].packets+'</td>' +
+                                        '<td>'+data[i].Info[j].weight+'</td>' +
+                                        '</tr>'
+                                    );
+                                    bags= bags + parseInt(data[i].Info[j].bags);
+                                    packets= packets + parseInt(data[i].Info[j].packets);
+                                    kgs= kgs + parseInt(data[i].Info[j].weight);
+
+                                }
+                            }
+                            $(".table-loading tbody").append(
+                                '<tr class="Total">' +
+                                '<td>'+"Total"+'</td>' +
+                                '<td>'+bags+'</td>' +
+                                '<td>'+packets+'</td>' +
+                                '<td>'+kgs+'</td>' +
+                                '</tr>'
+                            );
+
+
+                        } else {
+                            console.log(err);
+                        }
+                    });
+
+                }
+
+               Meteor.call('getSupariTypes', function (err, data) {
+                if (!err) {
+                    $scope.SupariTypes = data;
+                    if (!$scope.$$phase) {
+                        $scope.$digest();
+                    }
+                } else {
+                    console.log(err);
+                }
+            });
             }
         }
     });
@@ -857,8 +944,8 @@ if (Meteor.isClient) {
                             brand: value[0],
                             detail: value[2],
                             weight: weight,
-                            bags: value[3],
-                            packets: value[4],
+                            bags: getValidValue(value[3]),
+                            packets: getValidValue(value[4]),
                             totalBags: totalBags
                         };
 
@@ -988,7 +1075,7 @@ if (Meteor.isClient) {
                 };
 
                 var getValidValue = function (val) {
-                    val = (isNaN(val) || val == "") ? 0 : parseInt(val);
+                    val = (isNaN(val) || val == ""|| val == "null") ? 0 : parseInt(val);
                     return val;
                 };
                 var clearAllFields = function () {
@@ -1586,7 +1673,7 @@ if (Meteor.isClient) {
             $("body").show();
         };
         $("#logout").click(function(){
-            setCookie("Meteor","",-1);
+            setCookie("LoginUser","",-1);
         })
     });
 

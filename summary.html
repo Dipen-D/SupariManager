@@ -1,0 +1,108 @@
+<div class="container-summary">
+    <div class="page-header row summary-row">
+        <div class="col-lg-8">
+            <h1>Summary</h1>
+        </div>
+        <div class="col-lg-2" style="padding-top: 15px">
+            <input id="datePicker" ng-model="datePicker" type="text" class="form-control bigFonts" placeholder="Date"
+                   style="margin-top: 15px;" readonly>
+        </div>
+        <div class="col-lg-2" style="padding-top: 30px">
+            <button class="btn btn-success" ng-click="Summary()">Search</button>
+        </div>
+
+    </div>
+
+<div class="row summary-row">
+ <div class="col-lg-3">
+     <p class="center">OPP.STOCK</p>
+     <div class="row summary-row">
+         <table class="table table-bordered table-opening">
+             <thead>
+             <tr>
+                 <th></th>
+                 <th>Bags</th>
+                 <th>Packets</th>
+                 <th>KGS</th>
+             </tr>
+             </thead>
+             <tbody>
+             <tr ng-repeat="type in SupariTypes" class="{{type.Name}}">
+                 <td>{{type.Name}}</td>
+                 <td>-</td>
+                 <td>-</td>
+                 <td>-</td>
+             </tr>
+             </tbody>
+         </table>
+     </div>
+ </div>
+    <div class="col-lg-3">
+        <p class="center">PROCESS</p>
+        <div class="row summary-row">
+            <table class="table table-bordered table-process">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Bags</th>
+                    <th>Packets</th>
+                    <th>KGS</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <p class="center">LOADING</p>
+        <div class="row summary-row">
+            <table class="table table-bordered table-loading">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Bags</th>
+                    <th>Packets</th>
+                    <th>KGS</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <p class="center">BALANCE STOCK</p>
+        <div class="row summary-row">
+            <table class="table table-bordered table-balance">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Bags</th>
+                    <th>Packets</th>
+                    <th>KGS</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>Mora</th>
+                    <th>5*65</th>
+                    <th>1*65</th>
+                    <th>265</th>
+                </tr>
+                <tr>
+                    <th>Mora</th>
+                    <th>5*65</th>
+                    <th>1*65</th>
+                    <th>265</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>
+</div>

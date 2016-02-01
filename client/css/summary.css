@@ -1,0 +1,11 @@
+.center{
+    text-align:center;
+    font-weight:bold;
+}
+.summary-row{
+    margin-left:0px;
+    margin-right:0px;
+}
+.container-summary{
+    padding:10px;
+}
