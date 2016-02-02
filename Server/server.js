@@ -52,6 +52,11 @@ if (Meteor.isServer) {
             var transportname = TransportTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
             return transportname;
         },
+        getGodown : function(){
+          var godown = Godowns.find({},{fields:{'Name':1,'_id':0}}).fetch();
+            return godown;
+        },
+
         purchaseEntry: function(data) {
             Counters.update({_id: "purchaseId"}, {$inc: {SequenceValue: 1}});
             var ret = Counters.findOne({_id: "purchaseId"});
@@ -63,6 +68,7 @@ if (Meteor.isServer) {
                 CreatedDate:data.date,
                 LastModifiedDate:data.date,
                 PurchaseAccountName:data.account,
+                Godown :data.godown,
                 Type:data.product,
                 ProductType:data.producttype,
                 Bags:data.bags,
@@ -77,6 +83,7 @@ if (Meteor.isServer) {
                 CreatedDate:data.date,
                 LastModifiedDate:data.mdate,
                 PurchaseAccountName:data.account,
+                Godown :data.godown,
                 Type:data.product,
                 ProductType:data.producttype,
                 Bags:data.bags,
@@ -90,6 +97,7 @@ if (Meteor.isServer) {
               {  CreatedDate:datapro.date,
               LastModifiedDate:datapro.mdate,
               Product:datapro.product,
+              Godown:datapro.godown,
               Type:datapro.type,
               Input:datapro.input,
               Output:datapro.output,
@@ -109,6 +117,7 @@ if (Meteor.isServer) {
                 CreatedDate:datapro.date,
                 LastModifiedDate:datapro.mdate,
                 Product:datapro.product,
+                Godown:datapro.godown,
                 Type:datapro.type,
                 Input:datapro.input,
                 Output:datapro.output,
@@ -154,6 +163,7 @@ if (Meteor.isServer) {
                     salesAccountName: datapro.salesAccountName,
                     TransportName: datapro.TransportName,
                     Product: datapro.Product,
+                    Godown:datapro.Godown,
                     TotalBags: datapro.TotalBags,
                     Info:data
                 })
@@ -172,6 +182,7 @@ if (Meteor.isServer) {
                 salesAccountName: datapro.salesAccountName,
                 TransportName: datapro.TransportName,
                 Product: datapro.Product,
+                Godown:datapro.Godown,
                 TotalBags:datapro.TotalBags,
                 Info:data
             };
@@ -219,26 +230,13 @@ if (Meteor.isServer) {
             return x;
         },
         getAccess: function(x) {
-            var processlist = Login.findOne({"name":x},{"_id":0});
+            var processlist = Login.findOne({"Pin":x},{"_id":0});
             if(processlist != null){
                 return true;
                 console.log("success");
             }
             else{
               return false;
-            }
-        },
-        getSession :function(){
-                Cookie.insert({"name":"test"});
-        },
-        getAccessVal : function(){
-            var processlist = Cookie.findOne({"name":"test"},{"_id":0});
-            if(processlist != null){
-                return true;
-                console.log("success");
-            }
-            else{
-                return false;
             }
         },
         LoginDetails : function(data){
@@ -251,6 +249,14 @@ if (Meteor.isServer) {
         getSalesSummaryDate : function(x){
             var result = Sales.find({"CreatedDate":x}).fetch();
             return result;
+        },
+        getNameByPin : function(x){
+            var name = Login.find({"Pin":x},{fields: {'Name':1}}).fetch();
+            return name;
+        },
+        getPurchaseDataByGodown : function(x){
+            var purchaselist = Purchase.find({"Godown":x},{fields: {'CreatedDate': 1,'Type':1,'PurchaseAccountName':1,kgs:1,'_id': 1,'ProductType':1}}).fetch();
+            return purchaselist;
         }
     });
 }

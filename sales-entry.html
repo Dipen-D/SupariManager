@@ -11,6 +11,17 @@
     </div>
     <div class="form-horizontal">
         <div class="form-group">
+            <div class="col-sm-10">
+                <select id="godown" class="bigFonts hidden" ng-model="salesEntry.godown">
+                    <option value="">Select Godown</option>
+                    <option ng-repeat="godown in Godowns"
+                            value="{{godown.Name}}">
+                        {{godown.Name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
             <div class="col-lg-4 col-sm-5 col-xs-12">
                 <select id="accountName" class="bigFonts" style="width: 100%;" ng-model="salesEntry.accountName">
                     <option value="">Select an account</option>
@@ -42,6 +53,7 @@
                 </select>
             </div>
         </div>
+
         <div id="entryFields" class="form-group">
             <div class="col-sm-12">
                 <div class="row">

@@ -13,6 +13,16 @@
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-lg-4 col-sm-5 col-xs-12">
+                <select id="godown" class="bigFonts hidden" ng-model="processEntry.godown">
+                    <option value="">Select Godown</option>
+                    <option ng-repeat="godown in Godowns"
+                            value="{{godown.Name}}">
+                        {{godown.Name}}
+                    </option>
+                </select>
+                <div>
+                    <br>
+                </div>
                 <select id="product" class="bigFonts" ng-model="processEntry.product">
                     <option ng-repeat="product in ProductNames"
                             value="{{product.Name}}">

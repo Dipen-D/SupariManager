@@ -1,4 +1,3 @@
-
 PurchaseAccountNames = new Mongo.Collection("PurchaseAccountName");
 SalesAccountNames = new Mongo.Collection("SalesAccountName");
 SupariTypes = new Mongo.Collection("SupariTypeMaster");
@@ -17,22 +16,22 @@ Sales = new Mongo.Collection("Sales");
 Login = new Mongo.Collection("Login");
 Cookie = new Mongo.Collection("Cookie");
 LoginDetails = new Mongo.Collection("LoginDetails");
+Godowns = new Mongo.Collection("Godowns");
 
 if (Meteor.isClient) {
-    setCookie = function(cname,cvalue,exdays){
+    setCookie = function (cname, cvalue, exdays) {
         var d = new Date();
-        d.setTime(d.getTime()+(exdays*24*60*60*1000));
-        var expires = "expires="+d.toGMTString();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toGMTString();
         document.cookie = cname + "=" + cvalue + "; " + expires;
     };
 
-    getCookie = function(cname) {
+    getCookie = function (cname) {
         var name = cname + "=";
         var ca = document.cookie.split(';');
-        for(var i=0; i<ca.length; i++)
-        {
+        for (var i = 0; i < ca.length; i++) {
             var c = ca[i].trim();
-            if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+            if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
         }
         return "";
     };
@@ -44,50 +43,50 @@ if (Meteor.isClient) {
         $locationProvider.html5Mode(true);
         $stateProvider
             .state('processList', {
-                resolve: { authenticate:authenticate},
+                resolve: {authenticate: authenticate},
                 url: '/processlist',
                 template: '<process-list></process-list>'
 
             })
             .state('processEntry', {
-                resolve: { authenticate:authenticate},
+                resolve: {authenticate: authenticate},
                 url: '/process',
                 template: '<process-entry></process-entry>'
 
             })
             .state('salesEntry', {
-                resolve: { authenticate:authenticate},
+                resolve: {authenticate: authenticate},
                 url: '/sales',
                 template: '<sales-entry></sales-entry>'
             })
             .state('salesList', {
-                resolve: { authenticate:authenticate},
+                resolve: {authenticate: authenticate},
                 url: '/saleslist',
                 template: '<sales-list></sales-list>'
             })
             .state('purchaseEntry', {
-                resolve: { authenticate:authenticate},
+                resolve: {authenticate: authenticate},
                 url: '/purchase',
                 template: '<purchase-entry></purchase-entry>'
 
             })
             .state('purchaseEditEntry', {
-                resolve: { authenticate:authenticate},
+                resolve: {authenticate: authenticate},
                 url: '/purchase/:purchaseId',
                 template: '<purchase-entry></purchase-entry>'
             })
             .state('processEditEntry', {
-                resolve: { authenticate:authenticate},
+                resolve: {authenticate: authenticate},
                 url: '/process/:processId',
                 template: '<process-entry></process-entry>'
             })
             .state('salesEditEntry', {
-                resolve: { authenticate:authenticate},
+                resolve: {authenticate: authenticate},
                 url: '/sales/:salesId',
                 template: '<sales-entry></sales-entry>'
             })
             .state('purchaseList', {
-                resolve: { authenticate:authenticate},
+                resolve: {authenticate: authenticate},
                 url: '/purchaselist',
                 template: '<purchase-list></purchase-list>'
             })
@@ -95,17 +94,16 @@ if (Meteor.isClient) {
                 url: '/loginlist',
                 template: '<login-list></login-list>'
             })
-        .state('Summary', {
-            url: '/summary',
-            template: '<summary></summary>'
-        });
+            .state('Summary', {
+                url: '/summary',
+                template: '<summary></summary>'
+            });
 
         $urlRouterProvider.otherwise("/loginlist");
     })
     function authenticate() {
         var x = getCookie("LoginUser");
-        if(x=="")
-        {
+        if (x == "") {
             window.location.href = "/loginlist";
             Meteor.call('getAccess', x, function (err, data) {
                 if (!err) {
@@ -118,12 +116,12 @@ if (Meteor.isClient) {
         }
     }
 
-       /* if (!(getCookie('Meteor') == 1478) && (location.href.replace(/^(?:\/\/|[^\/]+)*\//, "") != "loginlist")) {
-            window.location.href = "/loginlist";
-        }*/
+    /* if (!(getCookie('Meteor') == 1478) && (location.href.replace(/^(?:\/\/|[^\/]+)*\//, "") != "loginlist")) {
+     window.location.href = "/loginlist";
+     }*/
 
 
-   angular.module('supariApp').directive('loginList', function () {
+    angular.module('supariApp').directive('loginList', function () {
         return {
             restrict: 'E',
             templateUrl: 'login-list.html',
@@ -138,93 +136,92 @@ if (Meteor.isClient) {
                                 setCookie('LoginUser', x, 5000);
                                 var nVer = navigator.appVersion;
                                 var nAgt = navigator.userAgent;
-                                var browserName  = navigator.appName;
-                                var fullVersion  = ''+parseFloat(navigator.appVersion);
-                                var majorVersion = parseInt(navigator.appVersion,10);
-                                var nameOffset,verOffset,ix;
+                                var browserName = navigator.appName;
+                                var fullVersion = '' + parseFloat(navigator.appVersion);
+                                var majorVersion = parseInt(navigator.appVersion, 10);
+                                var nameOffset, verOffset, ix;
 
                                 // In Opera 15+, the true version is after "OPR/"
-                                if ((verOffset=nAgt.indexOf("OPR/"))!=-1) {
+                                if ((verOffset = nAgt.indexOf("OPR/")) != -1) {
                                     browserName = "Opera";
-                                    fullVersion = nAgt.substring(verOffset+4);
+                                    fullVersion = nAgt.substring(verOffset + 4);
                                 }
                                 // In older Opera, the true version is after "Opera" or after "Version"
-                                else if ((verOffset=nAgt.indexOf("Opera"))!=-1) {
+                                else if ((verOffset = nAgt.indexOf("Opera")) != -1) {
                                     browserName = "Opera";
-                                    fullVersion = nAgt.substring(verOffset+6);
-                                    if ((verOffset=nAgt.indexOf("Version"))!=-1)
-                                        fullVersion = nAgt.substring(verOffset+8);
+                                    fullVersion = nAgt.substring(verOffset + 6);
+                                    if ((verOffset = nAgt.indexOf("Version")) != -1)
+                                        fullVersion = nAgt.substring(verOffset + 8);
                                 }
                                 // In MSIE, the true version is after "MSIE" in userAgent
-                                else if ((verOffset=nAgt.indexOf("MSIE"))!=-1) {
+                                else if ((verOffset = nAgt.indexOf("MSIE")) != -1) {
                                     browserName = "Microsoft Internet Explorer";
-                                    fullVersion = nAgt.substring(verOffset+5);
+                                    fullVersion = nAgt.substring(verOffset + 5);
                                 }
                                 // In Chrome, the true version is after "Chrome"
-                                else if ((verOffset=nAgt.indexOf("Chrome"))!=-1) {
+                                else if ((verOffset = nAgt.indexOf("Chrome")) != -1) {
                                     browserName = "Chrome";
-                                    fullVersion = nAgt.substring(verOffset+7);
+                                    fullVersion = nAgt.substring(verOffset + 7);
                                 }
                                 // In Safari, the true version is after "Safari" or after "Version"
-                                else if ((verOffset=nAgt.indexOf("Safari"))!=-1) {
+                                else if ((verOffset = nAgt.indexOf("Safari")) != -1) {
                                     browserName = "Safari";
-                                    fullVersion = nAgt.substring(verOffset+7);
-                                    if ((verOffset=nAgt.indexOf("Version"))!=-1)
-                                        fullVersion = nAgt.substring(verOffset+8);
+                                    fullVersion = nAgt.substring(verOffset + 7);
+                                    if ((verOffset = nAgt.indexOf("Version")) != -1)
+                                        fullVersion = nAgt.substring(verOffset + 8);
                                 }
                                 // In Firefox, the true version is after "Firefox"
-                                else if ((verOffset=nAgt.indexOf("Firefox"))!=-1) {
+                                else if ((verOffset = nAgt.indexOf("Firefox")) != -1) {
                                     browserName = "Firefox";
-                                    fullVersion = nAgt.substring(verOffset+8);
+                                    fullVersion = nAgt.substring(verOffset + 8);
                                 }
                                 // In most other browsers, "name/version" is at the end of userAgent
-                                else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) <
-                                    (verOffset=nAgt.lastIndexOf('/')) )
-                                {
-                                    browserName = nAgt.substring(nameOffset,verOffset);
-                                    fullVersion = nAgt.substring(verOffset+1);
-                                    if (browserName.toLowerCase()==browserName.toUpperCase()) {
+                                else if ((nameOffset = nAgt.lastIndexOf(' ') + 1) <
+                                    (verOffset = nAgt.lastIndexOf('/'))) {
+                                    browserName = nAgt.substring(nameOffset, verOffset);
+                                    fullVersion = nAgt.substring(verOffset + 1);
+                                    if (browserName.toLowerCase() == browserName.toUpperCase()) {
                                         browserName = navigator.appName;
                                     }
                                 }
                                 // trim the fullVersion string at semicolon/space if present
-                                if ((ix=fullVersion.indexOf(";"))!=-1)
-                                    fullVersion=fullVersion.substring(0,ix);
-                                if ((ix=fullVersion.indexOf(" "))!=-1)
-                                    fullVersion=fullVersion.substring(0,ix);
+                                if ((ix = fullVersion.indexOf(";")) != -1)
+                                    fullVersion = fullVersion.substring(0, ix);
+                                if ((ix = fullVersion.indexOf(" ")) != -1)
+                                    fullVersion = fullVersion.substring(0, ix);
 
-                                majorVersion = parseInt(''+fullVersion,10);
+                                majorVersion = parseInt('' + fullVersion, 10);
                                 if (isNaN(majorVersion)) {
-                                    fullVersion  = ''+parseFloat(navigator.appVersion);
-                                    majorVersion = parseInt(navigator.appVersion,10);
+                                    fullVersion = '' + parseFloat(navigator.appVersion);
+                                    majorVersion = parseInt(navigator.appVersion, 10);
                                 }
 
-                               /* document.write(''
-                                    +'Browser name  = '+browserName+'<br>'
-                                    +'Full version  = '+fullVersion+'<br>'
-                                    +'Major version = '+majorVersion+'<br>'
-                                    +'navigator.appName = '+navigator.appName+'<br>'
-                                    +'navigator.userAgent = '+navigator.userAgent+'<br>'
-                                )*/
+                                /* document.write(''
+                                 +'Browser name  = '+browserName+'<br>'
+                                 +'Full version  = '+fullVersion+'<br>'
+                                 +'Major version = '+majorVersion+'<br>'
+                                 +'navigator.appName = '+navigator.appName+'<br>'
+                                 +'navigator.userAgent = '+navigator.userAgent+'<br>'
+                                 )*/
 
-                                var DateTime = Date().substring(0,24);
+                                var DateTime = Date().substring(0, 24);
 
                                 var IP = ipConfig;
                                 var details = {
-                                    Pin:x,
-                                    DateTime:DateTime,
-                                    IP:IP,
-                                    BrowserName:browserName,
-                                    FullVersion:fullVersion
+                                    Pin: x,
+                                    DateTime: DateTime,
+                                    IP: IP,
+                                    BrowserName: browserName,
+                                    FullVersion: fullVersion
                                 }
-                                Meteor.call('LoginDetails',details, function (err, data) {
+                                Meteor.call('LoginDetails', details, function (err, data) {
                                     if (!err) {
                                         console.log("success");
                                     } else {
                                         console.log(err);
                                     }
                                 });
-                                window.location.href="/process";
+                                window.location.href = "/purchase";
 
                             }
                             else {
@@ -243,47 +240,49 @@ if (Meteor.isClient) {
             templateUrl: 'summary.html',
             controllerAs: 'summary',
             controller: function ($scope, $reactive, $meteor, $stateParams) {
-                $("#datePicker").datepicker({autoclose: true,
-                    todayHighlight: true});
+                $("#datePicker").datepicker({
+                    autoclose: true,
+                    todayHighlight: true
+                });
 
-                $scope.Summary = function(){
-                    var x  = $("#datePicker").val()
+                $scope.Summary = function () {
+                    var x = $("#datePicker").val()
 
-                    Meteor.call('getProcessSummaryDate',x, function (err, data) {
+                    Meteor.call('getProcessSummaryDate', x, function (err, data) {
                         if (!err) {
                             $scope.Process = data;
                             var sample = data;
                             console.log(sample);
                             var bags = 0;
-                            var packets =  0;
+                            var packets = 0;
                             var kgs = 0;
                             for (i = 0; i < data.length; i++) {
                                 for (j = 0; j < data[i].Info.length; j++) {
 
 
-                                   /* $(".table-process").find('.'+data[i].Info[j].Subtypename).find("td").eq(1).text(data[i].Info[j].bags+'*65');
-                                    $(".table-process").find('.'+data[i].Info[j].Subtypename).find("td").eq(2).text('1*'+data[i].Info[j].packets);
-                                    $(".table-process").find('.'+data[i].Info[j].Subtypename).find("td").eq(3).text(data[i].Info[j].value);*/
-                                   $(".table-process tbody").append(
-                                        '<tr class="'+data[i].Info[j].Subtypename+'">' +
-                                            '<td>'+data[i].Type+ '-' +data[i].Info[j].Subtypename+'</td>' +
-                                            '<td>'+data[i].Info[j].bags+'</td>' +
-                                            '<td>'+data[i].Info[j].packets+'</td>' +
-                                            '<td>'+data[i].Info[j].value+'</td>' +
+                                    /* $(".table-process").find('.'+data[i].Info[j].Subtypename).find("td").eq(1).text(data[i].Info[j].bags+'*65');
+                                     $(".table-process").find('.'+data[i].Info[j].Subtypename).find("td").eq(2).text('1*'+data[i].Info[j].packets);
+                                     $(".table-process").find('.'+data[i].Info[j].Subtypename).find("td").eq(3).text(data[i].Info[j].value);*/
+                                    $(".table-process tbody").append(
+                                        '<tr class="' + data[i].Info[j].Subtypename + '">' +
+                                        '<td>' + data[i].Type + '-' + data[i].Info[j].Subtypename + '</td>' +
+                                        '<td>' + data[i].Info[j].bags + '</td>' +
+                                        '<td>' + data[i].Info[j].packets + '</td>' +
+                                        '<td>' + data[i].Info[j].value + '</td>' +
                                         '</tr>'
                                     );
-                                    bags= bags + data[i].Info[j].bags;
-                                    packets= packets +data[i].Info[j].packets
-                                    kgs= kgs + data[i].Info[j].value;
+                                    bags = bags + data[i].Info[j].bags;
+                                    packets = packets + data[i].Info[j].packets
+                                    kgs = kgs + data[i].Info[j].value;
 
                                 }
                             }
                             $(".table-process tbody").append(
                                 '<tr class="Total">' +
-                                    '<td>'+"Total"+'</td>' +
-                                    '<td>'+bags+'</td>' +
-                                    '<td>'+packets+'</td>' +
-                                    '<td>'+kgs+'</td>' +
+                                '<td>' + "Total" + '</td>' +
+                                '<td>' + bags + '</td>' +
+                                '<td>' + packets + '</td>' +
+                                '<td>' + kgs + '</td>' +
                                 '</tr>'
                             );
 
@@ -292,13 +291,13 @@ if (Meteor.isClient) {
                             console.log(err);
                         }
                     });
-                    Meteor.call('getSalesSummaryDate',x, function (err, data) {
+                    Meteor.call('getSalesSummaryDate', x, function (err, data) {
                         if (!err) {
                             $scope.Process = data;
                             var sample = data;
                             console.log(sample);
                             var bags = 0;
-                            var packets =  0;
+                            var packets = 0;
                             var kgs = 0;
                             for (i = 0; i < data.length; i++) {
                                 for (j = 0; j < data[i].Info.length; j++) {
@@ -308,25 +307,25 @@ if (Meteor.isClient) {
                                      $(".table-process").find('.'+data[i].Info[j].Subtypename).find("td").eq(2).text('1*'+data[i].Info[j].packets);
                                      $(".table-process").find('.'+data[i].Info[j].Subtypename).find("td").eq(3).text(data[i].Info[j].value);*/
                                     $(".table-loading tbody").append(
-                                        '<tr class="'+data[i].Info[j].Subtypename+'">' +
-                                        '<td>' +data[i].Info[j].Subtypename+ '-' +data[i].Info[j].brand+ '-' +data[i].Info[j].detail +'</td>' +
-                                        '<td>'+data[i].Info[j].bags+'</td>' +
-                                        '<td>'+data[i].Info[j].packets+'</td>' +
-                                        '<td>'+data[i].Info[j].weight+'</td>' +
+                                        '<tr class="' + data[i].Info[j].Subtypename + '">' +
+                                        '<td>' + data[i].Info[j].Subtypename + '-' + data[i].Info[j].brand + '-' + data[i].Info[j].detail + '</td>' +
+                                        '<td>' + data[i].Info[j].bags + '</td>' +
+                                        '<td>' + data[i].Info[j].packets + '</td>' +
+                                        '<td>' + data[i].Info[j].weight + '</td>' +
                                         '</tr>'
                                     );
-                                    bags= bags + parseInt(data[i].Info[j].bags);
-                                    packets= packets + parseInt(data[i].Info[j].packets);
-                                    kgs= kgs + parseInt(data[i].Info[j].weight);
+                                    bags = bags + parseInt(data[i].Info[j].bags);
+                                    packets = packets + parseInt(data[i].Info[j].packets);
+                                    kgs = kgs + parseInt(data[i].Info[j].weight);
 
                                 }
                             }
                             $(".table-loading tbody").append(
                                 '<tr class="Total">' +
-                                '<td>'+"Total"+'</td>' +
-                                '<td>'+bags+'</td>' +
-                                '<td>'+packets+'</td>' +
-                                '<td>'+kgs+'</td>' +
+                                '<td>' + "Total" + '</td>' +
+                                '<td>' + bags + '</td>' +
+                                '<td>' + packets + '</td>' +
+                                '<td>' + kgs + '</td>' +
                                 '</tr>'
                             );
 
@@ -338,16 +337,16 @@ if (Meteor.isClient) {
 
                 }
 
-               Meteor.call('getSupariTypes', function (err, data) {
-                if (!err) {
-                    $scope.SupariTypes = data;
-                    if (!$scope.$$phase) {
-                        $scope.$digest();
+                Meteor.call('getSupariTypes', function (err, data) {
+                    if (!err) {
+                        $scope.SupariTypes = data;
+                        if (!$scope.$$phase) {
+                            $scope.$digest();
+                        }
+                    } else {
+                        console.log(err);
                     }
-                } else {
-                    console.log(err);
-                }
-            });
+                });
             }
         }
     });
@@ -359,11 +358,45 @@ if (Meteor.isClient) {
             controller: function ($scope, $reactive, $meteor, $stateParams) {
                 $reactive(this).attach($scope);
 
+
                 // var data = [];
                 var processDetail = [];
                 var p = [];
                 this.product = "Supari";
                 $scope.SupariTypes = "";
+
+                var x = getCookie("LoginUser");
+                Meteor.call('getNameByPin',x, function (err, data) {
+                    if (!err) {
+                        if (data[0].Name == "Admin") {
+                            Meteor.call('getGodown', function (err, data) {
+                                if (!err) {
+                                    $scope.Godowns = data;
+                                    console.log(data);
+                                    if (!$scope.$$phase) {
+                                        $scope.$digest();
+                                    }
+                                } else {
+                                    console.log(err);
+                                }
+                            });
+                            $("#godown").removeClass("hidden");
+
+
+                        }
+                        else {
+                            var godown = data[0].Name;
+                            $scope.processEntry.godown = data[0].Name;
+                            $scope.Godowns = data;
+
+
+                        }
+                    }
+                    else {
+                        console.log(err);
+                    }
+
+                });
                 Meteor.call('getSupariTypes', function (err, data) {
                     if (!err) {
                         $scope.SupariTypes = data;
@@ -404,9 +437,11 @@ if (Meteor.isClient) {
                         console.log(err);
                     }
                 });
-                var x = $("#datePicker").datepicker({autoclose: true,
-                    todayHighlight: true}).datepicker("setDate", new Date()).val();
-                $scope.datePicker =  x;
+                var x = $("#datePicker").datepicker({
+                    autoclose: true,
+                    todayHighlight: true
+                }).datepicker("setDate", new Date()).val();
+                $scope.datePicker = x;
 
 
                 //this.mariType = ["Mari1","Mari2"];
@@ -425,10 +460,10 @@ if (Meteor.isClient) {
                     adjustment = this.getTotalWeight() - ((rawMaterialBags * 65) + rawMaterialPackets)
                     return (isNaN(adjustment)) ? 0 : adjustment;
                 };
-              $('#entryFields').on('blur', 'input', function () {
+                $('#entryFields').on('blur', 'input', function () {
                     $scope.$apply();
                 });
-                setInterval(function(){
+                setInterval(function () {
                     $scope.$apply();
                 }, 1000);
 
@@ -450,7 +485,7 @@ if (Meteor.isClient) {
                     return (isNaN(weight)) ? 0 : weight;
                 };
                 var IsValidInputs = function () {
-                    if (ValidateInputField('type') && ValidateInputField('rawMaterialBags')) {
+                    if (ValidateInputField('godown') && ValidateInputField('type') && ValidateInputField('rawMaterialBags')) {
                         return true;
                     }
                     return false;
@@ -477,20 +512,25 @@ if (Meteor.isClient) {
                     var data1;
                     var totalWeight = 0;
                     var data = ($('#product').val() == 'Supari') ? $scope.SupariTypes : $scope.MariTypes;
-                    var rawMaterialBags = (isNaN($('#rawMaterialBags').val()) || $('#rawMaterialBags').val() == "" ||$('#rawMaterialBags').val()== null ) ? 0 : $('#rawMaterialBags').val();
-                    var rawMaterialPackets = (isNaN($('#rawMaterialPackets').val()) || $('#rawMaterialPackets').val()== "" ||$('#rawMaterialPackets').val()== null   ) ? 0 : $('#rawMaterialPackets').val();
-                    var rawMaterial =(parseInt(rawMaterialBags * 65) + parseInt(rawMaterialPackets));
+                    var rawMaterialBags = (isNaN($('#rawMaterialBags').val()) || $('#rawMaterialBags').val() == "" || $('#rawMaterialBags').val() == null ) ? 0 : $('#rawMaterialBags').val();
+                    var rawMaterialPackets = (isNaN($('#rawMaterialPackets').val()) || $('#rawMaterialPackets').val() == "" || $('#rawMaterialPackets').val() == null   ) ? 0 : $('#rawMaterialPackets').val();
+                    var rawMaterial = (parseInt(rawMaterialBags * 65) + parseInt(rawMaterialPackets));
                     obj += "<tr class='info'>";
                     obj += "<th scope='row'>Product</th>";
                     obj += "<td>" + $('#product').val() + "</td>";
                     obj += "</tr>";
-
+                    var godown = $("#godown").val();
                     var type = $('#type').val();
                     if (type != "") {
                         obj += "<tr>";
                         obj += "<th scope='row'>Type</th>";
                         obj += "<td>" + type + "</td>";
                         obj += "</tr>";
+                        obj += "<tr>";
+                        obj += "<th scope='row'>Godown</th>";
+                        obj += "<td>" + godown + "</td>";
+                        obj += "</tr>";
+
                     }
                     obj += "<tr>";
                     obj += "<th scope='row'>Raw Material</th>";
@@ -528,7 +568,7 @@ if (Meteor.isClient) {
                     $("#rawMaterialBags,#rawMaterialPackets").val('');
                     $("#Mari1Bags,#Mari2Bags,#Mari2Packets,#Mari1Packets").val('');
                     $("#GFBags,#GFPackets,#JFBags,#JFPackets,#JamBags,#JamPackets,#JiniBags,#JiniPackets,#LindiBags,#LindiPackets,#MFBags,#MFPackets,#MMFBags,#MMFPackets,#MoroBags,#MoroPackets,#MotiBags,#MotiPackets,#RFBags,#RFPackets,#SFBags,#SFPackets,#SevarBags,#SevarPackets").val('');
-                   // $("#output").text("0 KG");
+                    // $("#output").text("0 KG");
 
                 }
                 this.processId = $stateParams.processId;
@@ -538,6 +578,7 @@ if (Meteor.isClient) {
                         if (!err) {
                             for (i = 0; i < data.length; i++) {
                                 $("#product").val(data[0].Product).change();
+                                $("#godown").val(data[0].Godown);
                                 $("#type").val(data[0].Type);
                                 $("#rawMaterialBags").val(Math.floor(data[0].Input / 65)).change();
                                 $("#rawMaterialPackets").val(data[0].Input - parseInt(Math.floor(data[0].Input / 65) * 65)).change();
@@ -555,19 +596,21 @@ if (Meteor.isClient) {
                                 $(".modal-content").mask("");
                                 var date = $("#datePicker").val();
                                 var product = $("#product").val();
+                                var godown = $("#godown").val();
                                 var type = $("#type").val();
                                 var input = parseInt($("#rawMaterialBags").val()) * 65 + parseInt($("#rawMaterialPackets").val());
                                 var preoutput = $("#output").text();
                                 var outputkgs = preoutput.replace(/[^[+-A-Z]/g, '');
                                 var output = parseInt($("#rawMaterialBags").val()) * 65 + parseInt($("#rawMaterialPackets").val()) + parseInt(outputkgs);
                                 var dates = new Date();
-                                var datestring = ("0" + (dates.getMonth() + 1).toString()).substr(-2) + "/" + ("0" + dates.getDate().toString()).substr(-2)  + "/" + (dates.getFullYear().toString()).substr(0);
+                                var datestring = ("0" + (dates.getMonth() + 1).toString()).substr(-2) + "/" + ("0" + dates.getDate().toString()).substr(-2) + "/" + (dates.getFullYear().toString()).substr(0);
                                 var mdate = datestring;
                                 var po = {
                                     id: id,
                                     date: date,
-                                    mdate:mdate,
+                                    mdate: mdate,
                                     product: product,
+                                    godown: godown,
                                     type: type,
                                     input: input,
                                     output: output
@@ -596,12 +639,21 @@ if (Meteor.isClient) {
                     $(".modal-content").mask("");
                     var date = $("#datePicker").val();
                     var product = $("#product").val();
+                    var godown = $("#godown").val();
                     var type = $("#type").val();
                     var input = $scope.getValidValue(parseInt($("#rawMaterialBags").val())) * 65 + $scope.getValidValue(parseInt($("#rawMaterialPackets").val()));
                     var preoutput = $("#output").text();
                     var outputkgs = preoutput.replace(/[^[+-A-Z]/g, '');
                     var output = $scope.getValidValue(parseInt($("#rawMaterialBags").val())) * 65 + $scope.getValidValue(parseInt($("#rawMaterialPackets").val())) + $scope.getValidValue(parseInt(outputkgs));
-                    var pro = {_id: "0", date: date, product: product, type: type, input: input, output: output}
+                    var pro = {
+                        _id: "0",
+                        date: date,
+                        product: product,
+                        godown: godown,
+                        type: type,
+                        input: input,
+                        output: output
+                    }
 
                     Meteor.call('process', processDetail, pro, function (err, data) {
                         if (!err) {
@@ -615,7 +667,6 @@ if (Meteor.isClient) {
                     window.location.href = "/processlist";
                 }
                 $(document).ready(function () {
-
 
 
                     $('select').on('change', function () {
@@ -641,6 +692,38 @@ if (Meteor.isClient) {
             controllerAs: 'purchaseEntry',
             controller: function ($scope, $reactive, $meteor, $stateParams) {
                 $reactive(this).attach($scope);
+
+                var x = getCookie("LoginUser");
+                 Meteor.call('getNameByPin',x, function (err, data) {
+                 if (!err) {
+                     if (data[0].Name == "Admin") {
+                         Meteor.call('getGodown', function (err, data) {
+                             if (!err) {
+                                 $scope.Godowns = data;
+                                 console.log(data);
+                                 if (!$scope.$$phase) {
+                                     $scope.$digest();
+                                 }
+                             } else {
+                                 console.log(err);
+                             }
+                         });
+                         $("#selectGodown").removeClass("hidden");
+
+
+                     }
+                     else {
+                         var godown = data[0].Name;
+                         $scope.Godowns = data;
+                         $scope.godowns = data[0].Name;
+
+                     }
+                 }
+                 else {
+                    console.log(err);
+                }
+
+                 });
                 Meteor.call('getAccounts', function (err, data) {
                     if (!err) {
                         $scope.PurchaseAccountNames = data;
@@ -652,165 +735,171 @@ if (Meteor.isClient) {
                     }
                 });
 
-                    Meteor.call('getProducts', function (err, data) {
-                        if (!err) {
-                            $scope.ProductNames = data;
-                            if (!$scope.$$phase) {
-                                $scope.$digest();
-                            }
-                        } else {
-                            console.log(err);
+                Meteor.call('getProducts', function (err, data) {
+                    if (!err) {
+                        $scope.ProductNames = data;
+                        if (!$scope.$$phase) {
+                            $scope.$digest();
                         }
-                    });
-                    Meteor.call('getProductTypes', function (err, data) {
-                        if (!err) {
-                            $scope.ProductTypes = data;
-                            if (!$scope.$$phase) {
-                                $scope.$digest();
-                            }
-                        } else {
-                            console.log(err);
+                    } else {
+                        console.log(err);
+                    }
+                });
+                Meteor.call('getProductTypes', function (err, data) {
+                    if (!err) {
+                        $scope.ProductTypes = data;
+                        if (!$scope.$$phase) {
+                            $scope.$digest();
                         }
-                    });
-                    var clearPurchaseFields = function () {
-                        $("#selectAccount,#selectProductType,#bags,#packets").val('');
-                        $("#selectType").val("Supari");
-
-                    };
-                    var IsValidInputs = function () {
-                        if (ValidateInputField('selectAccount')  && ValidateInputField('selectProductType') && (ValidateInputField('bags'))) {
-                            return true;
-                        }
+                    } else {
+                        console.log(err);
+                    }
+                });
+                var clearPurchaseFields = function () {
+                    $("#selectAccount,#selectProductType,#bags,#packets").val('');
+                    $("#selectType").val("Supari");
+                };
+                var IsValidInputs = function () {
+                    if (ValidateInputField('selectAccount') && ValidateInputField('selectProductType') && (ValidateInputField('bags'))) {
+                        return true;
+                    }
+                    return false;
+                };
+                var ValidateInputField = function (_this) {
+                    if (IsEmpty(_this)) {
+                        $('#' + _this).addClass("invalidInput");
                         return false;
-                    };
-                    var ValidateInputField = function (_this) {
-                        if (IsEmpty(_this)) {
-                            $('#' + _this).addClass("invalidInput");
-                            return false;
+                    } else {
+                        $('#' + _this).removeClass("invalidInput");
+                        return true;
+                    }
+                };
+                var IsEmpty = function (_this) {
+                    return ($('#' + _this).val() == "");
+                };
+                this.purchaseId = $stateParams.purchaseId;
+                if (!!this.purchaseId) {
+                    var id = this.purchaseId;
+                    Meteor.call('getPurchaseEntry', this.purchaseId, function (err, data) {
+                        if (!err) {
+                            if (data.length != 0) {
+                                $scope.datePicker = data[0].CreatedDate;
+                                var name = data[0].PurchaseAccountName;
+                                $scope.AccountName = name;
+                                $scope.type = data[0].ProductType
+                                $("#selectType").val(data[0].Type);
+                                $("#selectGodown").val(data[0].Godown);
+                                $scope.bagsinput = data[0].Bags;
+                                $scope.packetsinput = data[0].Packets;
+                                if (!$scope.$$phase) {
+                                    $scope.$digest();
+                                }
+                            }
                         } else {
-                            $('#' + _this).removeClass("invalidInput");
-                            return true;
+                            console.log(err);
                         }
-                    };
-                    var IsEmpty = function (_this) {
-                        return ($('#' + _this).val() == "");
-                    };
-                    this.purchaseId = $stateParams.purchaseId;
-                    if (!!this.purchaseId) {
-                        var id = this.purchaseId;
-                        Meteor.call('getPurchaseEntry', this.purchaseId, function (err, data) {
-                            if (!err) {
-                                if(data.length!=0) {
-                                    $scope.datePicker = data[0].CreatedDate;
-                                    var name = data[0].PurchaseAccountName;
-                                    $scope.AccountName = name;
-                                    $scope.type = data[0].ProductType
-                                    $("#selectType").val(data[0].Type);
-                                    $scope.bagsinput = data[0].Bags;
-                                    $scope.packetsinput = data[0].Packets;
-                                    if (!$scope.$$phase) {
-                                        $scope.$digest();
-                                    }
-                                }
-                            } else {
-                                console.log(err);
+                        $scope.yes = function () {
+                            $(".modal-content").mask("");
+                            var product = ($scope.purchaseEntry.product);
+                            var producttype = ($scope.type);
+                            var accountname = ($scope.AccountName);
+                            var godowns = ($scope.godowns);
+                            var bags = ($scope.bagsinput);
+                            var packets = ($scope.packetsinput);
+                            var kgs = bags * 65 + packets;
+                            var date = ($scope.datePicker);
+                            var dates = new Date();
+                            var datestring = ("0" + (dates.getMonth() + 1).toString()).substr(-2) + "/" + ("0" + dates.getDate().toString()).substr(-2) + "/" + (dates.getFullYear().toString()).substr(0);
+                            var mdate = datestring;
+                            var data = {
+                                _id: id,
+                                account: accountname,
+                                product: product,
+                                godown: godowns,
+                                kgs: kgs,
+                                date: date,
+                                bags: bags,
+                                packets: packets,
+                                producttype: producttype,
+                                mdate: mdate
                             }
-                            $scope.yes = function () {
-                                $(".modal-content").mask("");
-                                var product = ($scope.purchaseEntry.product);
-                                var producttype = ($scope.type);
-                                var accountname = ($scope.AccountName);
-                                var bags = ($scope.bagsinput);
-                                var packets = ($scope.packetsinput);
-                                var kgs = bags * 65 + packets;
-                                var date = ($scope.datePicker);
-                                var dates = new Date();
-                                var datestring = ("0" + (dates.getMonth() + 1).toString()).substr(-2) + "/" + ("0" + dates.getDate().toString()).substr(-2)  + "/" + (dates.getFullYear().toString()).substr(0);
-                                var mdate = datestring;
-                                var data = {
-                                    _id: id,
-                                    account: accountname,
-                                    product: product,
-                                    kgs: kgs,
-                                    date: date,
-                                    bags: bags,
-                                    packets: packets,
-                                    producttype: producttype,
-                                    mdate:mdate
+                            console.log(data);
+                            Meteor.call('EditPurchaseEntry', data, id, function (err, data) {
+                                if (!err) {
+                                    $(".modal-content").unmask();
+                                } else {
+                                    console.log(err);
                                 }
-                                console.log(data);
-                                Meteor.call('EditPurchaseEntry', data, id, function (err, data) {
-                                    if (!err) {
-                                        $(".modal-content").unmask();
-                                    } else {
-                                        console.log(err);
-                                    }
-                                });
-                                clearPurchaseFields();
-                                $("#summary-modal").modal('hide');
-                                $("html").mask("");
-                                window.location.href = "/purchaselist";
-                            }
-                        });
-
-                    }
-                    this.product = "Supari";
-                    var x = $("#datePicker").datepicker({autoclose: true,
-                        todayHighlight: true}).datepicker("setDate", new Date()).val();
-                    $scope.datePicker =  x;
-
-
-                    $scope.getValidValue = function (val) {
-                        val = (isNaN(val) || val == "" || val == null) ? 0 : parseInt(val);
-                        return val;
-                    };
-                    this.calculateWeight = function () {
-                        var weight = (this.getValidValue(this.bags) * 65) + this.getValidValue(this.packets);
-                        return (isNaN(weight)) ? 0 : weight;
-                    }
-                    $scope.yes = function () {
-                        $(".modal-content").mask("");
-                        var product = ($scope.purchaseEntry.product);
-                        var producttype = ($scope.type);
-                        var accountname = ($scope.AccountName);
-                        var bags = $scope.getValidValue($scope.bagsinput);
-                        var packets = $scope.getValidValue($scope.packetsinput);
-                        var kgs = bags * 65 + packets;
-                        var date = ($scope.datePicker);
-                        var data = {
-                            _id: "0",
-                            account: accountname,
-                            product: product,
-                            kgs: kgs,
-                            date: date,
-                            bags: bags,
-                            packets: packets,
-                            producttype: producttype
+                            });
+                            clearPurchaseFields();
+                            $("#summary-modal").modal('hide');
+                            $("html").mask("");
+                            window.location.href = "/purchaselist";
                         }
-                        console.log(date);
-                        Meteor.call('purchaseEntry', data, function (err, data) {
-                            if (!err) {
-                                $(".modal-content").unmask();
-                            } else {
-                                console.log(err);
-                            }
-                        });
-                        clearPurchaseFields();
-                        $("html").mask("");
-                        window.location.href = "/purchaselist";
-                    }
-                    $(document).ready(function () {
-
-                        $('select').on('change', function () {
-                            $(this).removeClass("invalidInput");
-                        });
-
                     });
-                    $scope.savePurchaseEntry = function () {
-                        if (IsValidInputs()) {
-                            $("#summary-modal").modal('show');
-                        }
+
+                }
+                this.product = "Supari";
+                var x = $("#datePicker").datepicker({
+                    autoclose: true,
+                    todayHighlight: true
+                }).datepicker("setDate", new Date()).val();
+                $scope.datePicker = x;
+
+
+                $scope.getValidValue = function (val) {
+                    val = (isNaN(val) || val == "" || val == null) ? 0 : parseInt(val);
+                    return val;
+                };
+                this.calculateWeight = function () {
+                    var weight = (this.getValidValue(this.bags) * 65) + this.getValidValue(this.packets);
+                    return (isNaN(weight)) ? 0 : weight;
+                }
+                $scope.yes = function () {
+                    $(".modal-content").mask("");
+                    var product = ($scope.purchaseEntry.product);
+                    var producttype = ($scope.type);
+                    var accountname = ($scope.AccountName);
+                    var godowns = ($scope.godowns);
+                    var bags = $scope.getValidValue($scope.bagsinput);
+                    var packets = $scope.getValidValue($scope.packetsinput);
+                    var kgs = bags * 65 + packets;
+                    var date = ($scope.datePicker);
+                    var data = {
+                        _id: "0",
+                        account: accountname,
+                        product: product,
+                        godown: godowns,
+                        kgs: kgs,
+                        date: date,
+                        bags: bags,
+                        packets: packets,
+                        producttype: producttype
                     }
+                    console.log(date);
+                    Meteor.call('purchaseEntry', data, function (err, data) {
+                        if (!err) {
+                            $(".modal-content").unmask();
+                        } else {
+                            console.log(err);
+                        }
+                    });
+                    clearPurchaseFields();
+                    $("html").mask("");
+                    window.location.href = "/purchaselist";
+                }
+                $(document).ready(function () {
+
+                    $('select').on('change', function () {
+                        $(this).removeClass("invalidInput");
+                    });
+
+                });
+                $scope.savePurchaseEntry = function () {
+                    if (IsValidInputs()) {
+                        $("#summary-modal").modal('show');
+                    }
+                }
             }
         }
     });
@@ -823,7 +912,38 @@ if (Meteor.isClient) {
             controller: function ($scope, $reactive, $meteor, $stateParams) {
                 $reactive(this).attach($scope);
                 var salesDetail = [];
+                var x = getCookie("LoginUser");
+                Meteor.call('getNameByPin',x, function (err, data) {
+                    if (!err) {
+                        if (data[0].Name == "Admin") {
+                            Meteor.call('getGodown', function (err, data) {
+                                if (!err) {
+                                    $scope.Godowns = data;
+                                    console.log(data);
+                                    if (!$scope.$$phase) {
+                                        $scope.$digest();
+                                    }
+                                } else {
+                                    console.log(err);
+                                }
+                            });
+                            $("#godown").removeClass("hidden");
 
+
+                        }
+                        else {
+                            var godown = data[0].Name;
+                            $scope.salesEntry.godown = data[0].Name;
+                            $scope.Godowns = data;
+
+
+                        }
+                    }
+                    else {
+                        console.log(err);
+                    }
+
+                });
                 Meteor.call('getProductMainTypes', function (err, data) {
                     if (!err) {
                         $scope.ProductMainTypes = data;
@@ -885,9 +1005,11 @@ if (Meteor.isClient) {
                     }
                 });
                 this.product = "Supari";
-                var x = $("#datePicker").datepicker({autoclose: true,
-                    todayHighlight: true}).datepicker("setDate", new Date()).val();
-                $scope.datePicker =  x;
+                var x = $("#datePicker").datepicker({
+                    autoclose: true,
+                    todayHighlight: true
+                }).datepicker("setDate", new Date()).val();
+                $scope.datePicker = x;
 
                 function add_commasInAmount(nStr) { //regulerExpression function add coma(,) in price range
                     nStr += '';
@@ -919,6 +1041,9 @@ if (Meteor.isClient) {
                         obj += "<td scope='row'>Product</td>";
                         obj += "<td>" + $('#product').val() + "</td>";
                         obj += "</tr>";
+                        obj += "<td scope='row'>Godown</td>";
+                        obj += "<td>" + $('#godown').val() + "</td>";
+                        obj += "</tr>";
                     }
                     $.each(data, function (index, value) {
 
@@ -936,7 +1061,7 @@ if (Meteor.isClient) {
                             //obj += "<span class='glyphicon glyphicon-remove-circle clearIcon'></span>";
                         }
                         else
-                        obj += add_commasInAmount(getValidValue(value[3])) + ' X 65 '  + '<br/> = ' + add_commasInAmount(weight) + ' k.G';
+                            obj += add_commasInAmount(getValidValue(value[3])) + ' X 65 ' + '<br/> = ' + add_commasInAmount(weight) + ' k.G';
                         obj += "</td>";
                         obj += "</tr>";
                         var dataObjSales = {
@@ -993,11 +1118,11 @@ if (Meteor.isClient) {
                         obj += '<div class="item-swipe swipefix">';
                         obj += '<div class="marginTop18 paddingLeft10">';
                         obj += '<span>' + value[1] + ' ' + value[0] + ' ' + value[2] + '</span>';
-                        if(getValidValue(value[4]) > 0) {
+                        if (getValidValue(value[4]) > 0) {
                             obj += '<span class="flRight">' + add_commasInAmount(value[3]) + ' X 65 + ' + getValidValue(value[4]) + ' = ' + add_commasInAmount(weight) + '</span>';
                         }
                         else
-                        obj += '<span class="flRight">' + add_commasInAmount(value[3]) + ' X 65  ' + ' = ' + add_commasInAmount(weight) + '</span>';
+                            obj += '<span class="flRight">' + add_commasInAmount(value[3]) + ' X 65  ' + ' = ' + add_commasInAmount(weight) + '</span>';
                         obj += '</div>';
                         obj += '</div>';
                         obj += '<div class="item-back">';
@@ -1056,7 +1181,7 @@ if (Meteor.isClient) {
                 };
 
                 var IsValidInputs = function () {
-                    if (ValidateInputField('type') && ValidateInputField('brand') && ValidateInputField('subType') && ValidateInputField('bags') && ValidateInputField('product') && ValidateInputField('transportName') && ValidateInputField('accountName')) {
+                    if (ValidateInputField('transportName') && ValidateInputField('accountName') && ValidateInputField('godown') && ValidateInputField('type') && ValidateInputField('brand') && ValidateInputField('subType') && ValidateInputField('bags') && ValidateInputField('product')) {
                         return true;
                     }
                     return false;
@@ -1075,7 +1200,7 @@ if (Meteor.isClient) {
                 };
 
                 var getValidValue = function (val) {
-                    val = (isNaN(val) || val == ""|| val == "null") ? 0 : parseInt(val);
+                    val = (isNaN(val) || val == "" || val == "null") ? 0 : parseInt(val);
                     return val;
                 };
                 var clearAllFields = function () {
@@ -1119,6 +1244,7 @@ if (Meteor.isClient) {
                                 $("#accountName").val(salesData[i].salesAccountName);
                                 $("#transportName").val(salesData[i].TransportName);
                                 $("#product").val(salesData[i].Product);
+                                $("#godown").val(salesData[i].Godown);
                                 $("#datePicker").val(salesData[i].CreatedDate);
                                 for (j = 0; j < salesData[i].Info.length; j++) {
                                     var brand = salesData[i].Info[j].brand;
@@ -1139,9 +1265,10 @@ if (Meteor.isClient) {
                                 var salesAccountName = $('#accountName').val();
                                 var transportName = $('#transportName').val();
                                 var product = $('#product').val();
+                                var godown = $("#godown").val();
                                 var totalbags = parseInt($('#tbags').text());
                                 var dates = new Date();
-                                var datestring = ("0" + (dates.getMonth() + 1).toString()).substr(-2) + "/" + ("0" + dates.getDate().toString()).substr(-2)  + "/" + (dates.getFullYear().toString()).substr(0);
+                                var datestring = ("0" + (dates.getMonth() + 1).toString()).substr(-2) + "/" + ("0" + dates.getDate().toString()).substr(-2) + "/" + (dates.getFullYear().toString()).substr(0);
                                 var mdate = datestring;
                                 var po = {
                                     _id: id,
@@ -1149,8 +1276,9 @@ if (Meteor.isClient) {
                                     salesAccountName: salesAccountName,
                                     TransportName: transportName,
                                     Product: product,
+                                    Godown: godown,
                                     TotalBags: totalbags,
-                                    mdate:mdate
+                                    mdate: mdate
                                 }
                                 Meteor.call('EditSalesEntry', salesDetail, po, id, function (err, data) {
                                     if (!err) {
@@ -1175,6 +1303,7 @@ if (Meteor.isClient) {
                     var salesAccountName = $('#accountName').val();
                     var transportName = $('#transportName').val();
                     var product = $('#product').val();
+                    var godown = $("#godown").val();
                     var totalbags = parseInt($('#tbags').text());
                     var data = {
                         _id: "0",
@@ -1182,6 +1311,7 @@ if (Meteor.isClient) {
                         salesAccountName: salesAccountName,
                         TransportName: transportName,
                         Product: product,
+                        Godown: godown,
                         TotalBags: totalbags
                     }
                     Meteor.call('SalesEntry', salesDetail, data, function (err, data) {
@@ -1281,30 +1411,30 @@ if (Meteor.isClient) {
                     }
                     return x1 + x2;
                 }
-                $scope.SaleEntry = function(){
+                $scope.SaleEntry = function () {
                     $("html").mask('');
-                    window.location.href="/sales";
+                    window.location.href = "/sales";
                 }
-                $scope.trim = function(x){
-                    x = x.substring(0,5);
+                $scope.trim = function (x) {
+                    x = x.substring(0, 5);
                     return x;
                 };
-                $scope.load = function(id){
+                $scope.load = function (id) {
                     $("html").mask('');
                     window.location.href = '/sales/' + id;
 
                 };
-                $scope.pop = function(x){
-                    var bags = Math.floor(x/65);
-                    var packets = x -  Math.floor(x/65) * 65;
+                $scope.pop = function (x) {
+                    var bags = Math.floor(x / 65);
+                    var packets = x - Math.floor(x / 65) * 65;
                     var stringObj = bags + ' * 65 ';
-                    var packetObj =  packets;
+                    var packetObj = packets;
 
-                    if(packets == 0){
-                        return stringObj + ' = ' +  x;
+                    if (packets == 0) {
+                        return stringObj + ' = ' + x;
                     }
-                    else{
-                        return stringObj + packetObj + ' = ' +  x;
+                    else {
+                        return stringObj + packetObj + ' = ' + x;
                     }
                 };
                 $scope.predicate = 'date';
@@ -1320,7 +1450,7 @@ if (Meteor.isClient) {
                         if (!$scope.$$phase) {
                             $scope.$digest();
                         }
-                        if(data.length == 0){
+                        if (data.length == 0) {
                             $(".tableHeader,.listShadow").hide();
                             $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
                         }
@@ -1363,16 +1493,16 @@ if (Meteor.isClient) {
                         });
                     });
                 }
-                $scope.updateProcessObj = function(id){
-                    for (var i= 0; i< $scope.Sales.length; i++) {
+                $scope.updateProcessObj = function (id) {
+                    for (var i = 0; i < $scope.Sales.length; i++) {
                         if ($scope.Sales[i]._id == id) {
-                            $scope.Sales.splice(i,1);
+                            $scope.Sales.splice(i, 1);
                         }
                     }
                     if (!$scope.$$phase) {
                         $scope.$digest();
                     }
-                    if($(".item").length === 1){
+                    if ($(".item").length === 1) {
                         $(".tableHeader").hide();
                         $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
                     }
@@ -1388,6 +1518,64 @@ if (Meteor.isClient) {
             templateUrl: 'purchase-list.html',
             controllerAs: 'purchaseList',
             controller: ['$scope', function ($scope, $stateParams) {
+
+
+
+                var x = getCookie("LoginUser");
+                Meteor.call('getNameByPin',x, function (err, data) {
+                    if (!err) {
+                        if (data[0].Name == "Admin") {
+                            Meteor.call('getPurchaseList', function (err, data) {
+
+                                if (!err) {
+                                    $scope.Purchase = data;
+                                    if (!$scope.$$phase) {
+                                        $scope.$digest();
+                                    }
+                                    if (data.length == 0) {
+                                        $(".tableHeader,.listShadow").hide();
+                                        $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
+                                    }
+                                    else {
+                                        $(".tableHeader").show();
+                                    }
+                                    $('[data-toggle="popover"]').popover();
+                                } else {
+                                    console.log(err);
+                                }
+
+
+                            });
+                        }
+                        else {
+                            Meteor.call('getPurchaseDataByGodown',data[0].Name, function (err, data) {
+                                if (!err) {
+                                    $scope.Purchase = data;
+                                    console.log(data);
+                                    if (!$scope.$$phase) {
+                                        $scope.$digest();
+                                    }
+                                    if (data.length == 0) {
+                                        $(".tableHeader,.listShadow").hide();
+                                        $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
+                                    }
+                                    else {
+                                        $(".tableHeader").show();
+                                    }
+                                    $('[data-toggle="popover"]').popover();
+                                } else {
+                                    console.log(err);
+                                }
+
+                            });
+
+                        }
+                    }
+                    else {
+                        console.log(err);
+                    }
+
+                });
                 $("html").mask("");
                 $scope.weight = function (nStr) { //regulerExpression function add coma(,) in price range
                     nStr += '';
@@ -1400,33 +1588,33 @@ if (Meteor.isClient) {
                     }
                     return x1 + x2;
                 }
-                $scope.Purchase1 = function(){
+                $scope.Purchase1 = function () {
                     $("html").mask('');
                     window.location.href = "/purchase";
                 }
-               $scope.loader = function(id){
-                   alert(id);
-                //   window.location.href = "http://stackoverflow.com";
-                   // $("html").mask('');
+                $scope.loader = function (id) {
+                    alert(id);
+                    //   window.location.href = "http://stackoverflow.com";
+                    // $("html").mask('');
 
 
                 }
 
-                 $scope.pop = function(x){
-                    var bags = Math.floor(x/65);
-                    var packets = x -  Math.floor(x/65) * 65;
+                $scope.pop = function (x) {
+                    var bags = Math.floor(x / 65);
+                    var packets = x - Math.floor(x / 65) * 65;
                     var stringObj = bags + ' * 65 ';
-                    var packetObj =  packets;
+                    var packetObj = packets;
 
-                    if(packets == 0){
-                        return stringObj + ' = ' +  x;
+                    if (packets == 0) {
+                        return stringObj + ' = ' + x;
                     }
-                    else{
-                        return stringObj + packetObj + ' = ' +  x;
+                    else {
+                        return stringObj + packetObj + ' = ' + x;
                     }
                 };
-                $scope.trim = function(x){
-                    x = x.substring(0,5);
+                $scope.trim = function (x) {
+                    x = x.substring(0, 5);
                     return x;
                 };
                 $scope.predicate = 'date';
@@ -1436,14 +1624,14 @@ if (Meteor.isClient) {
                     $scope.predicate = predicate;
                 }
                 $(".tableHeader,.listShadow").hide();
-                Meteor.call('getPurchaseList', function (err, data) {
+                /*Meteor.call('getPurchaseList', function (err, data) {
 
                     if (!err) {
                         $scope.Purchase = data;
                         if (!$scope.$$phase) {
                             $scope.$digest();
                         }
-                        if(data.length == 0){
+                        if (data.length == 0) {
                             $(".tableHeader,.listShadow").hide();
                             $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
                         }
@@ -1456,13 +1644,13 @@ if (Meteor.isClient) {
                     }
 
 
-                });
+                });*/
 
 
                 $scope.delete = function (id) {
                     $("#delete-modal").modal('show');
-                        var that = $(this);
-                    $(".yes").click(function(){
+                    var that = $(this);
+                    $(".yes").click(function () {
                         that.parent().parent().parent().parent().remove();
                         $("html").unmask();
                         Meteor.call('deletePurchaseEntry', id, function (err, data) {
@@ -1480,7 +1668,7 @@ if (Meteor.isClient) {
                 $scope.deleteMobile = function (id) {
                     $("#delete-modal").modal('show');
                     var that = $(this);
-                    $(".yes").click(function(){
+                    $(".yes").click(function () {
                         that.parent().parent().parent().parent().remove();
                         $("html").unmask();
                         Meteor.call('deletePurchaseEntry', id, function (err, data) {
@@ -1497,16 +1685,16 @@ if (Meteor.isClient) {
                 };
 
 
-                $scope.updateProcessObj = function(id){
-                    for (var i= 0; i< $scope.Purchase.length; i++) {
+                $scope.updateProcessObj = function (id) {
+                    for (var i = 0; i < $scope.Purchase.length; i++) {
                         if ($scope.Purchase[i]._id == id) {
-                            $scope.Purchase.splice(i,1);
+                            $scope.Purchase.splice(i, 1);
                         }
                     }
                     if (!$scope.$$phase) {
                         $scope.$digest();
                     }
-                    if($scope.Purchase.length == 0){
+                    if ($scope.Purchase.length == 0) {
                         $(".tableHeader").hide();
                         $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
                     }
@@ -1532,30 +1720,30 @@ if (Meteor.isClient) {
                     }
                     return x1 + x2;
                 }
-                $scope.ProcessEntry = function(){
+                $scope.ProcessEntry = function () {
                     $("html").mask("");
-                    window.location.href="/process";
+                    window.location.href = "/process";
                 }
-                $scope.trim = function(x){
-                    x = x.substring(0,5);
+                $scope.trim = function (x) {
+                    x = x.substring(0, 5);
                     return x;
                 };
                 /*$scope.mobileEdit = function(id){
-                    $("html").mask('');
-                    window.location.href = '/process/' + id;
+                 $("html").mask('');
+                 window.location.href = '/process/' + id;
 
-                };*/
-                $scope.pop = function(x){
-                    var bags = Math.floor(x/65);
-                    var packets = x -  Math.floor(x/65) * 65;
+                 };*/
+                $scope.pop = function (x) {
+                    var bags = Math.floor(x / 65);
+                    var packets = x - Math.floor(x / 65) * 65;
                     var stringObj = bags + ' * 65 ';
-                    var packetObj =  packets;
+                    var packetObj = packets;
 
-                    if(packets == 0){
-                        return stringObj + ' = ' +  x;
+                    if (packets == 0) {
+                        return stringObj + ' = ' + x;
                     }
-                    else{
-                        return stringObj + packetObj + ' = ' +  x;
+                    else {
+                        return stringObj + packetObj + ' = ' + x;
                     }
                 };
                 $(".tableHeader,.listShadow").hide();
@@ -1565,7 +1753,7 @@ if (Meteor.isClient) {
                         if (!$scope.$$phase) {
                             $scope.$digest();
                         }
-                        if(data.length == 0){
+                        if (data.length == 0) {
                             $(".tableHeader,.listShadow").hide();
                             $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
                         }
@@ -1580,51 +1768,51 @@ if (Meteor.isClient) {
                 $scope.delete = function (id) {
                     $("#delete-modal").modal('show');
                     var that = $(this);
-                    $(".yes").click(function(){
+                    $(".yes").click(function () {
                         that.parent().parent().parent().parent().remove();
                         $("html").unmask();
-                    Meteor.call('deleteProcessEntry', id, function (err, data) {
-                        if (!err) {
-                            $scope.updateProcessObj(id);
-                        } else {
-                            console.log(err);
-                        }
-                    });
-                     });
-                }
-                    $scope.deleteMobile = function (id) {
-                        $("#delete-modal").modal('show');
-                        var that = $(this);
-                        $(".yes").click(function () {
-                            that.parent().parent().parent().remove();
-                            $("html").unmask();
-
-
-                            Meteor.call('deleteProcessEntry', id, function (err, data) {
-                                if (!err) {
-                                    $scope.updateProcessObj(id);
-                                } else {
-                                    console.log(err);
-                                }
-                            });
+                        Meteor.call('deleteProcessEntry', id, function (err, data) {
+                            if (!err) {
+                                $scope.updateProcessObj(id);
+                            } else {
+                                console.log(err);
+                            }
                         });
-                    }
+                    });
+                }
+                $scope.deleteMobile = function (id) {
+                    $("#delete-modal").modal('show');
+                    var that = $(this);
+                    $(".yes").click(function () {
+                        that.parent().parent().parent().remove();
+                        $("html").unmask();
+
+
+                        Meteor.call('deleteProcessEntry', id, function (err, data) {
+                            if (!err) {
+                                $scope.updateProcessObj(id);
+                            } else {
+                                console.log(err);
+                            }
+                        });
+                    });
+                }
                 $scope.predicate = 'date';
                 $scope.reverse = true;
                 $scope.order = function (predicate) {
                     $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
                     $scope.predicate = predicate;
                 };
-                $scope.updateProcessObj = function(id){
-                    for (var i= 0; i< $scope.Process.length; i++) {
+                $scope.updateProcessObj = function (id) {
+                    for (var i = 0; i < $scope.Process.length; i++) {
                         if ($scope.Process[i]._id == id) {
-                            $scope.Process.splice(i,1);
+                            $scope.Process.splice(i, 1);
                         }
                     }
                     if (!$scope.$$phase) {
                         $scope.$digest();
                     }
-                    if($(".item").length === 1){
+                    if ($(".item").length === 1) {
                         $(".tableHeader").hide();
                         $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
                     }
@@ -1637,7 +1825,7 @@ if (Meteor.isClient) {
     $(function () {
 
         $("body").hide();
-       $("html").mask("");
+        $("html").mask("");
         $('.item-swipe').swipeTo({
 
             //default options
@@ -1663,17 +1851,17 @@ if (Meteor.isClient) {
             });
         });
         close();
-       // deleteItem();
+        // deleteItem();
         editItem();
         editItemDesktop();
-      //  deleteItemDesktop();
+        //  deleteItemDesktop();
 
         window.onload = function () {
             $("html").unmask();
             $("body").show();
         };
-        $("#logout").click(function(){
-            setCookie("LoginUser","",-1);
+        $("#logout").click(function () {
+            setCookie("LoginUser", "", -1);
         })
     });
 
@@ -1684,14 +1872,14 @@ if (Meteor.isClient) {
         });
     }
     // function to delete items
-  /*  var deleteItem = function () {
-        $('body').on('click tap', '.btn-delete', function (e) {
-            var that = $(this);
-                $(this).parent().parent().parent().remove()
-            $("html").unmask();
-            checkitem();
-        });
-    }*/
+    /*  var deleteItem = function () {
+     $('body').on('click tap', '.btn-delete', function (e) {
+     var that = $(this);
+     $(this).parent().parent().parent().remove()
+     $("html").unmask();
+     checkitem();
+     });
+     }*/
     //Function to edit item
     var editItem = function () {
         $('body').on('click tap', '.btn-check', function (e) {
@@ -1700,19 +1888,19 @@ if (Meteor.isClient) {
             window.location = href;
         });
     }
-  /*var deleteItemDesktop = function () {
+    /*var deleteItemDesktop = function () {
 
-        $('body').on('click tap', '.delete', function (e) {
-            var that = $(this);
-            $("#delete-modal").modal('show');
-            $(".yes").click(function(){
-                that.parent().parent().parent().parent().remove();
-                $("html").unmask();
-                checkitem();
-            })
+     $('body').on('click tap', '.delete', function (e) {
+     var that = $(this);
+     $("#delete-modal").modal('show');
+     $(".yes").click(function(){
+     that.parent().parent().parent().parent().remove();
+     $("html").unmask();
+     checkitem();
+     })
 
-        });
-    }*/
+     });
+     }*/
 
     var editItemDesktop = function () {
         $('body').on('click tap', '.redirect', function (e) {
@@ -1721,15 +1909,15 @@ if (Meteor.isClient) {
             window.location = '/sales';
         });
     }
-   /* var checkitem = function () {
-        if(($('.item-swipe').length) === 0){
-            $(".tableHeader").hide();
-        }
-        if ($(".item").length === 1) {
-            $(".item").hide();
-            $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
-        }
+    /* var checkitem = function () {
+     if(($('.item-swipe').length) === 0){
+     $(".tableHeader").hide();
+     }
+     if ($(".item").length === 1) {
+     $(".item").hide();
+     $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
+     }
 
-    }*/
+     }*/
 
 }
