@@ -15,8 +15,6 @@ if (Meteor.isServer) {
         getAccounts: function () {
             //return AccountNames.find({});
             var result = PurchaseAccountNames.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
-            //result.foo = "Hello ";
-            //result.bar = "World!";
             return result;
         },
         getProducts: function () {
@@ -28,8 +26,8 @@ if (Meteor.isServer) {
             var producttypes = ProductTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
             return producttypes;
         },
-        getProductMainTypes: function() {
-            var productmaintypes = ProductMainTypes.find({}, {fields: {'Name':1, '_id': 0}}).fetch();
+        getProductMainTypes: function () {
+            var productmaintypes = ProductMainTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
             return productmaintypes;
         },
         getSupariTypes: function () {
@@ -48,80 +46,84 @@ if (Meteor.isServer) {
             var brandname = BrandTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
             return brandname;
         },
-        getTransportTypes : function() {
+        getTransportTypes: function () {
             var transportname = TransportTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
             return transportname;
         },
-        getGodown : function(){
-          var godown = Godowns.find({},{fields:{'Name':1,'_id':0}}).fetch();
+        getGodown: function () {
+            var godown = Godowns.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
             return godown;
         },
 
-        purchaseEntry: function(data) {
+        purchaseEntry: function (data) {
             Counters.update({_id: "purchaseId"}, {$inc: {SequenceValue: 1}});
             var ret = Counters.findOne({_id: "purchaseId"});
             var id = ret.SequenceValue.toString();
             console.log(id);
             console.log(data);
             Purchase.insert({
-                _id:id,
-                CreatedDate:data.date,
-                LastModifiedDate:data.date,
-                PurchaseAccountName:data.account,
-                Godown :data.godown,
-                Type:data.product,
-                ProductType:data.producttype,
-                Bags:data.bags,
-                Packets:data.packets,
-                kgs:data.kgs
+                _id: id,
+                CreatedDate: data.date,
+                LastModifiedDate: data.date,
+                PurchaseAccountName: data.account,
+                Godown: data.godown,
+                Type: data.product,
+                ProductType: data.producttype,
+                ProductTypeAlias:data.productTypeAlias,
+                Bags: data.bags,
+                Packets: data.packets,
+                kgs: data.kgs
             });
 
         },
-        EditPurchaseEntry : function(data,id){
-            Purchase.update({_id:id},
-            {
-                CreatedDate:data.date,
-                LastModifiedDate:data.mdate,
-                PurchaseAccountName:data.account,
-                Godown :data.godown,
-                Type:data.product,
-                ProductType:data.producttype,
-                Bags:data.bags,
-                Packets:data.packets,
-                kgs:data.kgs
-            })
+        EditPurchaseEntry: function (data, id) {
+            Purchase.update({_id: id},
+                {
+                    CreatedDate: data.date,
+                    LastModifiedDate: data.mdate,
+                    PurchaseAccountName: data.account,
+                    Godown: data.godown,
+                    Type: data.product,
+                    ProductType: data.producttype,
+                    ProductTypeAlias:data.productTypeAlias,
+                    Bags: data.bags,
+                    Packets: data.packets,
+                    kgs: data.kgs
+                })
 
         },
-        EditProcessEntry :function(data,datapro,id){
-          Process.update({_id:id},
-              {  CreatedDate:datapro.date,
-              LastModifiedDate:datapro.mdate,
-              Product:datapro.product,
-              Godown:datapro.godown,
-              Type:datapro.type,
-              Input:datapro.input,
-              Output:datapro.output,
-              Info:data
-          })
+        EditProcessEntry: function (data, datapro, id) {
+            Process.update({_id: id},
+                {
+                    CreatedDate: datapro.date,
+                    LastModifiedDate: datapro.mdate,
+                    Product: datapro.product,
+                    Godown: datapro.godown,
+                    Type: datapro.type,
+                    Input: datapro.input,
+                    Output: datapro.output,
+                    Info: data
+                })
             console.log(id);
         },
-        process: function(data,datapro){
+        process: function (data, datapro) {
 
             var _id;
             Counters.update({_id: "processId"}, {$inc: {SequenceValue: 1}});
             var ret = Counters.findOne({_id: "processId"});
             var id = ret.SequenceValue.toString();
-            var object ={};
+            var object = {};
             console.log(id);
-            var final = {_id:id,
-                CreatedDate:datapro.date,
-                LastModifiedDate:datapro.mdate,
-                Product:datapro.product,
-                Godown:datapro.godown,
-                Type:datapro.type,
-                Input:datapro.input,
-                Output:datapro.output,
-                Info:data
+            var final = {
+                _id: id,
+                CreatedDate: datapro.date,
+                LastModifiedDate: datapro.mdate,
+                Product: datapro.product,
+                Godown: datapro.godown,
+                Type: datapro.type,
+                Input: datapro.input,
+                Output: datapro.output,
+                Info: data
             };
 
             console.log(final);
@@ -129,134 +131,218 @@ if (Meteor.isServer) {
 
         },
         getPurchaseList: function () {
-            var purchaselist = Purchase.find({},{fields: {'CreatedDate': 1,'Type':1,'PurchaseAccountName':1,kgs:1,'_id': 1,'ProductType':1}}).fetch();
+            var purchaselist = Purchase.find({}, {
+                fields: {
+                    'CreatedDate': 1,
+                    'Type': 1,
+                    'PurchaseAccountName': 1,
+                    kgs: 1,
+                    '_id': 1,
+                    'ProductType': 1
+                }
+            }).fetch();
             return purchaselist;
         },
-        deletePurchaseEntry : function(id) {
+        deletePurchaseEntry: function (id) {
             Purchase.remove({
-                _id:id
+                _id: id
             });
         },
         getPurchaseEntry: function (id) {
-            var x = Purchase.find({_id:id}).fetch();
+            var x = Purchase.find({_id: id}).fetch();
             return x;
         },
-        getProcessList: function() {
-            var processlist = Process.find({},{fields: {'CreatedDate': 1,'Type':1,'Product':1,Input:1,'_id': 1,'Output':1}}).fetch();
+        getProcessList: function () {
+            var processlist = Process.find({}, {
+                fields: {
+                    'CreatedDate': 1,
+                    'Type': 1,
+                    'Product': 1,
+                    Input: 1,
+                    '_id': 1,
+                    'Output': 1
+                }
+            }).fetch();
             return processlist;
         },
-        deleteProcessEntry : function(id) {
+        deleteProcessEntry: function (id) {
             Process.remove({
-                _id:id
+                _id: id
             });
         },
         getProcessEntry: function (id) {
-            var x = Process.find({_id:id}).fetch();
+            var x = Process.find({_id: id}).fetch();
             return x;
         },
 
-        EditSalesEntry :function(data,datapro,id){
-            Sales.update({_id:id},
+        EditSalesEntry: function (data, datapro, id) {
+            Sales.update({_id: id},
                 {
                     CreatedDate: datapro.CreatedDate,
-                    LastModifiedDate:datapro.mdate,
+                    LastModifiedDate: datapro.mdate,
                     salesAccountName: datapro.salesAccountName,
                     TransportName: datapro.TransportName,
                     Product: datapro.Product,
-                    Godown:datapro.Godown,
+                    Godown: datapro.Godown,
                     TotalBags: datapro.TotalBags,
-                    Info:data
+                    Info: data
                 })
 
         },
-        SalesEntry : function(data,datapro) {
+        SalesEntry: function (data, datapro) {
             var _id;
             Counters.update({_id: "salesId"}, {$inc: {SequenceValue: 1}});
             var ret = Counters.findOne({_id: "salesId"});
             var id = ret.SequenceValue.toString();
-            var object ={};
+            var object = {};
             console.log(id);
             var final = {
-                _id:id,
+                _id: id,
                 CreatedDate: datapro.CreatedDate,
                 salesAccountName: datapro.salesAccountName,
                 TransportName: datapro.TransportName,
                 Product: datapro.Product,
-                Godown:datapro.Godown,
-                TotalBags:datapro.TotalBags,
-                Info:data
+                Godown: datapro.Godown,
+                TotalBags: datapro.TotalBags,
+                Info: data
             };
-            console.log(final);
-            /*for (i = 0; i < data.length; i++) {
-              var x = data[i].type;
-                x = get(data, x);
-                function get(array, pouch) {
-                    var found;
-                    array.some(function (entry) {
-                        if (entry.type == pouch) {
-                            found = entry;
-                            return true;
-                        }
-                    });
-                    if (found) {
-                        // Found it, create an object with the properties we want
-                        return {
-                            Brand: found.brand,
-                            DetailType: found.detail,
-                            Bags: found.bags,
-                            Packets: found.packets,
-                            Weight: found.weight
-                        };
-                    }
-                    return null;
-                }
-                final[data[i].type] = (x);
-            }*/
-            console.log(final);
             Sales.insert(final);
 
         },
-        getSalesList: function() {
-            var sale = Sales.find({},{fields: {'CreatedDate': 1,'salesAccountName':1,'TransportName':1,'TotalBags':1,'_id': 1}}).fetch();
+        getSalesList: function () {
+            var sale = Sales.find({}, {
+                fields: {
+                    'CreatedDate': 1,
+                    'salesAccountName': 1,
+                    'TransportName': 1,
+                    'TotalBags': 1,
+                    '_id': 1
+                }
+            }).fetch();
             return sale;
         },
-        deleteSaleEntry : function(id) {
+        deleteSaleEntry: function (id) {
             Sales.remove({
-                _id:id
+                _id: id
             });
         },
         getSalesEntry: function (id) {
-            var x = Sales.find({_id:id}).fetch();
+            var x = Sales.find({_id: id}).fetch();
             return x;
         },
-        getAccess: function(x) {
-            var processlist = Login.findOne({"Pin":x},{"_id":0});
-            if(processlist != null){
+        getAccess: function (x) {
+            var processlist = Login.findOne({"Pin": x}, {"_id": 0});
+            if (processlist != null) {
                 return true;
                 console.log("success");
             }
-            else{
-              return false;
+            else {
+                return false;
             }
         },
-        LoginDetails : function(data){
+
+        LoginDetails: function (data) {
             LoginDetails.insert(data);
         },
-        getProcessSummaryDate: function(x){
-            var result = Process.find({"CreatedDate":x}).fetch();
+
+        //Get Process summary for Admin
+        getProcessSummaryDate: function (x) {
+            var result = Process.find({"CreatedDate": x}).fetch();
             return result;
         },
-        getSalesSummaryDate : function(x){
-            var result = Sales.find({"CreatedDate":x}).fetch();
+
+        //Get Process summary for individual go-down
+        getProcessSummaryDateByGodown : function(date,x){
+            var result = Process.find({"CreatedDate": date,"Godown":x}).fetch();
             return result;
         },
-        getNameByPin : function(x){
-            var name = Login.find({"Pin":x},{fields: {'Name':1}}).fetch();
+
+        //Get Process summary for Admin
+        getSalesSummaryDate: function (x) {
+            var result = Sales.find({"CreatedDate": x}).fetch();
+            return result;
+        },
+
+        //Get Process summary for individual go-down
+        getSalesSummaryDateByGodown : function(date,x){
+            var result = Sales.find({"CreatedDate": date,"Godown":x}).fetch();
+            return result;
+        },
+
+
+        //Get Purchase Summary for admin
+        getPurchaseSummaryDate : function(x){
+            var result = Purchase.find({"CreatedDate": x}).fetch();
+            return result;
+        },
+
+        //Get Purchase Summary for individual go-dowm
+        getPurchaseSummaryDateByGodown : function(date,x){
+            var result = Purchase.find({"CreatedDate": date,"Godown":x}).fetch();
+            return result;
+        },
+
+        //Entering pin decode the go-down
+        getNameByPin: function (x) {
+            var name = Login.find({"Pin": x}, {fields: {'Name': 1}}).fetch();
             return name;
         },
-        getPurchaseDataByGodown : function(x){
-            var purchaselist = Purchase.find({"Godown":x},{fields: {'CreatedDate': 1,'Type':1,'PurchaseAccountName':1,kgs:1,'_id': 1,'ProductType':1}}).fetch();
+
+        //Get purchase-list for particular go-down
+        getPurchaseDataByGodown: function (x) {
+            var purchaselist = Purchase.find({"Godown": x}, {
+                fields: {
+                    'CreatedDate': 1,
+                    'Type': 1,
+                    'PurchaseAccountName': 1,
+                    kgs: 1,
+                    '_id': 1,
+                    'ProductType': 1
+                }
+            }).fetch();
             return purchaselist;
+        },
+
+        //Get sales-list for particular go-down
+        getSalesDataByGodown: function (x) {
+            var sale = Sales.find({"Godown": x}, {
+                fields: {
+                    'CreatedDate': 1,
+                    'salesAccountName': 1,
+                    'TransportName': 1,
+                    'TotalBags': 1,
+                    '_id': 1
+                }
+            }).fetch();
+            return sale;
+        },
+
+        //Get process-list for particular go-down
+        getProcessDataByGodown: function (x) {
+            var processlist = Process.find({"Godown": x}, {
+                fields: {
+                    'CreatedDate': 1,
+                    'Type': 1,
+                    'Product': 1,
+                    Input: 1,
+                    '_id': 1,
+                    'Output': 1
+                }
+            }).fetch();
+            return processlist;
+        },
+
+        //Get Opening Stock for a particular go-down
+        getOpeningStock: function (x) {
+            var stock = OpeningStock.find({"Godown": x}).fetch();
+            return stock;
+        },
+
+        //Get Total openingBalance
+        getTotalOpeningBalance: function () {
+            var stock = OpeningStock.find({}).fetch();
+            return stock;
         }
+
     });
 }
