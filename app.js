@@ -450,7 +450,6 @@ if (Meteor.isClient) {
                                         console.log(err);
                                     }
                                 });
-
                             }
                         }
                         else {
@@ -682,7 +681,6 @@ if (Meteor.isClient) {
                             Meteor.call('getGodown', function (err, data) {
                                 if (!err) {
                                     $scope.Godowns = data;
-                                    console.log(data);
                                     if (!$scope.$$phase) {
                                         $scope.$digest();
                                     }
@@ -747,6 +745,44 @@ if (Meteor.isClient) {
                         console.log(err);
                     }
                 });
+                //var date = $("#datePicker").val();
+                var date ="02/04/2016";
+                Meteor.call('getRawMaterialBasedOnType',date, function (err, data) {
+                    if (!err) {
+                        $scope.OpeningStock = data;
+                        var output = [];
+
+                        console.log(data);
+                        for(i=0;i<data.length;i++) {
+                            for (j = 0; j < data[i].length; j++) {
+                                var name = (data[i][j]._id);
+                                var kgs = (data[i][j].kgs);
+                                var dataObj = {Name: name, Kgs: kgs};
+                                containsObject(dataObj,output);
+                            }
+                        }
+                        console.log(output);
+
+                    } else {
+                        console.log(err);
+                    }
+                });
+
+                var containsObject = function (obj, list) {
+                    var i;
+                    var found = false;
+                    for (i = 0; i < list.length; i++) {
+                        if (list[i].Name === obj.Name) {
+                            list[i].Kgs = parseInt(obj.Kgs) + parseInt(list[i].Kgs);
+                            found = true;
+                            return true;
+                        }
+                    }
+                    if(!found) {
+                        list.push(obj);
+                    }
+                };
+
                 var x = $("#datePicker").datepicker({
                     autoclose: true,
                     todayHighlight: true
@@ -1093,6 +1129,7 @@ if (Meteor.isClient) {
                     Meteor.call('getPurchaseEntry', this.purchaseId, function (err, data) {
                         if (!err) {
                             if (data.length != 0) {
+                                console.log(data);
                                 $scope.datePicker = data[0].CreatedDate;
                                 var name = data[0].PurchaseAccountName;
                                 $scope.AccountName = name;
