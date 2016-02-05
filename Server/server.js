@@ -342,6 +342,139 @@ if (Meteor.isServer) {
         getTotalOpeningBalance: function () {
             var stock = OpeningStock.find({}).fetch();
             return stock;
+        },
+
+        getRawMaterialBasedOnType : function(x){
+            var containsObject = function (obj, list) {
+                var i;
+                var found = false;
+                for (i = 0; i < list.length; i++) {
+                    if (list[i].Name === obj.Name) {
+                        list[i].Kgs = parseInt(obj.Kgs) + parseInt(list[i].Kgs);
+                        found = true;
+                        //return true;
+                    }
+                }
+                if(!found) {
+                    list.push(obj);
+                }
+            };
+            var deduce = function (obj, list) {
+                var i;
+                var found = false;
+                for (i = 0; i < list.length; i++) {
+                    if (list[i].Name === obj.Name) {
+                        list[i].Kgs = parseInt(list[i].Kgs)  - parseInt(obj.Kgs);
+                        found = true;
+                    }
+                }
+                if(!found) {
+                    list.push(obj);
+                }
+            };
+            var data = [];
+            var result = [];
+            var final = [];
+            var sales = [];
+            var a = Process.aggregate([ {$match:{Product:"Supari",CreatedDate:{$lte:x}}},{$unwind: '$Info'},{  $group: { _id:"$Info.Subtypename",  kgs:{ $sum:"$Info.value" } } }])
+
+            var b = OpeningStock.aggregate([ {$match:{Product:"Supari"}},{$unwind: '$Info'},{  $group: { _id:"$Info.Subtypename",  kgs:{ $sum:"$Info.value" } } }])
+
+            var c = Sales.aggregate([ {$match:{Product:"Supari",CreatedDate:{$lte:x}}},{$unwind: '$Info'},{  $group: { _id:"$Info.detail",  kgs:{ $sum:"$Info.weight" } } }])
+            result.push(a);
+            result.push(b);
+            //result.push(c);
+            //return result;
+            for(i=0;i<result.length;i++) {
+                for (j = 0; j < result[i].length; j++) {
+                    var name = (result[i][j]._id);
+                    var kgs = (result[i][j].kgs);
+                    var dataObj = {Name: name, Kgs: kgs};
+                    containsObject(dataObj,data);
+                }
+            }
+           //return data;
+
+            sales.push(c);
+            for(i=0;i<sales.length;i++) {
+                for (j = 0; j < sales[i].length; j++) {
+                    var name = (sales[i][j]._id);
+                    var kgs = (sales[i][j].kgs);
+                    var dataObj = {Name: name, Kgs: kgs};
+                    deduce(dataObj,data);
+                }
+            }
+           return data;
+        },
+        getOpeningStockViaDate : function(x){
+            var Sums = function (obj, list) {
+                var i;
+                var found = false;
+                for (i = 0; i < list.length; i++) {
+                    if (list[i].Name === obj.Name) {
+                        list[i].Kgs = parseInt(obj.Kgs) + parseInt(list[i].Kgs);
+                        found = true;
+                        //return true;
+                    }
+                }
+                if(!found) {
+                    list.push(obj);
+                }
+            };
+            var deduce = function (obj, list) {
+                var i;
+                var found = false;
+                for (i = 0; i < list.length; i++) {
+                    if (list[i].Name === obj.Name) {
+                        list[i].Kgs = parseInt(list[i].Kgs)  - parseInt(obj.Kgs);
+                        found = true;
+                    }
+                }
+                if(!found) {
+                    list.push(obj);
+                }
+            };
+            var temp = [];
+            var sum = [];
+            var sale = [];
+            var result = [];
+            var raw = [];
+            var sales = Sales.aggregate([ {$match:{Product:"Supari",CreatedDate:{$lt:x}}},{$unwind: '$Info'},{  $group: { _id:{name:"$Info.Subtypename",type:"$Info.detail"},  kgs:{ $sum:"$Info.weight" } } }])
+            var openingstock = OpeningStock.aggregate([ {$match:{Product:"Supari"}},{$unwind: '$Info'},{  $group: { _id:{name:"$Info.Type",type:"$Info.Subtypename"},  kgs:{ $sum:"$Info.value" } } }])
+            var process = Process.aggregate([ {$match:{Product:"Supari",CreatedDate:{$lt:x}}},{$unwind: '$Info'},{  $group: { _id:{name:"$Type",type:"$Info.Subtypename"},  kgs:{ $sum:"$Info.value" } } }])
+            var deductRaw = Process.aggregate([{ $match:{Product:"Supari",CreatedDate:{$lt:x}}},{$group: { _id:"$Type", Kgs:{$sum:"$Input"}}}]);
+            raw.push(deductRaw);
+            temp.push(openingstock);
+            temp.push(process);
+           //return temp;
+            for(i=0;i<temp.length;i++) {
+                for (j = 0; j < temp[i].length; j++) {
+                    var name = (temp[i][j]._id.name);
+                    var type = (temp[i][j]._id.type);
+                    var kgs = (temp[i][j].kgs);
+                    var dataObj = {Name: name+'-'+type, Kgs: kgs};
+                    Sums(dataObj,sum);
+                }
+            }
+            sale.push(sales);
+            for(i=0;i<sale.length;i++) {
+                for (j = 0; j < sale[i].length; j++) {
+                    var name = (sale[i][j]._id.name);
+                    var type = (sale[i][j]._id.type);
+                    var kgs = (sale[i][j].kgs);
+                    var dataObj = {Name: name+'-'+type, Kgs: kgs};
+                    deduce(dataObj,sum);
+                }
+            }
+           for(i=0;i<raw.length;i++) {
+                for (j = 0; j < raw[i].length; j++) {
+                    var name = (raw[i][j]._id);
+                    var kgs = (raw[i][j].Kgs);
+                    var dataObj = {Name: name+'-Raw', Kgs: kgs};
+                    deduce(dataObj,sum);
+                }
+            }
+            return sum;
         }
 
     });

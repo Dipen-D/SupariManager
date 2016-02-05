@@ -251,7 +251,7 @@ if (Meteor.isClient) {
                 $scope.Summary = function () {
                    // var x = $("#datePicker").val();
            //-------------------------------------------------------GET OPENING STOCK-----------------------------------------------------------------------------------------------------//
-                    var x = getCookie("LoginUser");
+                  /*  var x = getCookie("LoginUser");
                     Meteor.call('getNameByPin',x, function (err, data) {
                         var bags = 0;
                         var packets = 0;
@@ -355,7 +355,36 @@ if (Meteor.isClient) {
                         else {
                             console.log(err);
                         }
-                    });
+                    });*/
+                    var date = $("#datePicker").val();
+                    var x = getCookie("LoginUser");
+                        var bags = 0;
+                        var packets = 0;
+                        var kgs = 0;
+                        Meteor.call('getOpeningStockViaDate',date, function (err, data) {
+                            if (!err) {
+                                $scope.OpeningStock1 = data;
+                                console.log(data);
+                                var obj = "";
+                                for(i=0;i<data.length;i++) {
+                                    console.log(data[i].Name);
+                                    console.log(Math.floor(data[i].Kgs / 65));
+                                    console.log(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                    console.log(data[i].Kgs);
+                                    obj +=  '<tr class="'+ data[i].Name + '">' ;
+                                    obj +='<td>' + data[i].Name + '</td>' ;
+                                    obj +='<td>' + Math.floor(data[i].Kgs / 65) + '</td>' ;
+                                    obj +='<td> '+(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65)+ '</td>' ;
+                                    obj +='<td>' + data[i].Kgs + '</td>' ;
+                                    obj +='</tr>';
+
+                                }
+                                $(".table-opening tbody").append(obj);
+                            }
+                            else {
+                                console.log(err);
+                            }
+                        });
 
                     //-------------------------------------------------------GET PROCESS SUMMARY-----------------------------------------------------------------------------------------------------//
                     Meteor.call('getNameByPin',x, function (err, data) {
@@ -422,17 +451,31 @@ if (Meteor.isClient) {
                                         var kgs = 0;
                                         for (i = 0; i < data.length; i++) {
                                             for (j = 0; j < data[i].Info.length; j++) {
-                                                $(".table-process tbody").append(
-                                                    '<tr class="' + data[i].Info[j].Subtypename + '">' +
-                                                    '<td>' + data[i].Type + '-' + data[i].Info[j].Subtypename + '</td>' +
-                                                    '<td>' + data[i].Info[j].bags + '</td>' +
-                                                    '<td>' + data[i].Info[j].packets + '</td>' +
-                                                    '<td>' + data[i].Info[j].value + '</td>' +
-                                                    '</tr>'
-                                                );
-                                                bags = bags + data[i].Info[j].bags;
-                                                packets = packets + data[i].Info[j].packets
-                                                kgs = kgs + data[i].Info[j].value;
+                                                if($('.table-process tbody').find('.'+data[i].Info[j].Type+data[i].Info[j].Subtypename).length == 0){
+                                                    $(".table-process tbody").append(
+                                                        '<tr class="'+data[i].Info[j].Type+data[i].Info[j].Subtypename + '">' +
+                                                        '<td>' + data[i].Type + '-' + data[i].Info[j].Subtypename + '</td>' +
+                                                        '<td>' + data[i].Info[j].bags + '</td>' +
+                                                        '<td>' + data[i].Info[j].packets + '</td>' +
+                                                        '<td>' + data[i].Info[j].value + '</td>' +
+                                                        '</tr>'
+                                                    );
+                                                    bags = bags + parseInt(data[i].Info[j].bags);
+                                                    packets = packets + parseInt(data[i].Info[j].packets);
+                                                    kgs = kgs + parseInt(data[i].Info[j].value);
+                                                }
+                                                else{
+                                                    var bagupdate =  parseInt($('.table-process tbody').find('.'+data[i].Info[j].Type+data[i].Info[j].Subtypename).find("td").eq(1).text());
+                                                    $('.table-process tbody').find('.'+data[i].Info[j].Type+data[i].Info[j].Subtypename).find("td").eq(1).text(bagupdate+parseInt(data[i].Info[j].bags));
+                                                    var packetupdate = parseInt($('.table-process tbody').find('.'+data[i].Info[j].Type+data[i].Info[j].Subtypename).find("td").eq(2).text());
+                                                    $('.table-process tbody').find('.'+data[i].Info[j].Type+data[i].Info[j].Subtypename).find("td").eq(2).text(packetupdate+parseInt(data[i].Info[j].packets));
+                                                    var weightupdate = parseInt($('.table-process tbody').find('.'+data[i].Info[j].Type+data[i].Info[j].Subtypename).find("td").eq(3).text());
+                                                    $('.table-process tbody').find('.'+data[i].Info[j].Type+data[i].Info[j].Subtypename).find("td").eq(3).text(weightupdate+parseInt(data[i].Info[j].value));
+
+                                                    bags = bags + data[i].Info[j].bags;
+                                                    packets = packets + data[i].Info[j].packets;
+                                                    kgs = kgs + data[i].Info[j].value;
+                                                }
 
                                             }
                                         }
@@ -522,17 +565,31 @@ if (Meteor.isClient) {
                                         var kgs = 0;
                                         for (i = 0; i < data.length; i++) {
                                             for (j = 0; j < data[i].Info.length; j++) {
-                                                $(".table-loading tbody").append(
-                                                    '<tr class="' + data[i].Info[j].Subtypename + '">' +
-                                                    '<td>' + data[i].Info[j].Subtypename + '-' + data[i].Info[j].brand + '-' + data[i].Info[j].detail + '</td>' +
-                                                    '<td>' + data[i].Info[j].bags + '</td>' +
-                                                    '<td>' + data[i].Info[j].packets + '</td>' +
-                                                    '<td>' + data[i].Info[j].weight + '</td>' +
-                                                    '</tr>'
-                                                );
-                                                bags = bags + parseInt(data[i].Info[j].bags);
-                                                packets = packets + parseInt(data[i].Info[j].packets);
-                                                kgs = kgs + parseInt(data[i].Info[j].weight);
+                                                if($('.table-loading tbody').find('.'+data[i].Info[j].Type+data[i].Info[j].Subtypename).length == 0){
+                                                    $(".table-loading tbody").append(
+                                                        '<tr class="' + data[i].Info[j].Subtypename + '">' +
+                                                        '<td>' + data[i].Info[j].Subtypename + '-' + data[i].Info[j].brand + '-' + data[i].Info[j].detail + '</td>' +
+                                                        '<td>' + data[i].Info[j].bags + '</td>' +
+                                                        '<td>' + data[i].Info[j].packets + '</td>' +
+                                                        '<td>' + data[i].Info[j].weight + '</td>' +
+                                                        '</tr>'
+                                                    );
+                                                    bags = bags + parseInt(data[i].Info[j].bags);
+                                                    packets = packets + parseInt(data[i].Info[j].packets);
+                                                    kgs = kgs + parseInt(data[i].Info[j].weight);
+                                                }
+                                                else{
+                                                    var bagupdate =  parseInt($('.table-loading tbody').find('.'+data[i].Info[j].Type+data[i].Info[j].Subtypename).find("td").eq(1).text());
+                                                    $('.table-loading tbody').find('.'+data[i].Info[j].Type+data[i].Info[j].Subtypename).find("td").eq(1).text(bagupdate+parseInt(data[i].Info[j].bags));
+                                                    var packetupdate = parseInt($('.table-loading tbody').find('.'+data[i].Info[j].Type+data[i].Info[j].Subtypename).find("td").eq(2).text());
+                                                    $('.table-loading tbody').find('.'+data[i].Info[j].Type+data[i].Info[j].Subtypename).find("td").eq(2).text(packetupdate+parseInt(data[i].Info[j].packets));
+                                                    var weightupdate = parseInt($('.table-loading tbody').find('.'+data[i].Info[j].Type+data[i].Info[j].Subtypename).find("td").eq(3).text());
+                                                    $('.table-loading tbody').find('.'+data[i].Info[j].Type+data[i].Info[j].Subtypename).find("td").eq(3).text(weightupdate+parseInt(data[i].Info[j].value));
+
+                                                    bags = bags + parseInt(data[i].Info[j].bags);
+                                                    packets = packets + parseInt(data[i].Info[j].packets);
+                                                    kgs = kgs + parseInt(data[i].Info[j].value);
+                                                }
 
                                             }
                                         }
@@ -622,17 +679,31 @@ if (Meteor.isClient) {
                                         var packets = 0;
                                         var kgs = 0;
                                         for (i = 0; i < data.length; i++) {
-                                            $(".table-purchase tbody").append(
-                                                '<tr class="' + data[i].ProductTypeAlias + '">' +
-                                                '<td>' + data[i].ProductTypeAlias+'-Raw'+ '</td>' +
-                                                '<td>' + data[i].Bags + '</td>' +
-                                                '<td>' + data[i].Packets + '</td>' +
-                                                '<td>' + data[i].kgs + '</td>' +
-                                                '</tr>'
-                                            );
-                                            bags = bags + parseInt(data[i].Bags);
-                                            packets = packets + parseInt(data[i].Packets);
-                                            kgs = kgs + parseInt(data[i].kgs);
+                                            if($('.table-purchase tbody').find('.'+data[i].ProductTypeAlias).length == 0){
+                                                $(".table-purchase tbody").append(
+                                                    '<tr class="' + data[i].ProductTypeAlias + '">' +
+                                                    '<td>' + data[i].ProductTypeAlias+'-Raw'+ '</td>' +
+                                                    '<td>' + data[i].Bags + '</td>' +
+                                                    '<td>' + data[i].Packets + '</td>' +
+                                                    '<td>' + data[i].kgs + '</td>' +
+                                                    '</tr>'
+                                                );
+                                                bags = bags + parseInt(data[i].Bags);
+                                                packets = packets + parseInt(data[i].Packets);
+                                                kgs = kgs + parseInt(data[i].kgs);
+                                            }
+                                            else {
+                                                var bagupdate = parseInt($('.table-purchase tbody').find('.' + data[i].ProductTypeAlias).find("td").eq(1).text());
+                                                $('.table-purchase tbody').find('.' + data[i].ProductTypeAlias).find("td").eq(1).text(bagupdate + parseInt(data[i].Bags));
+                                                var packetupdate = parseInt($('.table-purchase tbody').find('.' + data[i].ProductTypeAlias).find("td").eq(2).text());
+                                                $('.table-purchase tbody').find('.' + data[i].ProductTypeAlias).find("td").eq(2).text(packetupdate + parseInt(data[i].Packets));
+                                                var weightupdate = parseInt($('.table-purchase tbody').find('.' + data[i].ProductTypeAlias).find("td").eq(3).text());
+                                                $('.table-purchase tbody').find('.' + data[i].ProductTypeAlias).find("td").eq(3).text(weightupdate + parseInt(data[i].kgs));
+
+                                                bags = bags + parseInt(data[i].Bags);
+                                                packets = packets + parseInt(data[i].Packets);
+                                                kgs = kgs + parseInt(data[i].kgs);
+                                            }
                                         }
                                         $(".table-purchase tbody").append(
                                             '<tr class="Total">' +
@@ -746,11 +817,20 @@ if (Meteor.isClient) {
                     }
                 });
                 //var date = $("#datePicker").val();
-                var date ="02/04/2016";
+                var date ="02/05/2016";
                 Meteor.call('getRawMaterialBasedOnType',date, function (err, data) {
                     if (!err) {
                         $scope.OpeningStock = data;
-                        var output = [];
+                       // console.log(data);
+                    }
+                });
+                Meteor.call('getOpeningStockViaDate',date, function (err, data) {
+                    if (!err) {
+                        $scope.OpeningStock1 = data;
+                        console.log(data);
+                    }
+                });
+                      /*  var output = [];
 
                         console.log(data);
                         for(i=0;i<data.length;i++) {
@@ -781,7 +861,7 @@ if (Meteor.isClient) {
                     if(!found) {
                         list.push(obj);
                     }
-                };
+                };*/
 
                 var x = $("#datePicker").datepicker({
                     autoclose: true,
