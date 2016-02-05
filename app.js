@@ -367,10 +367,6 @@ if (Meteor.isClient) {
                                 console.log(data);
                                 var obj = "";
                                 for(i=0;i<data.length;i++) {
-                                    console.log(data[i].Name);
-                                    console.log(Math.floor(data[i].Kgs / 65));
-                                    console.log(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
-                                    console.log(data[i].Kgs);
                                     obj +=  '<tr class="'+ data[i].Name + '">' ;
                                     obj +='<td>' + data[i].Name + '</td>' ;
                                     obj +='<td>' + Math.floor(data[i].Kgs / 65) + '</td>' ;
@@ -386,8 +382,29 @@ if (Meteor.isClient) {
                             }
                         });
 
+                        Meteor.call('getOpeningStockViaDate',"02/05/14", function (err, data) {
+                            if (!err) {
+                                $scope.OpeningStock2 = data;
+                                console.log(data);
+                                var obj = "";
+                                for(i=0;i<data.length;i++) {
+                                    obj +=  '<tr class="'+ data[i].Name + '">' ;
+                                    obj +='<td>' + data[i].Name + '</td>' ;
+                                    obj +='<td>' + Math.floor(data[i].Kgs / 65) + '</td>' ;
+                                    obj +='<td> '+(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65)+ '</td>' ;
+                                    obj +='<td>' + data[i].Kgs + '</td>' ;
+                                    obj +='</tr>';
+
+                                }
+                                $(".table-balance tbody").append(obj);
+                            }
+                            else {
+                                console.log(err);
+                            }
+                        });
+
                     //-------------------------------------------------------GET PROCESS SUMMARY-----------------------------------------------------------------------------------------------------//
-                    Meteor.call('getNameByPin',x, function (err, data) {
+                /*    Meteor.call('getNameByPin',x, function (err, data) {
                         var bags = 0;
                         var packets = 0;
                         var kgs = 0;
@@ -498,9 +515,9 @@ if (Meteor.isClient) {
                         else {
                             console.log(err);
                         }
-                    });
+                    });*/
 //-------------------------------------------------------GET SALES SUMMARY-----------------------------------------------------------------------------------------------------//
-                    Meteor.call('getNameByPin',x, function (err, data) {
+                   /* Meteor.call('getNameByPin',x, function (err, data) {
                         var bags = 0;
                         var packets = 0;
                         var kgs = 0;
@@ -613,12 +630,12 @@ if (Meteor.isClient) {
                         else {
                             console.log(err);
                         }
-                    });
+                    });*/
 
                    var x = getCookie("LoginUser");
                     var date = $("#datePicker").val();
 //-------------------------------------------------------GET PURCHASE SUMMARY-----------------------------------------------------------------------------------------------------//
-                    Meteor.call('getNameByPin',x, function (err, data) {
+                 /*   Meteor.call('getNameByPin',x, function (err, data) {
                         var bags = 0;
                         var packets = 0;
                         var kgs = 0;
@@ -726,7 +743,71 @@ if (Meteor.isClient) {
                         else {
                             console.log(err);
                         }
+                    });*/
+                    Meteor.call('getPurchaseForDay',date, function (err, data) {
+                        if (!err) {
+                            $scope.Purchase = data;
+                                var obj = "";
+                                for(i=0;i<data.length;i++) {
+                                    obj +=  '<tr class="'+ data[i]._id + '">' ;
+                                    obj +='<td>' + data[i]._id+'-Raw'+ '</td>' ;
+                                    obj +='<td>' + Math.floor(data[i].Kgs / 65) + '</td>' ;
+                                    obj +='<td> '+(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65)+ '</td>' ;
+                                    obj +='<td>' + data[i].Kgs + '</td>' ;
+                                    obj +='</tr>';
+
+                                }
+                                $(".table-purchase tbody").append(obj);
+
+                        }
+                        else {
+                            console.log(err);
+                        }
                     });
+                    Meteor.call('getSalesForDay',date, function (err, data) {
+                        if (!err) {
+                            $scope.Sales = data;
+                            console.log(data);
+                            var obj = "";
+                            for(i=0;i<data.length;i++) {
+                                obj +=  '<tr class="'+ data[i]._id.name + '">' ;
+                                obj +='<td>' + data[i]._id.name+'-'+data[i]._id.detail+'-'+data[i]._id.type+ '</td>' ;
+                                obj +='<td>' + Math.floor(data[i].Kgs / 65) + '</td>' ;
+                                obj +='<td> '+(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65)+ '</td>' ;
+                                obj +='<td>' + data[i].Kgs + '</td>' ;
+                                obj +='</tr>';
+
+                            }
+                            $(".table-loading tbody").append(obj);
+
+                        }
+                        else {
+                            console.log(err);
+                        }
+                    });
+                    Meteor.call('getProcessForDay',date, function (err, data) {
+                        if (!err) {
+                            $scope.Process = data;
+                            console.log(data);
+                            var obj = "";
+                            for(i=0;i<data.length;i++) {
+                                obj +=  '<tr class="'+ data[i]._id.name + '">' ;
+                                obj +='<td>' + data[i]._id.name+'-'+data[i]._id.type+ '</td>' ;
+                                obj +='<td>' + Math.floor(data[i].Kgs / 65) + '</td>' ;
+                                obj +='<td> '+(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65)+ '</td>' ;
+                                obj +='<td>' + data[i].Kgs + '</td>' ;
+                                obj +='</tr>';
+
+                            }
+                            $(".table-process tbody").append(obj);
+
+                        }
+                        else {
+                            console.log(err);
+                        }
+                    });
+
+
                 }
             }
         }
