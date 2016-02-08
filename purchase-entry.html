@@ -5,9 +5,9 @@
             <h1>Purchase</h1>
         </div>
 
-       <div class="col-xs-6">
+        <div class="col-xs-6">
             <input id="datePicker" ng-model="datePicker" type="text" class="form-control bigFonts" placeholder="Date"
-                    style="margin-top: 15px;" readonly>
+                   style="margin-top: 15px;" readonly>
         </div>
     </div>
 
@@ -25,18 +25,19 @@
         </div>
         <div class="form-group">
             <div class="col-lg-4 col-sm-5 col-xs-12">
-               <select class="bigFonts" style="width: 100%;" ng-model="AccountName" id="selectAccount">
+                <select class="bigFonts" style="width: 100%;" ng-model="AccountName" id="selectAccount">
                     <option value="">Select an account</option>
-                    <option ng-repeat="accountName in PurchaseAccountNames" value="{{accountName.Name}}" >
+                    <option ng-repeat="accountName in PurchaseAccountNames" value="{{accountName.Name}}">
                         {{accountName.Name}}
                     </option>
-               </select>
+                </select>
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-10">
-                <select class="bigFonts" ng-model="purchaseEntry.product" value="{{purchaseEntry.product}}" id="selectType">
-                   <option ng-repeat="product in ProductNames"
+                <select class="bigFonts" ng-model="purchaseEntry.product" value="{{purchaseEntry.product}}"
+                        id="selectType">
+                    <option ng-repeat="product in ProductNames"
                             value="{{product.Name}}">
                         {{product.Name}}
                     </option>
@@ -47,7 +48,7 @@
         <div class="form-group">
             <div class="col-lg-4 col-sm-5 col-xs-12">
                 <select class="bigFonts" style="width: 100%;" ng-model="type" id="selectProductType">
-                   <option value="">Select a type</option>
+                    <option value="">Select a type</option>
                     <option ng-repeat="type in ProductTypes"
                             value="{{type.Name}}">
                         {{type.Name}}
@@ -60,7 +61,7 @@
             <div class="col-sm-3 col-xs-7 input-bags">
                 <div class="input-group"><input type="number" min="0" max="999" ng-model="bagsinput"
                                                 class="form-control bigFonts" pattern="\d*" placeholder="Bags"
-                                                aria-describedby="basic-addon2"  id="bags">
+                                                aria-describedby="basic-addon2" id="bags">
                     <span class="input-group-addon addonStyle" id="basic-addon2">x 65 KG</span>
                 </div>
             </div>
@@ -75,7 +76,8 @@
 
         <div class="form-group">
             <div class="col-sm-10">
-                <button type="submit" class="btn btn-success btn-block btn-block-xs bigFonts purchase-save" data-toggle="modal"
+                <button type="submit" class="btn btn-success btn-block btn-block-xs bigFonts purchase-save"
+                        data-toggle="modal"
                         data-target="" ng-click="savePurchaseEntry()">Save
                 </button>
             </div>
@@ -132,12 +134,14 @@
             </div>
             <div class="modal-footer">
                 <div class="col-xs-6">
-                    <button type="button" class="btn btn-default bigFonts no" data-dismiss="modal" style="width: 100%;" ng-click="no()">
+                    <button type="button" class="btn btn-default bigFonts no" data-dismiss="modal" style="width: 100%;"
+                            ng-click="no()">
                         No
                     </button>
                 </div>
                 <div class="col-xs-6">
-                    <button type="button" class="btn btn-success bigFonts yes" data-dismiss="modal" style="width: 100%;" ng-click ="yes()">
+                    <button type="button" class="btn btn-success bigFonts yes" data-dismiss="modal" style="width: 100%;"
+                            ng-click="yes()">
                         Yes
                     </button>
                 </div>

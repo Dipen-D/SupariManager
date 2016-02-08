@@ -65,7 +65,8 @@
         </div>
 
         <div id="entryFields">
-            <div class="form-group process-Entry" ng-repeat="type in SupariTypes" ng-hide="(processEntry.product != 'Supari')" data-name="{{type.Name}}">
+            <div class="form-group process-Entry" ng-repeat="type in SupariTypes"
+                 ng-hide="(processEntry.product != 'Supari')" data-name="{{type.Name}}">
                 <label for="" class="col-sm-2 col-xs-12  control-label">{{type.Name}}</label>
                 <div class="col-sm-3 col-xs-7 input-bags">
                     <div class="input-group">
@@ -83,12 +84,13 @@
                 </div>
             </div>
 
-            <div class="form-group" ng-repeat="type in MariTypes" ng-hide="(processEntry.product != 'Mari')" data-name="{{type.Name}}">
+            <div class="form-group" ng-repeat="type in MariTypes" ng-hide="(processEntry.product != 'Mari')"
+                 data-name="{{type.Name}}">
                 <label for="" class="col-sm-2 col-xs-12  control-label">{{type.Name}}</label>
                 <div class="col-sm-3 col-xs-7 input-bags">
                     <div class="input-group">
                         <input type="number" id="{{type.Name + 'Bags'}}" pattern="\d*" class="form-control bigFonts"
-                               placeholder="Bags" aria-describedby="basic-addon2" />
+                               placeholder="Bags" aria-describedby="basic-addon2"/>
                         <span class="input-group-addon addonStyle">x 65 KG</span>
                     </div>
                 </div>
@@ -103,26 +105,29 @@
         </div>
     </div>
     <hr/>
-	
-	<div class="form-horizontal">
+
+    <div class="form-horizontal">
         <div class="form-group ng-scope row">
             <label for="" class="col-sm-2 col-xs-2 text-right total-Label">Total</label>
             <div class="col-sm-3 col-xs-10 input-bags">
                 <div class="input-group">
-                    <label class="input-group-addon totalStyle control-label1">{{processEntry.getTotalWeight()}} KG</label>
+                    <label class="input-group-addon totalStyle control-label1">{{processEntry.getTotalWeight()}}
+                        KG</label>
                 </div>
             </div>
 
             <label for="" class="col-sm-1 col-xs-2 text-right total-Label">Adj</label>
             <div class=" col-sm-2 col-xs-10 input-bags">
                 <div class="input-group">
-                    <label for="" id="output" class=" input-group-addon control-label1 text-right totalStyle" ng-class="{'text-danger' : (processEntry.getAdjustment() < 0), 'text-success' : (processEntry.getAdjustment() >= 0)} ">{{processEntry.getAdjustment()}} KG</label>
+                    <label for="" id="output" class=" input-group-addon control-label1 text-right totalStyle"
+                           ng-class="{'text-danger' : (processEntry.getAdjustment() < 0), 'text-success' : (processEntry.getAdjustment() >= 0)} ">{{processEntry.getAdjustment()}}
+                        KG</label>
                 </div>
             </div>
         </div>
     </div>
 
-	<hr />
+    <hr/>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <button id="saveBtn" type="submit" class="btn btn-success btn-block btn-block-xs bigFonts"
@@ -154,12 +159,14 @@
             </div>
             <div class="modal-footer">
                 <div class="col-xs-6">
-                    <button type="button" class="btn btn-default bigFonts process-cancel" data-dismiss="modal" style="width: 100%;" ng-click="processcancel()">
+                    <button type="button" class="btn btn-default bigFonts process-cancel" data-dismiss="modal"
+                            style="width: 100%;" ng-click="processcancel()">
                         No
                     </button>
                 </div>
                 <div class="col-xs-6">
-                    <button type="button" class="btn btn-success bigFonts process-save" data-dismiss="modal" style="width: 100%;" ng-click="processsave()">
+                    <button type="button" class="btn btn-success bigFonts process-save" data-dismiss="modal"
+                            style="width: 100%;" ng-click="processsave()">
                         Yes
                     </button>
                 </div>

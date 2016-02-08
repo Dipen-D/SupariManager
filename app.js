@@ -104,26 +104,21 @@ if (Meteor.isClient) {
     })
     function authenticate() {
 
-                var x = getCookie("LoginUser");
-                if (x == "") {
-                    window.location.href = "/loginlist";
-                    Meteor.call('getAccess', x, function (err, data) {
-                        if (!err) {
-                            if (!(data == true)) {
-                                //location.href.replace(/^(?:\/\/|[^\/]+)*\//, "") != "/loginlist";
-                                window.location.href = "/loginlist";
-                            }
-                        }
-                    });
+        var x = getCookie("LoginUser");
+        if (x == "") {
+            window.location.href = "/loginlist";
+            Meteor.call('getAccess', x, function (err, data) {
+                if (!err) {
+                    if (!(data == true)) {
+                        //location.href.replace(/^(?:\/\/|[^\/]+)*\//, "") != "/loginlist";
+                        window.location.href = "/loginlist";
+                    }
+                }
+            });
         }
     }
 
-    /* if (!(getCookie('Meteor') == 1478) && (location.href.replace(/^(?:\/\/|[^\/]+)*\//, "") != "loginlist")) {
-     window.location.href = "/loginlist";
-     }*/
-
-
-                angular.module('supariApp').directive('loginList', function () {
+    angular.module('supariApp').directive('loginList', function () {
         return {
             restrict: 'E',
             templateUrl: 'login-list.html',
@@ -217,7 +212,7 @@ if (Meteor.isClient) {
                                 window.location.href = "/purchase";
                             }
                             else {
-                                alert("Sorry");
+                                alert("This will be re-directed to login page");
                             }
                         }
 
@@ -243,17 +238,19 @@ if (Meteor.isClient) {
                     }
                     return x1 + x2;
                 }
+
                 function Show() {
                     $("html").addClass("fixed");
                     $("html").mask("");
                 }
+
                 $("#datePicker").datepicker({
                     autoclose: true,
                     todayHighlight: true
                 });
                 var x = getCookie("LoginUser");
 
-                Meteor.call('getNameByPin',x, function (err, data) {
+                Meteor.call('getNameByPin', x, function (err, data) {
                     if (!err) {
                         if (data[0].Name == "Admin") {
                             $("#godown").removeClass("hidden");
@@ -265,12 +262,10 @@ if (Meteor.isClient) {
                     Show();
                     setTimeout(function () {
                         $("html").removeClass("fixed");
-                       $("html").unmask();
+                        $("html").unmask();
                     }, 299);
-
-
                     var date = $("#datePicker").val();
-                    var convertDate = function(usDate) {
+                    var convertDate = function (usDate) {
                         var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
                         return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
                     }
@@ -278,20 +273,19 @@ if (Meteor.isClient) {
                     var outDate = convertDate(date);
                     console.log(outDate);
                     //-------------------------------------------------OPP STOCK-------------------------------------------//
-                    Meteor.call('getNameByPin',x, function (err, data) {
+                    Meteor.call('getNameByPin', x, function (err, data) {
 
                         var godownchoice = $("#godown").val();
                         if (!err) {
                             if (data[0].Name == "Admin") {
                                 $(".table-opening tbody").html('');
-                                if(godownchoice == "All"){
+                                if (godownchoice == "All") {
                                     Meteor.call('getOpeningStockViaDate', date, function (err, data) {
                                         var bags = 0;
                                         var packets = 0;
                                         var kgs = 0;
                                         if (!err) {
                                             $scope.OpeningStock1 = data;
-                                            console.log(data);
                                             var obj = "";
                                             for (i = 0; i < data.length; i++) {
                                                 obj += '<tr class="' + data[i].Name + '">';
@@ -315,20 +309,19 @@ if (Meteor.isClient) {
                                         ob += '<td>' + "Total" + '</td>';
                                         ob += '<td>' + bags + '</td>';
                                         ob += '<td> ' + packets + '</td>';
-                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '<td>' + kgs + '</td>';
                                         ob += '</tr>';
                                         $(".table-opening tbody").append(ob);
                                     });
                                 }
-                                else{
+                                else {
                                     $(".table-opening tbody").html('');
-                                    Meteor.call('getOpeningStockViaDateForGodown', date,godownchoice, function (err, data) {
+                                    Meteor.call('getOpeningStockViaDateForGodown', date, godownchoice, function (err, data) {
                                         var bags = 0;
                                         var packets = 0;
                                         var kgs = 0;
                                         if (!err) {
                                             $scope.OpeningStock1 = data;
-                                            console.log(data);
                                             var obj = "";
                                             for (i = 0; i < data.length; i++) {
                                                 obj += '<tr class="' + data[i].Name + '">';
@@ -353,7 +346,7 @@ if (Meteor.isClient) {
                                         ob += '<td>' + "Total" + '</td>';
                                         ob += '<td>' + bags + '</td>';
                                         ob += '<td> ' + packets + '</td>';
-                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '<td>' + kgs + '</td>';
                                         ob += '</tr>';
                                         $(".table-opening tbody").append(ob);
                                     });
@@ -368,7 +361,6 @@ if (Meteor.isClient) {
                                     var kgs = 0;
                                     if (!err) {
                                         $scope.OpeningStock1 = data;
-                                        console.log(data);
                                         var obj = "";
                                         for (i = 0; i < data.length; i++) {
                                             obj += '<tr class="' + data[i].Name + '">';
@@ -393,7 +385,7 @@ if (Meteor.isClient) {
                                     ob += '<td>' + "Total" + '</td>';
                                     ob += '<td>' + bags + '</td>';
                                     ob += '<td> ' + packets + '</td>';
-                                    ob += '<td>' +  kgs + '</td>';
+                                    ob += '<td>' + kgs + '</td>';
                                     ob += '</tr>';
                                     $(".table-opening tbody").append(ob);
                                 });
@@ -406,19 +398,18 @@ if (Meteor.isClient) {
                     });
 
                     //-------------------------------------------------BALANCE SHEET-------------------------------------------//
-                   Meteor.call('getNameByPin',x, function (err, data) {
-                       var godownchoice = $("#godown").val();
+                    Meteor.call('getNameByPin', x, function (err, data) {
+                        var godownchoice = $("#godown").val();
                         if (!err) {
                             if (data[0].Name == "Admin") {
                                 $(".table-balance tbody").html('');
-                                if(godownchoice == "All"){
+                                if (godownchoice == "All") {
                                     Meteor.call('getBalanceSheetForDay', date, function (err, data) {
                                         var bags = 0;
                                         var packets = 0;
                                         var kgs = 0;
                                         if (!err) {
                                             $scope.OpeningStock2 = data;
-                                            console.log(data);
                                             var obj = "";
                                             for (i = 0; i < data.length; i++) {
                                                 obj += '<tr class="' + data[i].Name + '">';
@@ -428,8 +419,8 @@ if (Meteor.isClient) {
                                                 obj += '<td>' + data[i].Kgs + '</td>';
                                                 obj += '</tr>';
 
-                                                bags = bags +Math.floor(data[i].Kgs / 65);
-                                                packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                bags = bags + Math.floor(data[i].Kgs / 65);
+                                                packets = packets + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
                                                 kgs = kgs + data[i].Kgs;
 
                                             }
@@ -443,13 +434,13 @@ if (Meteor.isClient) {
                                         ob += '<td>' + "Total" + '</td>';
                                         ob += '<td>' + bags + '</td>';
                                         ob += '<td> ' + packets + '</td>';
-                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '<td>' + kgs + '</td>';
                                         ob += '</tr>';
                                         $(".table-balance tbody").append(ob);
 
                                     });
                                 }
-                                else{
+                                else {
                                     $(".table-balance tbody").html('');
                                     Meteor.call('getBalanceSheetViaDateForGodown', date, godownchoice, function (err, data) {
                                         var bags = 0;
@@ -457,7 +448,6 @@ if (Meteor.isClient) {
                                         var kgs = 0;
                                         if (!err) {
                                             $scope.OpeningStock3 = data;
-                                            console.log(data);
                                             var obj = "";
                                             for (i = 0; i < data.length; i++) {
                                                 obj += '<tr class="' + data[i].Name + '">';
@@ -467,8 +457,8 @@ if (Meteor.isClient) {
                                                 obj += '<td>' + data[i].Kgs + '</td>';
                                                 obj += '</tr>';
 
-                                                bags = bags +Math.floor(data[i].Kgs / 65);
-                                                packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                bags = bags + Math.floor(data[i].Kgs / 65);
+                                                packets = packets + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
                                                 kgs = kgs + data[i].Kgs;
 
                                             }
@@ -482,7 +472,7 @@ if (Meteor.isClient) {
                                         ob += '<td>' + "Total" + '</td>';
                                         ob += '<td>' + bags + '</td>';
                                         ob += '<td> ' + packets + '</td>';
-                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '<td>' + kgs + '</td>';
                                         ob += '</tr>';
                                         $(".table-balance tbody").append(ob);
                                     });
@@ -498,7 +488,6 @@ if (Meteor.isClient) {
                                     var kgs = 0;
                                     if (!err) {
                                         $scope.OpeningStock3 = data;
-                                        console.log(data);
                                         var obj = "";
                                         for (i = 0; i < data.length; i++) {
                                             obj += '<tr class="' + data[i].Name + '">';
@@ -508,8 +497,8 @@ if (Meteor.isClient) {
                                             obj += '<td>' + data[i].Kgs + '</td>';
                                             obj += '</tr>';
 
-                                            bags = bags +Math.floor(data[i].Kgs / 65);
-                                            packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                            bags = bags + Math.floor(data[i].Kgs / 65);
+                                            packets = packets + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
                                             kgs = kgs + data[i].Kgs;
 
                                         }
@@ -523,7 +512,7 @@ if (Meteor.isClient) {
                                     ob += '<td>' + "Total" + '</td>';
                                     ob += '<td>' + bags + '</td>';
                                     ob += '<td> ' + packets + '</td>';
-                                    ob += '<td>' +  kgs + '</td>';
+                                    ob += '<td>' + kgs + '</td>';
                                     ob += '</tr>';
                                     $(".table-balance tbody").append(ob);
                                 });
@@ -535,14 +524,14 @@ if (Meteor.isClient) {
                         }
                     });
 
-            //------------------------------------------------------Purchase FOR DAY-------------------------------------------------------------//
-                    Meteor.call('getNameByPin',x, function (err, data) {
+                    //------------------------------------------------------Purchase FOR DAY-------------------------------------------------------------//
+                    Meteor.call('getNameByPin', x, function (err, data) {
 
                         var godownchoice = $("#godown").val();
                         if (!err) {
                             if (data[0].Name == "Admin") {
                                 $(".table-purchase tbody").html('');
-                                if(godownchoice == "All"){
+                                if (godownchoice == "All") {
                                     Meteor.call('getPurchaseForDay', date, function (err, data) {
                                         var bags = 0;
                                         var packets = 0;
@@ -558,8 +547,8 @@ if (Meteor.isClient) {
                                                 obj += '<td>' + data[i].Kgs + '</td>';
                                                 obj += '</tr>';
 
-                                                bags = bags +Math.floor(data[i].Kgs / 65);
-                                                packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                bags = bags + Math.floor(data[i].Kgs / 65);
+                                                packets = packets + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
                                                 kgs = kgs + data[i].Kgs;
 
                                             }
@@ -574,14 +563,14 @@ if (Meteor.isClient) {
                                         ob += '<td>' + "Total" + '</td>';
                                         ob += '<td>' + bags + '</td>';
                                         ob += '<td> ' + packets + '</td>';
-                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '<td>' + kgs + '</td>';
                                         ob += '</tr>';
                                         $(".table-purchase tbody").append(ob);
                                     });
                                 }
                                 else {
                                     $(".table-purchase tbody").html('');
-                                    Meteor.call('getPurchaseForDayForGodown', date,godownchoice, function (err, data) {
+                                    Meteor.call('getPurchaseForDayForGodown', date, godownchoice, function (err, data) {
                                         var bags = 0;
                                         var packets = 0;
                                         var kgs = 0;
@@ -596,8 +585,8 @@ if (Meteor.isClient) {
                                                 obj += '<td>' + data[i].Kgs + '</td>';
                                                 obj += '</tr>';
 
-                                                bags = bags +Math.floor(data[i].Kgs / 65);
-                                                packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                bags = bags + Math.floor(data[i].Kgs / 65);
+                                                packets = packets + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
                                                 kgs = kgs + data[i].Kgs;
 
                                             }
@@ -612,7 +601,7 @@ if (Meteor.isClient) {
                                         ob += '<td>' + "Total" + '</td>';
                                         ob += '<td>' + bags + '</td>';
                                         ob += '<td> ' + packets + '</td>';
-                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '<td>' + kgs + '</td>';
                                         ob += '</tr>';
                                         $(".table-purchase tbody").append(ob);
                                     });
@@ -621,7 +610,7 @@ if (Meteor.isClient) {
                             }
                             else {
                                 $(".table-purchase tbody").html('');
-                                Meteor.call('getPurchaseForDayForGodown', date,data[0].Name, function (err, data) {
+                                Meteor.call('getPurchaseForDayForGodown', date, data[0].Name, function (err, data) {
                                     var bags = 0;
                                     var packets = 0;
                                     var kgs = 0;
@@ -636,8 +625,8 @@ if (Meteor.isClient) {
                                             obj += '<td>' + data[i].Kgs + '</td>';
                                             obj += '</tr>';
 
-                                            bags = bags +Math.floor(data[i].Kgs / 65);
-                                            packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                            bags = bags + Math.floor(data[i].Kgs / 65);
+                                            packets = packets + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
                                             kgs = kgs + data[i].Kgs;
 
                                         }
@@ -653,7 +642,7 @@ if (Meteor.isClient) {
                                     ob += '<td>' + "Total" + '</td>';
                                     ob += '<td>' + bags + '</td>';
                                     ob += '<td> ' + packets + '</td>';
-                                    ob += '<td>' +  kgs + '</td>';
+                                    ob += '<td>' + kgs + '</td>';
                                     ob += '</tr>';
                                     $(".table-purchase tbody").append(ob);
                                 });
@@ -667,7 +656,7 @@ if (Meteor.isClient) {
 
 
                     //---------------------------------------Get SALES FOR DAY----------------------------------------------------------------------------//
-                    Meteor.call('getNameByPin',x, function (err, data) {
+                    Meteor.call('getNameByPin', x, function (err, data) {
                         var godownchoice = $("#godown").val();
                         if (!err) {
                             if (data[0].Name == "Admin") {
@@ -675,11 +664,10 @@ if (Meteor.isClient) {
                                 var packets = 0;
                                 var kgs = 0;
                                 $(".table-loading tbody").html('');
-                                if(godownchoice == "All"){
+                                if (godownchoice == "All") {
                                     Meteor.call('getSalesForDay', date, function (err, data) {
                                         if (!err) {
                                             $scope.Sales = data;
-                                            console.log(data);
                                             var obj = "";
                                             for (i = 0; i < data.length; i++) {
                                                 obj += '<tr class="' + data[i]._id.name + '">';
@@ -689,8 +677,8 @@ if (Meteor.isClient) {
                                                 obj += '<td>' + data[i].Kgs + '</td>';
                                                 obj += '</tr>';
 
-                                                bags = bags +Math.floor(data[i].Kgs / 65);
-                                                packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                bags = bags + Math.floor(data[i].Kgs / 65);
+                                                packets = packets + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
                                                 kgs = kgs + data[i].Kgs;
 
                                             }
@@ -705,12 +693,12 @@ if (Meteor.isClient) {
                                         ob += '<td>' + "Total" + '</td>';
                                         ob += '<td>' + bags + '</td>';
                                         ob += '<td> ' + packets + '</td>';
-                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '<td>' + kgs + '</td>';
                                         ob += '</tr>';
                                         $(".table-loading tbody").append(ob);
                                     });
                                 }
-                                else{
+                                else {
                                     $(".table-loading tbody").html('');
                                     Meteor.call('getSalesForDayForGodown', date, godownchoice, function (err, data) {
                                         var bags = 0;
@@ -718,7 +706,6 @@ if (Meteor.isClient) {
                                         var kgs = 0;
                                         if (!err) {
                                             $scope.Sales = data;
-                                            console.log(data);
                                             var obj = "";
                                             for (i = 0; i < data.length; i++) {
                                                 obj += '<tr class="' + data[i]._id.name + '">';
@@ -729,8 +716,8 @@ if (Meteor.isClient) {
                                                 obj += '</tr>';
 
 
-                                                bags = bags +Math.floor(data[i].Kgs / 65);
-                                                packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                bags = bags + Math.floor(data[i].Kgs / 65);
+                                                packets = packets + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
                                                 kgs = kgs + data[i].Kgs;
 
                                             }
@@ -745,7 +732,7 @@ if (Meteor.isClient) {
                                         ob += '<td>' + "Total" + '</td>';
                                         ob += '<td>' + bags + '</td>';
                                         ob += '<td> ' + packets + '</td>';
-                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '<td>' + kgs + '</td>';
                                         ob += '</tr>';
                                         $(".table-loading tbody").append(ob);
                                     });
@@ -760,7 +747,6 @@ if (Meteor.isClient) {
                                     var kgs = 0;
                                     if (!err) {
                                         $scope.Sales = data;
-                                        console.log(data);
                                         var obj = "";
                                         for (i = 0; i < data.length; i++) {
                                             obj += '<tr class="' + data[i]._id.name + '">';
@@ -770,8 +756,8 @@ if (Meteor.isClient) {
                                             obj += '<td>' + data[i].Kgs + '</td>';
                                             obj += '</tr>';
 
-                                            bags = bags +Math.floor(data[i].Kgs / 65);
-                                            packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                            bags = bags + Math.floor(data[i].Kgs / 65);
+                                            packets = packets + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
                                             kgs = kgs + data[i].Kgs;
                                         }
                                         $(".table-loading tbody").append(obj);
@@ -785,31 +771,30 @@ if (Meteor.isClient) {
                                     ob += '<td>' + "Total" + '</td>';
                                     ob += '<td>' + bags + '</td>';
                                     ob += '<td> ' + packets + '</td>';
-                                    ob += '<td>' +  kgs + '</td>';
+                                    ob += '<td>' + kgs + '</td>';
                                     ob += '</tr>';
                                     $(".table-loading tbody").append(ob);
                                 });
                             }
                         }
-                             else {
-                                console.log(err);
-                            }
-                        });
+                        else {
+                            console.log(err);
+                        }
+                    });
 
-                     //---------------------------GET PROCESS FOR DAY-------------------------------------------------------------------//
-                    Meteor.call('getNameByPin',x, function (err, data) {
+                    //---------------------------GET PROCESS FOR DAY-------------------------------------------------------------------//
+                    Meteor.call('getNameByPin', x, function (err, data) {
                         var godownchoice = $("#godown").val();
                         if (!err) {
                             if (data[0].Name == "Admin") {
                                 $(".table-process tbody").html('');
-                                if(godownchoice == "All"){
+                                if (godownchoice == "All") {
                                     Meteor.call('getProcessForDay', date, function (err, data) {
                                         var bags = 0;
                                         var packets = 0;
                                         var kgs = 0;
                                         if (!err) {
                                             $scope.Process = data;
-                                            console.log(data);
                                             var obj = "";
                                             for (i = 0; i < data.length; i++) {
                                                 obj += '<tr class="' + data[i]._id.name + '">';
@@ -819,8 +804,8 @@ if (Meteor.isClient) {
                                                 obj += '<td>' + data[i].Kgs + '</td>';
                                                 obj += '</tr>';
 
-                                                bags = bags +Math.floor(data[i].Kgs / 65);
-                                                packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                bags = bags + Math.floor(data[i].Kgs / 65);
+                                                packets = packets + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
                                                 kgs = kgs + data[i].Kgs;
 
                                             }
@@ -835,20 +820,19 @@ if (Meteor.isClient) {
                                         ob += '<td>' + "Total" + '</td>';
                                         ob += '<td>' + bags + '</td>';
                                         ob += '<td> ' + packets + '</td>';
-                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '<td>' + kgs + '</td>';
                                         ob += '</tr>';
                                         $(".table-process tbody").append(ob);
                                     });
                                 }
-                                else{
+                                else {
                                     $(".table-process tbody").html('');
-                                    Meteor.call('getProcessForDayForGodown', date,godownchoice, function (err, data) {
+                                    Meteor.call('getProcessForDayForGodown', date, godownchoice, function (err, data) {
                                         var bags = 0;
                                         var packets = 0;
                                         var kgs = 0;
                                         if (!err) {
                                             $scope.Process = data;
-                                            console.log(data);
                                             var obj = "";
                                             for (i = 0; i < data.length; i++) {
                                                 obj += '<tr class="' + data[i]._id.name + '">';
@@ -858,8 +842,8 @@ if (Meteor.isClient) {
                                                 obj += '<td>' + data[i].Kgs + '</td>';
                                                 obj += '</tr>';
 
-                                                bags = bags +Math.floor(data[i].Kgs / 65);
-                                                packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                bags = bags + Math.floor(data[i].Kgs / 65);
+                                                packets = packets + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
                                                 kgs = kgs + data[i].Kgs;
                                             }
                                             $(".table-process tbody").append(obj);
@@ -873,7 +857,7 @@ if (Meteor.isClient) {
                                         ob += '<td>' + "Total" + '</td>';
                                         ob += '<td>' + bags + '</td>';
                                         ob += '<td> ' + packets + '</td>';
-                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '<td>' + kgs + '</td>';
                                         ob += '</tr>';
                                         $(".table-process tbody").append(ob);
                                     });
@@ -882,13 +866,12 @@ if (Meteor.isClient) {
                             }
                             else {
                                 $(".table-process tbody").html('');
-                                Meteor.call('getProcessForDayForGodown', date,data[0].Name, function (err, data) {
+                                Meteor.call('getProcessForDayForGodown', date, data[0].Name, function (err, data) {
                                     var bags = 0;
                                     var packets = 0;
                                     var kgs = 0;
                                     if (!err) {
                                         $scope.Process = data;
-                                        console.log(data);
                                         var obj = "";
                                         for (i = 0; i < data.length; i++) {
                                             obj += '<tr class="' + data[i]._id.name + '">';
@@ -898,8 +881,8 @@ if (Meteor.isClient) {
                                             obj += '<td>' + data[i].Kgs + '</td>';
                                             obj += '</tr>';
 
-                                            bags = bags +Math.floor(data[i].Kgs / 65);
-                                            packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                            bags = bags + Math.floor(data[i].Kgs / 65);
+                                            packets = packets + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
                                             kgs = kgs + data[i].Kgs;
 
                                         }
@@ -914,41 +897,42 @@ if (Meteor.isClient) {
                                     ob += '<td>' + "Total" + '</td>';
                                     ob += '<td>' + bags + '</td>';
                                     ob += '<td> ' + packets + '</td>';
-                                    ob += '<td>' +  kgs + '</td>';
+                                    ob += '<td>' + kgs + '</td>';
                                     ob += '</tr>';
                                     $(".table-process tbody").append(ob);
                                 });
                             }
 
-                            }
+                        }
                         else {
                             console.log(err);
                         }
                     });
                     setTimeout(function () {
-                        for(i=0;i<$(".table-balance tbody tr").length;i++) {
+                        for (i = 0; i < $(".table-balance tbody tr").length; i++) {
                             if ($(".table-balance").find("td:nth-child(4)").eq(i).text() < 0) {
                                 $(".table-balance").find("td:nth-child(4)").eq(i).closest('tr').addClass('alertStock');
                             }
                         }
-                        for(i=0;i<$(".table-opening tbody tr").length;i++) {
+                        for (i = 0; i < $(".table-opening tbody tr").length; i++) {
                             if ($(".table-opening").find("td:nth-child(4)").eq(i).text() < 0) {
                                 $(".table-opening").find("td:nth-child(4)").eq(i).closest('tr').addClass('alertStock');
                             }
                         }
-                    }, 100);/*
-                    setTimeout(function () {
-                        for(i=0;i<$(".table-balance tbody tr").length;i++) {
-                            if ($(".table-balance").find("td:nth-child(4)").eq(i).text() == 0) {
-                                $(".table-balance").find("td:nth-child(4)").eq(i).closest('tr').remove();
-                            }
-                        }
-                        for(i=0;i<$(".table-opening tbody tr").length;i++) {
-                            if ($(".table-opening").find("td:nth-child(4)").eq(i).text() == 0) {
-                                $(".table-opening").find("td:nth-child(4)").eq(i).closest('tr').remove();
-                            }
-                        }
-                    }, 100);*/
+                    }, 100);
+                    /*
+                     setTimeout(function () {
+                     for(i=0;i<$(".table-balance tbody tr").length;i++) {
+                     if ($(".table-balance").find("td:nth-child(4)").eq(i).text() == 0) {
+                     $(".table-balance").find("td:nth-child(4)").eq(i).closest('tr').remove();
+                     }
+                     }
+                     for(i=0;i<$(".table-opening tbody tr").length;i++) {
+                     if ($(".table-opening").find("td:nth-child(4)").eq(i).text() == 0) {
+                     $(".table-opening").find("td:nth-child(4)").eq(i).closest('tr').remove();
+                     }
+                     }
+                     }, 100);*/
                 }
             }
         }
@@ -968,7 +952,7 @@ if (Meteor.isClient) {
                 this.product = "Supari";
                 $scope.SupariTypes = "";
                 var x = getCookie("LoginUser");
-                Meteor.call('getNameByPin',x, function (err, data) {
+                Meteor.call('getNameByPin', x, function (err, data) {
                     if (!err) {
                         if (data[0].Name == "Admin") {
                             Meteor.call('getGodown', function (err, data) {
@@ -1038,52 +1022,18 @@ if (Meteor.isClient) {
                         console.log(err);
                     }
                 });
-                //var date = $("#datePicker").val();
-                var date ="02/05/2016";
-                Meteor.call('getRawMaterialBasedOnType',date, function (err, data) {
+                var date = "02/05/2016";
+                Meteor.call('getRawMaterialBasedOnType', date, function (err, data) {
                     if (!err) {
                         $scope.OpeningStock = data;
-                       // console.log(data);
                     }
                 });
-                Meteor.call('getOpeningStockViaDate',date, function (err, data) {
+                Meteor.call('getOpeningStockViaDate', date, function (err, data) {
                     if (!err) {
                         $scope.OpeningStock1 = data;
                         console.log(data);
                     }
                 });
-                      /*  var output = [];
-
-                        console.log(data);
-                        for(i=0;i<data.length;i++) {
-                            for (j = 0; j < data[i].length; j++) {
-                                var name = (data[i][j]._id);
-                                var kgs = (data[i][j].kgs);
-                                var dataObj = {Name: name, Kgs: kgs};
-                                containsObject(dataObj,output);
-                            }
-                        }
-                        console.log(output);
-
-                    } else {
-                        console.log(err);
-                    }
-                });
-
-                var containsObject = function (obj, list) {
-                    var i;
-                    var found = false;
-                    for (i = 0; i < list.length; i++) {
-                        if (list[i].Name === obj.Name) {
-                            list[i].Kgs = parseInt(obj.Kgs) + parseInt(list[i].Kgs);
-                            found = true;
-                            return true;
-                        }
-                    }
-                    if(!found) {
-                        list.push(obj);
-                    }
-                };*/
 
                 var x = $("#datePicker").datepicker({
                     autoclose: true,
@@ -1091,8 +1041,6 @@ if (Meteor.isClient) {
                 }).datepicker("setDate", new Date()).val();
                 $scope.datePicker = x;
 
-
-                //this.mariType = ["Mari1","Mari2"];
                 this.getTotalWeight = function () {
                     var total = 0;
                     var data = (this.product == 'Supari') ? $scope.SupariTypes : $scope.MariTypes;
@@ -1216,7 +1164,6 @@ if (Meteor.isClient) {
                     $("#rawMaterialBags,#rawMaterialPackets").val('');
                     $("#Mari1Bags,#Mari2Bags,#Mari2Packets,#Mari1Packets").val('');
                     $("#GFBags,#GFPackets,#JFBags,#JFPackets,#JamBags,#JamPackets,#JiniBags,#JiniPackets,#LindiBags,#LindiPackets,#MFBags,#MFPackets,#MMFBags,#MMFPackets,#MoroBags,#MoroPackets,#MotiBags,#MotiPackets,#RFBags,#RFPackets,#SFBags,#SFPackets,#SevarBags,#SevarPackets").val('');
-                    // $("#output").text("0 KG");
 
                 }
                 this.processId = $stateParams.processId;
@@ -1226,7 +1173,7 @@ if (Meteor.isClient) {
                         if (!err) {
                             for (i = 0; i < data.length; i++) {
                                 $("#product").val(data[0].Product).change();
-                               // $("#godown").val(data[0].Godown);
+                                // $("#godown").val(data[0].Godown);
                                 $scope.processEntry.godown = data[0].Godown;
                                 $("#type").val(data[0].Type);
                                 $("#rawMaterialBags").val(Math.floor(data[0].Input / 65)).change();
@@ -1235,7 +1182,6 @@ if (Meteor.isClient) {
 
                                 for (j = 0; j < data[i].Info.length; j++) {
                                     var name = (data[i].Info[j].Subtypename);
-                                    //  var x =    $("[data-name='data[i].Info[j].Subtypename']").find('#' + name + 'Bags').val("5");
                                     $("html").find('#' + data[i].Info[j].Subtypename + 'Bags').val(data[i].Info[j].bags).change();
                                     $("html").find('#' + data[i].Info[j].Subtypename + 'Packets').val(data[i].Info[j].packets).change();
                                     $("#output").change();
@@ -1341,42 +1287,41 @@ if (Meteor.isClient) {
             controllerAs: 'purchaseEntry',
             controller: function ($scope, $reactive, $meteor, $stateParams) {
                 $reactive(this).attach($scope);
-                var convertDate = function(usDate) {
+                var convertDate = function (usDate) {
                     var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
                     return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
                 }
 
                 var x = getCookie("LoginUser");
-                 Meteor.call('getNameByPin',x, function (err, data) {
-                 if (!err) {
-                     if (data[0].Name == "Admin") {
-                         Meteor.call('getGodown', function (err, data) {
-                             if (!err) {
-                                 $scope.Godowns = data;
-                                 console.log(data);
-                                 if (!$scope.$$phase) {
-                                     $scope.$digest();
-                                 }
-                             } else {
-                                 console.log(err);
-                             }
-                         });
-                         $("#selectGodown").removeClass("hidden");
+                Meteor.call('getNameByPin', x, function (err, data) {
+                    if (!err) {
+                        if (data[0].Name == "Admin") {
+                            Meteor.call('getGodown', function (err, data) {
+                                if (!err) {
+                                    $scope.Godowns = data;
+                                    if (!$scope.$$phase) {
+                                        $scope.$digest();
+                                    }
+                                } else {
+                                    console.log(err);
+                                }
+                            });
+                            $("#selectGodown").removeClass("hidden");
 
 
-                     }
-                     else {
-                         var godown = data[0].Name;
-                         $scope.Godowns = data;
-                         $scope.godowns = data[0].Name;
+                        }
+                        else {
+                            var godown = data[0].Name;
+                            $scope.Godowns = data;
+                            $scope.godowns = data[0].Name;
 
-                     }
-                 }
-                 else {
-                    console.log(err);
-                }
+                        }
+                    }
+                    else {
+                        console.log(err);
+                    }
 
-                 });
+                });
                 Meteor.call('getAccounts', function (err, data) {
                     if (!err) {
                         $scope.PurchaseAccountNames = data;
@@ -1466,13 +1411,13 @@ if (Meteor.isClient) {
                             var dates = new Date();
                             var datestring = ("0" + (dates.getMonth() + 1).toString()).substr(-2) + "/" + ("0" + dates.getDate().toString()).substr(-2) + "/" + (dates.getFullYear().toString()).substr(0);
                             var mdate = datestring;
-                            if(producttype == "C2" ||producttype ==  "C3" ||producttype ==  "CX"){
+                            if (producttype == "C2" || producttype == "C3" || producttype == "CX") {
                                 var productTypeAlias = "C";
                             }
-                            else if(producttype == "DC2" ||producttype == "DCX"){
+                            else if (producttype == "DC2" || producttype == "DCX") {
                                 var productTypeAlias = "DC";
                             }
-                            else{
+                            else {
                                 var productTypeAlias = "N";
                             }
                             var data = {
@@ -1485,7 +1430,7 @@ if (Meteor.isClient) {
                                 bags: bags,
                                 packets: packets,
                                 producttype: producttype,
-                                productTypeAlias:productTypeAlias,
+                                productTypeAlias: productTypeAlias,
                                 mdate: mdate
                             }
                             console.log(data);
@@ -1530,13 +1475,13 @@ if (Meteor.isClient) {
                     var packets = $scope.getValidValue($scope.packetsinput);
                     var kgs = bags * 65 + packets;
                     var ProductTypeAlias;
-                    if(producttype == "C2" ||producttype ==  "C3" ||producttype ==  "CX"){
+                    if (producttype == "C2" || producttype == "C3" || producttype == "CX") {
                         var productTypeAlias = "C";
                     }
-                    else if(producttype == "DC2" ||producttype == "DCX"){
+                    else if (producttype == "DC2" || producttype == "DCX") {
                         var productTypeAlias = "DC";
                     }
-                    else{
+                    else {
                         var productTypeAlias = "N";
                     }
 
@@ -1552,9 +1497,8 @@ if (Meteor.isClient) {
                         bags: bags,
                         packets: packets,
                         producttype: producttype,
-                        productTypeAlias:productTypeAlias
+                        productTypeAlias: productTypeAlias
                     }
-                    console.log(date);
                     Meteor.call('purchaseEntry', data, function (err, data) {
                         if (!err) {
                             $(".modal-content").unmask();
@@ -1591,13 +1535,12 @@ if (Meteor.isClient) {
                 $reactive(this).attach($scope);
                 var salesDetail = [];
                 var x = getCookie("LoginUser");
-                Meteor.call('getNameByPin',x, function (err, data) {
+                Meteor.call('getNameByPin', x, function (err, data) {
                     if (!err) {
                         if (data[0].Name == "Admin") {
                             Meteor.call('getGodown', function (err, data) {
                                 if (!err) {
                                     $scope.Godowns = data;
-                                    console.log(data);
                                     if (!$scope.$$phase) {
                                         $scope.$digest();
                                     }
@@ -1736,7 +1679,6 @@ if (Meteor.isClient) {
                         obj += "<td>";
                         if (getValidValue(value[4]) > 0) {
                             obj += add_commasInAmount(getValidValue(value[3])) + ' X 65 + ' + getValidValue(value[4]) + '<br/> = ' + add_commasInAmount(weight) + ' k.G';
-                            //obj += "<span class='glyphicon glyphicon-remove-circle clearIcon'></span>";
                         }
                         else
                             obj += add_commasInAmount(getValidValue(value[3])) + ' X 65 ' + '<br/> = ' + add_commasInAmount(weight) + ' k.G';
@@ -1922,7 +1864,6 @@ if (Meteor.isClient) {
                                 $("#accountName").val(salesData[i].salesAccountName);
                                 $("#transportName").val(salesData[i].TransportName);
                                 $("#product").val(salesData[i].Product);
-                               // $("#godown").val(salesData[i].Godown);
                                 $scope.salesEntry.godown = salesData[i].Godown;
                                 $("#datePicker").val(salesData[i].CreatedDate);
                                 for (j = 0; j < salesData[i].Info.length; j++) {
@@ -1995,7 +1936,6 @@ if (Meteor.isClient) {
                     }
                     Meteor.call('SalesEntry', salesDetail, data, function (err, data) {
                         if (!err) {
-                            console.log("sucess");
                             $(".modal-content").unmask();
                         } else {
                             console.log(err);
@@ -2125,7 +2065,7 @@ if (Meteor.isClient) {
                         return stringObj + ' = ' + x;
                     }
                     else {
-                        return stringObj + packetObj + ' = ' + x;
+                        return stringObj + '+ ' + packetObj + ' = ' + x;
                     }
                 };
                 $scope.predicate = 'date';
@@ -2136,7 +2076,7 @@ if (Meteor.isClient) {
                 }
                 $(".tableHeader,.listShadow").hide();
                 var x = getCookie("LoginUser");
-                Meteor.call('getNameByPin',x, function (err, data) {
+                Meteor.call('getNameByPin', x, function (err, data) {
                     if (!err) {
                         if (data[0].Name == "Admin") {
                             Meteor.call('getSalesList', function (err, data) {
@@ -2159,7 +2099,7 @@ if (Meteor.isClient) {
                             });
                         }
                         else {
-                            Meteor.call('getSalesDataByGodown',data[0].Name, function (err, data) {
+                            Meteor.call('getSalesDataByGodown', data[0].Name, function (err, data) {
                                 if (!err) {
                                     $scope.Sales = data;
                                     if (!$scope.$$phase) {
@@ -2241,7 +2181,7 @@ if (Meteor.isClient) {
             controller: ['$scope', function ($scope, $stateParams) {
 
                 var x = getCookie("LoginUser");
-                Meteor.call('getNameByPin',x, function (err, data) {
+                Meteor.call('getNameByPin', x, function (err, data) {
                     if (!err) {
                         if (data[0].Name == "Admin") {
                             Meteor.call('getPurchaseList', function (err, data) {
@@ -2267,7 +2207,7 @@ if (Meteor.isClient) {
                             });
                         }
                         else {
-                            Meteor.call('getPurchaseDataByGodown',data[0].Name, function (err, data) {
+                            Meteor.call('getPurchaseDataByGodown', data[0].Name, function (err, data) {
                                 if (!err) {
                                     $scope.Purchase = data;
                                     console.log(data);
@@ -2312,7 +2252,7 @@ if (Meteor.isClient) {
                     setInterval(function () {
                         window.location.href = "/purchase";
                     }, 500);
-                  //  window.location.href = "/purchase";
+                    //  window.location.href = "/purchase";
                     $("html").mask("");
                     window.onload = function () {
                         $("html").unmask();
@@ -2334,7 +2274,7 @@ if (Meteor.isClient) {
                         return stringObj + ' = ' + x;
                     }
                     else {
-                        return stringObj + packetObj + ' = ' + x;
+                        return stringObj + '+ ' + packetObj + ' = ' + x;
                     }
                 };
                 $scope.trim = function (x) {
@@ -2400,7 +2340,7 @@ if (Meteor.isClient) {
                         $("body").append("<br><div class='container'><div class='alert alert-info'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>No Records! </div></div>");
                     }
                 };
-                $(document).ready(function() {
+                $(document).ready(function () {
                     $("body").hide();
                     $("html").mask("");
                     window.onload = function () {
@@ -2457,7 +2397,7 @@ if (Meteor.isClient) {
                         return stringObj + ' = ' + x;
                     }
                     else {
-                        return stringObj + packetObj + ' = ' + x;
+                        return stringObj + '+ ' + packetObj + ' = ' + x;
                     }
                 };
                 $(".tableHeader,.listShadow").hide();
@@ -2472,7 +2412,7 @@ if (Meteor.isClient) {
                     }
                 });
                 var x = getCookie("LoginUser");
-                Meteor.call('getNameByPin',x, function (err, data) {
+                Meteor.call('getNameByPin', x, function (err, data) {
                     if (!err) {
                         if (data[0].Name == "Admin") {
                             Meteor.call('getProcessList', function (err, data) {
@@ -2495,7 +2435,7 @@ if (Meteor.isClient) {
                             });
                         }
                         else {
-                            Meteor.call('getProcessDataByGodown',data[0].Name, function (err, data) {
+                            Meteor.call('getProcessDataByGodown', data[0].Name, function (err, data) {
                                 if (!err) {
                                     $scope.Process = data;
                                     if (!$scope.$$phase) {
