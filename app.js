@@ -243,6 +243,10 @@ if (Meteor.isClient) {
                     }
                     return x1 + x2;
                 }
+                function Show() {
+                    $("html").addClass("fixed");
+                    $("html").mask("");
+                }
                 $("#datePicker").datepicker({
                     autoclose: true,
                     todayHighlight: true
@@ -258,6 +262,12 @@ if (Meteor.isClient) {
                 });
 
                 $scope.Summary = function () {
+                    Show();
+                    setTimeout(function () {
+                        $("html").removeClass("fixed");
+                       $("html").unmask();
+                    }, 299);
+
 
                     var date = $("#datePicker").val();
                     var convertDate = function(usDate) {
