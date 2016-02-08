@@ -247,11 +247,19 @@ if (Meteor.isClient) {
                     autoclose: true,
                     todayHighlight: true
                 });
+                var x = getCookie("LoginUser");
+
+                Meteor.call('getNameByPin',x, function (err, data) {
+                    if (!err) {
+                        if (data[0].Name == "Admin") {
+                            $("#godown").removeClass("hidden");
+                        }
+                    }
+                });
 
                 $scope.Summary = function () {
 
                     var date = $("#datePicker").val();
-                    var x = getCookie("LoginUser");
                     var convertDate = function(usDate) {
                         var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
                         return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
@@ -261,34 +269,93 @@ if (Meteor.isClient) {
                     console.log(outDate);
                     //-------------------------------------------------OPP STOCK-------------------------------------------//
                     Meteor.call('getNameByPin',x, function (err, data) {
+
+                        var godownchoice = $("#godown").val();
                         if (!err) {
                             if (data[0].Name == "Admin") {
-                                var bags = 0;
-                                var packets = 0;
-                                var kgs = 0;
-                                Meteor.call('getOpeningStockViaDate', date, function (err, data) {
-                                    if (!err) {
-                                        $scope.OpeningStock1 = data;
-                                        console.log(data);
-                                        var obj = "";
-                                        for (i = 0; i < data.length; i++) {
-                                            obj += '<tr class="' + data[i].Name + '">';
-                                            obj += '<td>' + data[i].Name + '</td>';
-                                            obj += '<td>' + Math.floor(data[i].Kgs / 65) + '</td>';
-                                            obj += '<td> ' + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65) + '</td>';
-                                            obj += '<td>' + data[i].Kgs + '</td>';
-                                            obj += '</tr>';
+                                $(".table-opening tbody").html('');
+                                if(godownchoice == "All"){
+                                    Meteor.call('getOpeningStockViaDate', date, function (err, data) {
+                                        var bags = 0;
+                                        var packets = 0;
+                                        var kgs = 0;
+                                        if (!err) {
+                                            $scope.OpeningStock1 = data;
+                                            console.log(data);
+                                            var obj = "";
+                                            for (i = 0; i < data.length; i++) {
+                                                obj += '<tr class="' + data[i].Name + '">';
+                                                obj += '<td>' + data[i].Name + '</td>';
+                                                obj += '<td>' + Math.floor(data[i].Kgs / 65) + '</td>';
+                                                obj += '<td> ' + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65) + '</td>';
+                                                obj += '<td>' + data[i].Kgs + '</td>';
+                                                obj += '</tr>';
 
+                                                bags = bags + Math.floor(data[i].Kgs / 65);
+                                                packets = packets + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                kgs = kgs + data[i].Kgs;
+                                            }
+                                            $(".table-opening tbody").append(obj);
                                         }
-                                        $(".table-opening tbody").append(obj);
-                                    }
-                                    else {
-                                        console.log(err);
-                                    }
-                                });
+                                        else {
+                                            console.log(err);
+                                        }
+                                        var ob = '';
+                                        ob += '<tr class="' + "Total" + '">';
+                                        ob += '<td>' + "Total" + '</td>';
+                                        ob += '<td>' + bags + '</td>';
+                                        ob += '<td> ' + packets + '</td>';
+                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '</tr>';
+                                        $(".table-opening tbody").append(ob);
+                                    });
+                                }
+                                else{
+                                    $(".table-opening tbody").html('');
+                                    Meteor.call('getOpeningStockViaDateForGodown', date,godownchoice, function (err, data) {
+                                        var bags = 0;
+                                        var packets = 0;
+                                        var kgs = 0;
+                                        if (!err) {
+                                            $scope.OpeningStock1 = data;
+                                            console.log(data);
+                                            var obj = "";
+                                            for (i = 0; i < data.length; i++) {
+                                                obj += '<tr class="' + data[i].Name + '">';
+                                                obj += '<td>' + data[i].Name + '</td>';
+                                                obj += '<td>' + Math.floor(data[i].Kgs / 65) + '</td>';
+                                                obj += '<td> ' + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65) + '</td>';
+                                                obj += '<td>' + data[i].Kgs + '</td>';
+                                                obj += '</tr>';
+
+                                                bags = bags + Math.floor(data[i].Kgs / 65);
+                                                packets = packets + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                kgs = kgs + data[i].Kgs;
+
+                                            }
+                                            $(".table-opening tbody").append(obj);
+                                        }
+                                        else {
+                                            console.log(err);
+                                        }
+                                        var ob = '';
+                                        ob += '<tr class="' + "Total" + '">';
+                                        ob += '<td>' + "Total" + '</td>';
+                                        ob += '<td>' + bags + '</td>';
+                                        ob += '<td> ' + packets + '</td>';
+                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '</tr>';
+                                        $(".table-opening tbody").append(ob);
+                                    });
+                                }
+
                             }
                             else {
+                                $(".table-opening tbody").html('');
                                 Meteor.call('getOpeningStockViaDateForGodown', date, data[0].Name, function (err, data) {
+                                    var bags = 0;
+                                    var packets = 0;
+                                    var kgs = 0;
                                     if (!err) {
                                         $scope.OpeningStock1 = data;
                                         console.log(data);
@@ -301,12 +368,24 @@ if (Meteor.isClient) {
                                             obj += '<td>' + data[i].Kgs + '</td>';
                                             obj += '</tr>';
 
+                                            bags = bags + Math.floor(data[i].Kgs / 65);
+                                            packets = packets + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                            kgs = kgs + data[i].Kgs;
+
                                         }
                                         $(".table-opening tbody").append(obj);
                                     }
                                     else {
                                         console.log(err);
                                     }
+                                    var ob = '';
+                                    ob += '<tr class="' + "Total" + '">';
+                                    ob += '<td>' + "Total" + '</td>';
+                                    ob += '<td>' + bags + '</td>';
+                                    ob += '<td> ' + packets + '</td>';
+                                    ob += '<td>' +  kgs + '</td>';
+                                    ob += '</tr>';
+                                    $(".table-opening tbody").append(ob);
                                 });
                             }
 
@@ -318,34 +397,95 @@ if (Meteor.isClient) {
 
                     //-------------------------------------------------BALANCE SHEET-------------------------------------------//
                    Meteor.call('getNameByPin',x, function (err, data) {
+                       var godownchoice = $("#godown").val();
                         if (!err) {
                             if (data[0].Name == "Admin") {
-                                var bags = 0;
-                                var packets = 0;
-                                var kgs = 0;
-                                Meteor.call('getBalanceSheetForDay', date, function (err, data) {
-                                    if (!err) {
-                                        $scope.OpeningStock2 = data;
-                                        console.log(data);
-                                        var obj = "";
-                                        for (i = 0; i < data.length; i++) {
-                                            obj += '<tr class="' + data[i].Name + '">';
-                                            obj += '<td>' + data[i].Name + '</td>';
-                                            obj += '<td>' + Math.floor(data[i].Kgs / 65) + '</td>';
-                                            obj += '<td> ' + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65) + '</td>';
-                                            obj += '<td>' + data[i].Kgs + '</td>';
-                                            obj += '</tr>';
+                                $(".table-balance tbody").html('');
+                                if(godownchoice == "All"){
+                                    Meteor.call('getBalanceSheetForDay', date, function (err, data) {
+                                        var bags = 0;
+                                        var packets = 0;
+                                        var kgs = 0;
+                                        if (!err) {
+                                            $scope.OpeningStock2 = data;
+                                            console.log(data);
+                                            var obj = "";
+                                            for (i = 0; i < data.length; i++) {
+                                                obj += '<tr class="' + data[i].Name + '">';
+                                                obj += '<td>' + data[i].Name + '</td>';
+                                                obj += '<td>' + Math.floor(data[i].Kgs / 65) + '</td>';
+                                                obj += '<td> ' + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65) + '</td>';
+                                                obj += '<td>' + data[i].Kgs + '</td>';
+                                                obj += '</tr>';
 
+                                                bags = bags +Math.floor(data[i].Kgs / 65);
+                                                packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                kgs = kgs + data[i].Kgs;
+
+                                            }
+                                            $(".table-balance tbody").append(obj);
                                         }
-                                        $(".table-balance tbody").append(obj);
-                                    }
-                                    else {
-                                        console.log(err);
-                                    }
-                                });
+                                        else {
+                                            console.log(err);
+                                        }
+                                        var ob = '';
+                                        ob += '<tr class="' + "Total" + '">';
+                                        ob += '<td>' + "Total" + '</td>';
+                                        ob += '<td>' + bags + '</td>';
+                                        ob += '<td> ' + packets + '</td>';
+                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '</tr>';
+                                        $(".table-balance tbody").append(ob);
+
+                                    });
+                                }
+                                else{
+                                    $(".table-balance tbody").html('');
+                                    Meteor.call('getBalanceSheetViaDateForGodown', date, godownchoice, function (err, data) {
+                                        var bags = 0;
+                                        var packets = 0;
+                                        var kgs = 0;
+                                        if (!err) {
+                                            $scope.OpeningStock3 = data;
+                                            console.log(data);
+                                            var obj = "";
+                                            for (i = 0; i < data.length; i++) {
+                                                obj += '<tr class="' + data[i].Name + '">';
+                                                obj += '<td>' + data[i].Name + '</td>';
+                                                obj += '<td>' + Math.floor(data[i].Kgs / 65) + '</td>';
+                                                obj += '<td> ' + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65) + '</td>';
+                                                obj += '<td>' + data[i].Kgs + '</td>';
+                                                obj += '</tr>';
+
+                                                bags = bags +Math.floor(data[i].Kgs / 65);
+                                                packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                kgs = kgs + data[i].Kgs;
+
+                                            }
+                                            $(".table-balance tbody").append(obj);
+                                        }
+                                        else {
+                                            console.log(err);
+                                        }
+                                        var ob = '';
+                                        ob += '<tr class="' + "Total" + '">';
+                                        ob += '<td>' + "Total" + '</td>';
+                                        ob += '<td>' + bags + '</td>';
+                                        ob += '<td> ' + packets + '</td>';
+                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '</tr>';
+                                        $(".table-balance tbody").append(ob);
+                                    });
+                                }
+
+
                             }
                             else {
+                                $(".table-balance tbody").html('');
                                 Meteor.call('getBalanceSheetViaDateForGodown', date, data[0].Name, function (err, data) {
+                                    var bags = 0;
+                                    var packets = 0;
+                                    var kgs = 0;
                                     if (!err) {
                                         $scope.OpeningStock3 = data;
                                         console.log(data);
@@ -358,12 +498,24 @@ if (Meteor.isClient) {
                                             obj += '<td>' + data[i].Kgs + '</td>';
                                             obj += '</tr>';
 
+                                            bags = bags +Math.floor(data[i].Kgs / 65);
+                                            packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                            kgs = kgs + data[i].Kgs;
+
                                         }
                                         $(".table-balance tbody").append(obj);
                                     }
                                     else {
                                         console.log(err);
                                     }
+                                    var ob = '';
+                                    ob += '<tr class="' + "Total" + '">';
+                                    ob += '<td>' + "Total" + '</td>';
+                                    ob += '<td>' + bags + '</td>';
+                                    ob += '<td> ' + packets + '</td>';
+                                    ob += '<td>' +  kgs + '</td>';
+                                    ob += '</tr>';
+                                    $(".table-balance tbody").append(ob);
                                 });
                             }
 
@@ -376,34 +528,93 @@ if (Meteor.isClient) {
             //------------------------------------------------------Purchase FOR DAY-------------------------------------------------------------//
                     Meteor.call('getNameByPin',x, function (err, data) {
 
+                        var godownchoice = $("#godown").val();
                         if (!err) {
                             if (data[0].Name == "Admin") {
-                                var bags = 0;
-                                var packets = 0;
-                                var kgs = 0;
-                                Meteor.call('getPurchaseForDay', date, function (err, data) {
-                                    if (!err) {
-                                        $scope.Purchase = data;
-                                        var obj = "";
-                                        for (i = 0; i < data.length; i++) {
-                                            obj += '<tr class="' + data[i]._id + '">';
-                                            obj += '<td>' + data[i]._id + '-Raw' + '</td>';
-                                            obj += '<td>' + Math.floor(data[i].Kgs / 65) + '</td>';
-                                            obj += '<td> ' + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65) + '</td>';
-                                            obj += '<td>' + data[i].Kgs + '</td>';
-                                            obj += '</tr>';
+                                $(".table-purchase tbody").html('');
+                                if(godownchoice == "All"){
+                                    Meteor.call('getPurchaseForDay', date, function (err, data) {
+                                        var bags = 0;
+                                        var packets = 0;
+                                        var kgs = 0;
+                                        if (!err) {
+                                            $scope.Purchase = data;
+                                            var obj = "";
+                                            for (i = 0; i < data.length; i++) {
+                                                obj += '<tr class="' + data[i]._id + '">';
+                                                obj += '<td>' + data[i]._id + '-Raw' + '</td>';
+                                                obj += '<td>' + Math.floor(data[i].Kgs / 65) + '</td>';
+                                                obj += '<td> ' + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65) + '</td>';
+                                                obj += '<td>' + data[i].Kgs + '</td>';
+                                                obj += '</tr>';
+
+                                                bags = bags +Math.floor(data[i].Kgs / 65);
+                                                packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                kgs = kgs + data[i].Kgs;
+
+                                            }
+                                            $(".table-purchase tbody").append(obj);
 
                                         }
-                                        $(".table-purchase tbody").append(obj);
+                                        else {
+                                            console.log(err);
+                                        }
+                                        var ob = '';
+                                        ob += '<tr class="' + "Total" + '">';
+                                        ob += '<td>' + "Total" + '</td>';
+                                        ob += '<td>' + bags + '</td>';
+                                        ob += '<td> ' + packets + '</td>';
+                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '</tr>';
+                                        $(".table-purchase tbody").append(ob);
+                                    });
+                                }
+                                else {
+                                    $(".table-purchase tbody").html('');
+                                    Meteor.call('getPurchaseForDayForGodown', date,godownchoice, function (err, data) {
+                                        var bags = 0;
+                                        var packets = 0;
+                                        var kgs = 0;
+                                        if (!err) {
+                                            $scope.Purchases = data;
+                                            var obj = "";
+                                            for (i = 0; i < data.length; i++) {
+                                                obj += '<tr class="' + data[i]._id + '">';
+                                                obj += '<td>' + data[i]._id + '-Raw' + '</td>';
+                                                obj += '<td>' + Math.floor(data[i].Kgs / 65) + '</td>';
+                                                obj += '<td> ' + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65) + '</td>';
+                                                obj += '<td>' + data[i].Kgs + '</td>';
+                                                obj += '</tr>';
 
-                                    }
-                                    else {
-                                        console.log(err);
-                                    }
-                                });
+                                                bags = bags +Math.floor(data[i].Kgs / 65);
+                                                packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                kgs = kgs + data[i].Kgs;
+
+                                            }
+                                            $(".table-purchase tbody").append(obj);
+
+                                        }
+                                        else {
+                                            console.log(err);
+                                        }
+                                        var ob = '';
+                                        ob += '<tr class="' + "Total" + '">';
+                                        ob += '<td>' + "Total" + '</td>';
+                                        ob += '<td>' + bags + '</td>';
+                                        ob += '<td> ' + packets + '</td>';
+                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '</tr>';
+                                        $(".table-purchase tbody").append(ob);
+                                    });
+                                }
+
                             }
                             else {
+                                $(".table-purchase tbody").html('');
                                 Meteor.call('getPurchaseForDayForGodown', date,data[0].Name, function (err, data) {
+                                    var bags = 0;
+                                    var packets = 0;
+                                    var kgs = 0;
                                     if (!err) {
                                         $scope.Purchases = data;
                                         var obj = "";
@@ -415,13 +626,26 @@ if (Meteor.isClient) {
                                             obj += '<td>' + data[i].Kgs + '</td>';
                                             obj += '</tr>';
 
+                                            bags = bags +Math.floor(data[i].Kgs / 65);
+                                            packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                            kgs = kgs + data[i].Kgs;
+
                                         }
+
                                         $(".table-purchase tbody").append(obj);
 
                                     }
                                     else {
                                         console.log(err);
                                     }
+                                    var ob = '';
+                                    ob += '<tr class="' + "Total" + '">';
+                                    ob += '<td>' + "Total" + '</td>';
+                                    ob += '<td>' + bags + '</td>';
+                                    ob += '<td> ' + packets + '</td>';
+                                    ob += '<td>' +  kgs + '</td>';
+                                    ob += '</tr>';
+                                    $(".table-purchase tbody").append(ob);
                                 });
                             }
 
@@ -434,35 +658,96 @@ if (Meteor.isClient) {
 
                     //---------------------------------------Get SALES FOR DAY----------------------------------------------------------------------------//
                     Meteor.call('getNameByPin',x, function (err, data) {
+                        var godownchoice = $("#godown").val();
                         if (!err) {
                             if (data[0].Name == "Admin") {
                                 var bags = 0;
                                 var packets = 0;
                                 var kgs = 0;
-                                Meteor.call('getSalesForDay', date, function (err, data) {
-                                    if (!err) {
-                                        $scope.Sales = data;
-                                        console.log(data);
-                                        var obj = "";
-                                        for (i = 0; i < data.length; i++) {
-                                            obj += '<tr class="' + data[i]._id.name + '">';
-                                            obj += '<td>' + data[i]._id.name + '-' + data[i]._id.detail + '-' + data[i]._id.type + '</td>';
-                                            obj += '<td>' + Math.floor(data[i].Kgs / 65) + '</td>';
-                                            obj += '<td> ' + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65) + '</td>';
-                                            obj += '<td>' + data[i].Kgs + '</td>';
-                                            obj += '</tr>';
+                                $(".table-loading tbody").html('');
+                                if(godownchoice == "All"){
+                                    Meteor.call('getSalesForDay', date, function (err, data) {
+                                        if (!err) {
+                                            $scope.Sales = data;
+                                            console.log(data);
+                                            var obj = "";
+                                            for (i = 0; i < data.length; i++) {
+                                                obj += '<tr class="' + data[i]._id.name + '">';
+                                                obj += '<td>' + data[i]._id.name + '-' + data[i]._id.detail + '-' + data[i]._id.type + '</td>';
+                                                obj += '<td>' + Math.floor(data[i].Kgs / 65) + '</td>';
+                                                obj += '<td> ' + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65) + '</td>';
+                                                obj += '<td>' + data[i].Kgs + '</td>';
+                                                obj += '</tr>';
+
+                                                bags = bags +Math.floor(data[i].Kgs / 65);
+                                                packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                kgs = kgs + data[i].Kgs;
+
+                                            }
+                                            $(".table-loading tbody").append(obj);
 
                                         }
-                                        $(".table-loading tbody").append(obj);
+                                        else {
+                                            console.log(err);
+                                        }
+                                        var ob = '';
+                                        ob += '<tr class="' + "Total" + '">';
+                                        ob += '<td>' + "Total" + '</td>';
+                                        ob += '<td>' + bags + '</td>';
+                                        ob += '<td> ' + packets + '</td>';
+                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '</tr>';
+                                        $(".table-loading tbody").append(ob);
+                                    });
+                                }
+                                else{
+                                    $(".table-loading tbody").html('');
+                                    Meteor.call('getSalesForDayForGodown', date, godownchoice, function (err, data) {
+                                        var bags = 0;
+                                        var packets = 0;
+                                        var kgs = 0;
+                                        if (!err) {
+                                            $scope.Sales = data;
+                                            console.log(data);
+                                            var obj = "";
+                                            for (i = 0; i < data.length; i++) {
+                                                obj += '<tr class="' + data[i]._id.name + '">';
+                                                obj += '<td>' + data[i]._id.name + '-' + data[i]._id.detail + '-' + data[i]._id.type + '</td>';
+                                                obj += '<td>' + Math.floor(data[i].Kgs / 65) + '</td>';
+                                                obj += '<td> ' + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65) + '</td>';
+                                                obj += '<td>' + data[i].Kgs + '</td>';
+                                                obj += '</tr>';
 
-                                    }
-                                    else {
-                                        console.log(err);
-                                    }
-                                });
+
+                                                bags = bags +Math.floor(data[i].Kgs / 65);
+                                                packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                kgs = kgs + data[i].Kgs;
+
+                                            }
+                                            $(".table-loading tbody").append(obj);
+
+                                        }
+                                        else {
+                                            console.log(err);
+                                        }
+                                        var ob = '';
+                                        ob += '<tr class="' + "Total" + '">';
+                                        ob += '<td>' + "Total" + '</td>';
+                                        ob += '<td>' + bags + '</td>';
+                                        ob += '<td> ' + packets + '</td>';
+                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '</tr>';
+                                        $(".table-loading tbody").append(ob);
+                                    });
+                                }
+
                             }
                             else {
+                                $(".table-loading tbody").html('');
                                 Meteor.call('getSalesForDayForGodown', date, data[0].Name, function (err, data) {
+                                    var bags = 0;
+                                    var packets = 0;
+                                    var kgs = 0;
                                     if (!err) {
                                         $scope.Sales = data;
                                         console.log(data);
@@ -475,6 +760,9 @@ if (Meteor.isClient) {
                                             obj += '<td>' + data[i].Kgs + '</td>';
                                             obj += '</tr>';
 
+                                            bags = bags +Math.floor(data[i].Kgs / 65);
+                                            packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                            kgs = kgs + data[i].Kgs;
                                         }
                                         $(".table-loading tbody").append(obj);
 
@@ -482,6 +770,14 @@ if (Meteor.isClient) {
                                     else {
                                         console.log(err);
                                     }
+                                    var ob = '';
+                                    ob += '<tr class="' + "Total" + '">';
+                                    ob += '<td>' + "Total" + '</td>';
+                                    ob += '<td>' + bags + '</td>';
+                                    ob += '<td> ' + packets + '</td>';
+                                    ob += '<td>' +  kgs + '</td>';
+                                    ob += '</tr>';
+                                    $(".table-loading tbody").append(ob);
                                 });
                             }
                         }
@@ -492,37 +788,94 @@ if (Meteor.isClient) {
 
                      //---------------------------GET PROCESS FOR DAY-------------------------------------------------------------------//
                     Meteor.call('getNameByPin',x, function (err, data) {
+                        var godownchoice = $("#godown").val();
                         if (!err) {
                             if (data[0].Name == "Admin") {
-                                var bags = 0;
-                                var packets = 0;
-                                var kgs = 0;
-                                Meteor.call('getProcessForDay', date, function (err, data) {
-                                    if (!err) {
-                                        $scope.Process = data;
-                                        console.log(data);
-                                        var obj = "";
-                                        for (i = 0; i < data.length; i++) {
-                                            obj += '<tr class="' + data[i]._id.name + '">';
-                                            obj += '<td>' + data[i]._id.name + '-' + data[i]._id.type + '</td>';
-                                            obj += '<td>' + Math.floor(data[i].Kgs / 65) + '</td>';
-                                            obj += '<td> ' + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65) + '</td>';
-                                            obj += '<td>' + data[i].Kgs + '</td>';
-                                            obj += '</tr>';
+                                $(".table-process tbody").html('');
+                                if(godownchoice == "All"){
+                                    Meteor.call('getProcessForDay', date, function (err, data) {
+                                        var bags = 0;
+                                        var packets = 0;
+                                        var kgs = 0;
+                                        if (!err) {
+                                            $scope.Process = data;
+                                            console.log(data);
+                                            var obj = "";
+                                            for (i = 0; i < data.length; i++) {
+                                                obj += '<tr class="' + data[i]._id.name + '">';
+                                                obj += '<td>' + data[i]._id.name + '-' + data[i]._id.type + '</td>';
+                                                obj += '<td>' + Math.floor(data[i].Kgs / 65) + '</td>';
+                                                obj += '<td> ' + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65) + '</td>';
+                                                obj += '<td>' + data[i].Kgs + '</td>';
+                                                obj += '</tr>';
+
+                                                bags = bags +Math.floor(data[i].Kgs / 65);
+                                                packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                kgs = kgs + data[i].Kgs;
+
+                                            }
+                                            $(".table-process tbody").append(obj);
 
                                         }
-                                        $(".table-process tbody").append(obj);
+                                        else {
+                                            console.log(err);
+                                        }
+                                        var ob = '';
+                                        ob += '<tr class="' + "Total" + '">';
+                                        ob += '<td>' + "Total" + '</td>';
+                                        ob += '<td>' + bags + '</td>';
+                                        ob += '<td> ' + packets + '</td>';
+                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '</tr>';
+                                        $(".table-process tbody").append(ob);
+                                    });
+                                }
+                                else{
+                                    $(".table-process tbody").html('');
+                                    Meteor.call('getProcessForDayForGodown', date,godownchoice, function (err, data) {
+                                        var bags = 0;
+                                        var packets = 0;
+                                        var kgs = 0;
+                                        if (!err) {
+                                            $scope.Process = data;
+                                            console.log(data);
+                                            var obj = "";
+                                            for (i = 0; i < data.length; i++) {
+                                                obj += '<tr class="' + data[i]._id.name + '">';
+                                                obj += '<td>' + data[i]._id.name + '-' + data[i]._id.type + '</td>';
+                                                obj += '<td>' + Math.floor(data[i].Kgs / 65) + '</td>';
+                                                obj += '<td> ' + (data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65) + '</td>';
+                                                obj += '<td>' + data[i].Kgs + '</td>';
+                                                obj += '</tr>';
 
-                                    }
-                                    else {
-                                        console.log(err);
-                                    }
-                                });
+                                                bags = bags +Math.floor(data[i].Kgs / 65);
+                                                packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                                kgs = kgs + data[i].Kgs;
+                                            }
+                                            $(".table-process tbody").append(obj);
+
+                                        }
+                                        else {
+                                            console.log(err);
+                                        }
+                                        var ob = '';
+                                        ob += '<tr class="' + "Total" + '">';
+                                        ob += '<td>' + "Total" + '</td>';
+                                        ob += '<td>' + bags + '</td>';
+                                        ob += '<td> ' + packets + '</td>';
+                                        ob += '<td>' +  kgs + '</td>';
+                                        ob += '</tr>';
+                                        $(".table-process tbody").append(ob);
+                                    });
+                                }
+
                             }
                             else {
-
-                            }
+                                $(".table-process tbody").html('');
                                 Meteor.call('getProcessForDayForGodown', date,data[0].Name, function (err, data) {
+                                    var bags = 0;
+                                    var packets = 0;
+                                    var kgs = 0;
                                     if (!err) {
                                         $scope.Process = data;
                                         console.log(data);
@@ -535,6 +888,10 @@ if (Meteor.isClient) {
                                             obj += '<td>' + data[i].Kgs + '</td>';
                                             obj += '</tr>';
 
+                                            bags = bags +Math.floor(data[i].Kgs / 65);
+                                            packets = packets +(data[i].Kgs - Math.floor(data[i].Kgs / 65) * 65);
+                                            kgs = kgs + data[i].Kgs;
+
                                         }
                                         $(".table-process tbody").append(obj);
 
@@ -542,25 +899,46 @@ if (Meteor.isClient) {
                                     else {
                                         console.log(err);
                                     }
+                                    var ob = '';
+                                    ob += '<tr class="' + "Total" + '">';
+                                    ob += '<td>' + "Total" + '</td>';
+                                    ob += '<td>' + bags + '</td>';
+                                    ob += '<td> ' + packets + '</td>';
+                                    ob += '<td>' +  kgs + '</td>';
+                                    ob += '</tr>';
+                                    $(".table-process tbody").append(ob);
                                 });
+                            }
+
                             }
                         else {
                             console.log(err);
                         }
                     });
                     setTimeout(function () {
-                        for(i=0;i<$(".table-balance tbody tr").length;i++){
-                            if($(".table-balance").find("td:nth-child(4)").eq(i).text() < 0 ) {
+                        for(i=0;i<$(".table-balance tbody tr").length;i++) {
+                            if ($(".table-balance").find("td:nth-child(4)").eq(i).text() < 0) {
                                 $(".table-balance").find("td:nth-child(4)").eq(i).closest('tr').addClass('alertStock');
                             }
                         }
-                        for(i=0;i<$(".table-opening tbody tr").length;i++){
-                            if($(".table-opening").find("td:nth-child(4)").eq(i).text() < 0 ) {
+                        for(i=0;i<$(".table-opening tbody tr").length;i++) {
+                            if ($(".table-opening").find("td:nth-child(4)").eq(i).text() < 0) {
                                 $(".table-opening").find("td:nth-child(4)").eq(i).closest('tr').addClass('alertStock');
                             }
                         }
-
-                    }, 500);
+                    }, 100);/*
+                    setTimeout(function () {
+                        for(i=0;i<$(".table-balance tbody tr").length;i++) {
+                            if ($(".table-balance").find("td:nth-child(4)").eq(i).text() == 0) {
+                                $(".table-balance").find("td:nth-child(4)").eq(i).closest('tr').remove();
+                            }
+                        }
+                        for(i=0;i<$(".table-opening tbody tr").length;i++) {
+                            if ($(".table-opening").find("td:nth-child(4)").eq(i).text() == 0) {
+                                $(".table-opening").find("td:nth-child(4)").eq(i).closest('tr').remove();
+                            }
+                        }
+                    }, 100);*/
                 }
             }
         }

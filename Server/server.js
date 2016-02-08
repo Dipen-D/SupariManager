@@ -372,6 +372,38 @@ if (Meteor.isServer) {
                         list.push(obj);
                     }
                 };
+                var deduceminus = function (obj, list) {
+                    var i;
+                    var found = false;
+                    for (i = 0; i < list.length; i++) {
+                        if (list[i].Name === obj.Name) {
+                            list[i].Kgs = parseInt(list[i].Kgs) - parseInt(obj.Kgs);
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        obj.Kgs = - obj.Kgs;
+                        list.push(obj);
+                    }
+                };
+                var Sumsminus = function (obj, list) {
+                    var i;
+                    var found = false;
+                    for (i = 0; i < list.length; i++) {
+                        if (list[i].Name === obj.Name) {
+                            list[i].Kgs =  parseInt(list[i].Kgs) - parseInt(obj.Kgs);
+                            found = true;
+                            //return true;
+                        }
+                    }
+                    if (!found) {
+                        if(obj.Name == 'N-Raw' || obj.Name == 'DC-Raw' || obj.Name == 'C-Raw'){
+                            obj.Kgs = - obj.Kgs;
+                        }
+                        list.push(obj);
+                    }
+                };
+                var temp1 = [];
                 var temp = [];
                 var sum = [];
                 var sale = [];
@@ -428,13 +460,30 @@ if (Meteor.isServer) {
                 purchaseStock.push(purchaseRaw);
                 raw.push(deductRaw);
                 temp.push(openingstock);
-                temp.push(processObj);
+                temp1.push(processObj);
                 //return temp;
                 for (i = 0; i < temp.length; i++) {
                     for (j = 0; j < temp[i].length; j++) {
                         var name = (temp[i][j]._id.name);
                         var type = (temp[i][j]._id.type);
                         var kgs = (temp[i][j].kgs);
+                        var dataObj = {Name: name + '-' + type, Kgs: kgs};
+                        Sums(dataObj, sum);
+                    }
+                }
+                for (i = 0; i < purchaseStock.length; i++) {
+                    for (j = 0; j < purchaseStock[i].length; j++) {
+                        var name = (purchaseStock[i][j]._id);
+                        var kgs = (purchaseStock[i][j].Kgs);
+                        var dataObj = {Name: name + '-'+'Raw', Kgs: kgs};
+                        Sums(dataObj, sum);
+                    }
+                }
+                for (i = 0; i < temp1.length; i++) {
+                    for (j = 0; j < temp1[i].length; j++) {
+                        var name = (temp1[i][j]._id.name);
+                        var type = (temp1[i][j]._id.type);
+                        var kgs = (temp1[i][j].kgs);
                         var dataObj = {Name: name + '-' + type, Kgs: kgs};
                         Sums(dataObj, sum);
                     }
@@ -446,23 +495,15 @@ if (Meteor.isServer) {
                         var type = (sale[i][j]._id.type);
                         var kgs = (sale[i][j].kgs);
                         var dataObj = {Name: name + '-' + type, Kgs: kgs};
-                        deduce(dataObj, sum);
+                        deduceminus(dataObj, sum);
                     }
                 }
                 for (i = 0; i < raw.length; i++) {
                     for (j = 0; j < raw[i].length; j++) {
                         var name = (raw[i][j]._id);
                         var kgs = (raw[i][j].Kgs);
-                        var dataObj = {Name: name + '-Raw', Kgs: kgs};
-                        deduce(dataObj, sum);
-                    }
-                }
-                for (i = 0; i < purchaseStock.length; i++) {
-                    for (j = 0; j < purchaseStock[i].length; j++) {
-                        var name = (purchaseStock[i][j]._id);
-                        var kgs = (purchaseStock[i][j].Kgs);
-                        var dataObj = {Name: name + '-Raw', Kgs: kgs};
-                        Sums(dataObj, sum);
+                        var dataObj = {Name: name + '-'+'Raw', Kgs: kgs};
+                        Sumsminus(dataObj, sum);
                     }
                 }
                 return sum;
@@ -519,6 +560,38 @@ if (Meteor.isServer) {
                         list.push(obj);
                     }
                 };
+                var deduceminus = function (obj, list) {
+                    var i;
+                    var found = false;
+                    for (i = 0; i < list.length; i++) {
+                        if (list[i].Name === obj.Name) {
+                            list[i].Kgs = parseInt(list[i].Kgs) - parseInt(obj.Kgs);
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        obj.Kgs = - obj.Kgs;
+                        list.push(obj);
+                    }
+                };
+                var Sumsminus = function (obj, list) {
+                    var i;
+                    var found = false;
+                    for (i = 0; i < list.length; i++) {
+                        if (list[i].Name === obj.Name) {
+                            list[i].Kgs =  parseInt(list[i].Kgs) - parseInt(obj.Kgs);
+                            found = true;
+                            //return true;
+                        }
+                    }
+                    if (!found) {
+                        if(obj.Name == 'N-Raw' || obj.Name == 'DC-Raw' || obj.Name == 'C-Raw'){
+                            obj.Kgs = - obj.Kgs;
+                        }
+                        list.push(obj);
+                    }
+                };
+                var temp1 = [];
                 var temp = [];
                 var sum = [];
                 var sale = [];
@@ -567,13 +640,30 @@ if (Meteor.isServer) {
                 purchaseStock.push(purchaseRaw);
                 raw.push(deductRaw);
                 temp.push(openingstock);
-                temp.push(processObj);
+                temp1.push(processObj);
                 //return temp;
                 for (i = 0; i < temp.length; i++) {
                     for (j = 0; j < temp[i].length; j++) {
                         var name = (temp[i][j]._id.name);
                         var type = (temp[i][j]._id.type);
                         var kgs = (temp[i][j].kgs);
+                        var dataObj = {Name: name + '-' + type, Kgs: kgs};
+                        Sums(dataObj, sum);
+                    }
+                }
+                for (i = 0; i < purchaseStock.length; i++) {
+                    for (j = 0; j < purchaseStock[i].length; j++) {
+                        var name = (purchaseStock[i][j]._id);
+                        var kgs = (purchaseStock[i][j].Kgs);
+                        var dataObj = {Name: name + '-'+'Raw', Kgs: kgs};
+                        Sums(dataObj, sum);
+                    }
+                }
+                for (i = 0; i < temp1.length; i++) {
+                    for (j = 0; j < temp1[i].length; j++) {
+                        var name = (temp1[i][j]._id.name);
+                        var type = (temp1[i][j]._id.type);
+                        var kgs = (temp1[i][j].kgs);
                         var dataObj = {Name: name + '-' + type, Kgs: kgs};
                         Sums(dataObj, sum);
                     }
@@ -585,23 +675,15 @@ if (Meteor.isServer) {
                         var type = (sale[i][j]._id.type);
                         var kgs = (sale[i][j].kgs);
                         var dataObj = {Name: name + '-' + type, Kgs: kgs};
-                        deduce(dataObj, sum);
+                        deduceminus(dataObj, sum);
                     }
                 }
                 for (i = 0; i < raw.length; i++) {
                     for (j = 0; j < raw[i].length; j++) {
                         var name = (raw[i][j]._id);
                         var kgs = (raw[i][j].Kgs);
-                        var dataObj = {Name: name + '-Raw', Kgs: kgs};
-                        deduce(dataObj, sum);
-                    }
-                }
-                for (i = 0; i < purchaseStock.length; i++) {
-                    for (j = 0; j < purchaseStock[i].length; j++) {
-                        var name = (purchaseStock[i][j]._id);
-                        var kgs = (purchaseStock[i][j].Kgs);
-                        var dataObj = {Name: name + '-Raw', Kgs: kgs};
-                        Sums(dataObj, sum);
+                        var dataObj = {Name: name + '-'+'Raw', Kgs: kgs};
+                        Sumsminus(dataObj, sum);
                     }
                 }
                 return sum;
@@ -631,6 +713,37 @@ if (Meteor.isServer) {
                     }
                 }
                 if (!found) {
+                    list.push(obj);
+                }
+            };
+            var deduceminus = function (obj, list) {
+                var i;
+                var found = false;
+                for (i = 0; i < list.length; i++) {
+                    if (list[i].Name === obj.Name) {
+                        list[i].Kgs = parseInt(list[i].Kgs) - parseInt(obj.Kgs);
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    obj.Kgs = - obj.Kgs;
+                    list.push(obj);
+                }
+            };
+            var Sumsminus = function (obj, list) {
+                var i;
+                var found = false;
+                for (i = 0; i < list.length; i++) {
+                    if (list[i].Name === obj.Name) {
+                        list[i].Kgs =  parseInt(list[i].Kgs) - parseInt(obj.Kgs);
+                        found = true;
+                        //return true;
+                    }
+                }
+                if (!found) {
+                    if(obj.Name == 'N-Raw' || obj.Name == 'DC-Raw' || obj.Name == 'C-Raw'){
+                        obj.Kgs = - obj.Kgs;
+                    }
                     list.push(obj);
                 }
             };
@@ -730,7 +843,7 @@ if (Meteor.isServer) {
                     var type = (sale[i][j]._id.type);
                     var kgs = (sale[i][j].kgs);
                     var dataObj = {Name: name + '-' + type, Kgs: kgs};
-                    deduce(dataObj, sum);
+                    deduceminus(dataObj, sum);
                 }
             }
             for (i = 0; i < raw.length; i++) {
@@ -738,7 +851,7 @@ if (Meteor.isServer) {
                     var name = (raw[i][j]._id);
                     var kgs = (raw[i][j].Kgs);
                     var dataObj = {Name: name + '-'+'Raw', Kgs: kgs};
-                    deduce(dataObj, sum);
+                    Sumsminus(dataObj, sum);
                 }
             }
             return sum;

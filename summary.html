@@ -1,15 +1,27 @@
 <div class="container-summary">
     <div class="page-header row summary-row">
-        <div class="col-lg-8">
+        <div class="col-lg-6">
             <h1>Summary</h1>
+
         </div>
         <div class="col-lg-2" style="padding-top: 15px">
             <input id="datePicker" ng-model="datePicker" type="text" class="form-control bigFonts" placeholder="Date"
                    style="margin-top: 15px;" readonly>
         </div>
         <div class="col-lg-2" style="padding-top: 30px">
+            <div class="form-group">
+                <select class="form-control bigFonts godown hidden" id="godown">
+                    <option>Godown1</option>
+                    <option>Godown2</option>
+                    <option>Godown3</option>
+                    <option>All</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-2" style="padding-top: 30px">
             <button class="btn btn-success" ng-click="Summary()">Search</button>
         </div>
+
 
     </div>
 
