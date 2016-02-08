@@ -479,6 +479,18 @@ if (Meteor.isServer) {
                 var processData = Process.aggregate([ {$match:{Product:"Supari",CreatedDate:x}},{$unwind: '$Info'},{  $group: { _id:{name:"$Type",type:"$Info.Subtypename"},  Kgs:{ $sum:"$Info.value" } } }]);
                 return processData;
             },
+            getPurchaseForDayForGodown: function (x,Godown) {
+                var Purchaseo = Purchase.aggregate([{ $match:{Type:"Supari",CreatedDate:x,Godown:Godown}},{$group: { _id:"$ProductTypeAlias", Kgs:{$sum:"$kgs"}}}]);
+                return Purchaseo;
+            },
+            getSalesForDayForGodown : function(x,Godown){
+                var saleData = Sales.aggregate([ {$match:{Product:"Supari",CreatedDate:x,Godown:Godown}},{$unwind: '$Info'},{  $group: { _id:{name:"$Info.Subtypename",type:"$Info.detail",detail:"$Info.brand"},  Kgs:{ $sum:"$Info.weight" } } }]);
+                return saleData;
+            },
+            getProcessForDayForGodown : function(x,Godown){
+                var processData = Process.aggregate([ {$match:{Product:"Supari",CreatedDate:x,Godown:Godown}},{$unwind: '$Info'},{  $group: { _id:{name:"$Type",type:"$Info.Subtypename"},  Kgs:{ $sum:"$Info.value" } } }]);
+                return processData;
+            },
             getBalanceSheetForDay : function(x){
                 var Sums = function (obj, list) {
                     var i;
@@ -623,6 +635,7 @@ if (Meteor.isServer) {
                 }
             };
             var temp = [];
+            var temp1 = [];
             var sum = [];
             var sale = [];
             var result = [];
@@ -681,13 +694,31 @@ if (Meteor.isServer) {
             purchaseStock.push(purchaseRaw);
             raw.push(deductRaw);
             temp.push(openingstock);
-            temp.push(processObj);
+            temp1.push(processObj);
             //return temp;
+
             for (i = 0; i < temp.length; i++) {
                 for (j = 0; j < temp[i].length; j++) {
                     var name = (temp[i][j]._id.name);
                     var type = (temp[i][j]._id.type);
                     var kgs = (temp[i][j].kgs);
+                    var dataObj = {Name: name + '-' + type, Kgs: kgs};
+                    Sums(dataObj, sum);
+                }
+            }
+            for (i = 0; i < purchaseStock.length; i++) {
+                for (j = 0; j < purchaseStock[i].length; j++) {
+                    var name = (purchaseStock[i][j]._id);
+                    var kgs = (purchaseStock[i][j].Kgs);
+                    var dataObj = {Name: name + '-'+'Raw', Kgs: kgs};
+                    Sums(dataObj, sum);
+                }
+            }
+            for (i = 0; i < temp1.length; i++) {
+                for (j = 0; j < temp1[i].length; j++) {
+                    var name = (temp1[i][j]._id.name);
+                    var type = (temp1[i][j]._id.type);
+                    var kgs = (temp1[i][j].kgs);
                     var dataObj = {Name: name + '-' + type, Kgs: kgs};
                     Sums(dataObj, sum);
                 }
@@ -706,16 +737,8 @@ if (Meteor.isServer) {
                 for (j = 0; j < raw[i].length; j++) {
                     var name = (raw[i][j]._id);
                     var kgs = (raw[i][j].Kgs);
-                    var dataObj = {Name: name + '-Raw', Kgs: kgs};
+                    var dataObj = {Name: name + '-'+'Raw', Kgs: kgs};
                     deduce(dataObj, sum);
-                }
-            }
-            for (i = 0; i < purchaseStock.length; i++) {
-                for (j = 0; j < purchaseStock[i].length; j++) {
-                    var name = (purchaseStock[i][j]._id);
-                    var kgs = (purchaseStock[i][j].Kgs);
-                    var dataObj = {Name: name + '-Raw', Kgs: kgs};
-                    Sums(dataObj, sum);
                 }
             }
             return sum;
@@ -749,7 +772,39 @@ if (Meteor.isServer) {
                     list.push(obj);
                 }
             };
+            var deduceminus = function (obj, list) {
+                var i;
+                var found = false;
+                for (i = 0; i < list.length; i++) {
+                    if (list[i].Name === obj.Name) {
+                        list[i].Kgs = parseInt(list[i].Kgs) - parseInt(obj.Kgs);
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    obj.Kgs = - obj.Kgs;
+                    list.push(obj);
+                }
+            };
+            var Sumsminus = function (obj, list) {
+                var i;
+                var found = false;
+                for (i = 0; i < list.length; i++) {
+                    if (list[i].Name === obj.Name) {
+                        list[i].Kgs =  parseInt(list[i].Kgs) - parseInt(obj.Kgs);
+                        found = true;
+                        //return true;
+                    }
+                }
+                if (!found) {
+                    if(obj.Name == 'N-Raw' || obj.Name == 'DC-Raw' || obj.Name == 'C-Raw'){
+                        obj.Kgs = - obj.Kgs;
+                    }
+                    list.push(obj);
+                }
+            };
             var temp = [];
+            var temp1= [];
             var sum = [];
             var sale = [];
             var result = [];
@@ -769,7 +824,7 @@ if (Meteor.isServer) {
             }])
             console.log("Sales");
             console.log(salesObj);
-            var openingstock = OpeningStock.aggregate([{$match: {Product: "Supari",Godown:Godown}}, {$unwind: '$Info'}, {
+            var openingstocks = OpeningStock.aggregate([{$match: {Product: "Supari",Godown:Godown}}, {$unwind: '$Info'}, {
                 $group: {
                     _id: {
                         name: "$Info.Type",
@@ -778,7 +833,7 @@ if (Meteor.isServer) {
                 }
             }]);
             console.log("OP");
-            console.log(openingstock);
+            console.log(openingstocks);
             var processObj = Process.aggregate([{
                 $match: {
                     Product: "Supari",
@@ -807,14 +862,75 @@ if (Meteor.isServer) {
             console.log(purchaseRaw);
             purchaseStock.push(purchaseRaw);
             raw.push(deductRaw);
-            temp.push(openingstock);
-            temp.push(processObj);
+            temp.push(openingstocks);
+            temp1.push(processObj);
             //return temp;
+            /*for (i = 0; i < temp.length; i++) {
+                for (j = 0; j < temp[i].length; j++) {
+                    var name = (temp[i][j]._id.name);
+                    var type = (temp[i][j]._id.type);
+                    var kgs = (temp[i][j].kgs);
+                    var dataObj = {Name: name + '-' + type, Kgs: kgs};
+                    Sums(dataObj, sum);
+                }
+            }
+            console.log("SUM of op + process");
+            console.log(sum);
+            sale.push(salesObj);
+            for (i = 0; i < sale.length; i++) {
+                for (j = 0; j < sale[i].length; j++) {
+                    var name = (sale[i][j]._id.name);
+                    var type = (sale[i][j]._id.type);
+                    var kgs = (sale[i][j].kgs);
+                    var dataObj = {Name: name + '-' + type, Kgs: kgs};
+                    deduce(dataObj, sum);
+                }
+            }
+            console.log("sum of op + process - sales");
+            console.log(sum);
+            for (i = 0; i < raw.length; i++) {
+                for (j = 0; j < raw[i].length; j++) {
+                    var name = (raw[i][j]._id);
+                    var kgs = (raw[i][j].Kgs);
+                    var dataObj = {Name: name + '-'+'Raw', Kgs: kgs};
+                    deduce(dataObj, sum);
+                }
+            }
+            console.log("sum of op + process - sales - processraw");
+            console.log(sum);
+            for (i = 0; i < purchaseStock.length; i++) {
+                for (j = 0; j < purchaseStock[i].length; j++) {
+                    var name = (purchaseStock[i][j]._id);
+                    var kgs = (purchaseStock[i][j].Kgs);
+                    var dataObj = {Name: name + '-'+'Raw', Kgs: kgs};
+                    Sums(dataObj, sum);
+                }
+            }
+            console.log("sum of op + process - sales - processraw + purchase");
+            console.log(sum);
+            return sum;*/
             for (i = 0; i < temp.length; i++) {
                 for (j = 0; j < temp[i].length; j++) {
                     var name = (temp[i][j]._id.name);
                     var type = (temp[i][j]._id.type);
                     var kgs = (temp[i][j].kgs);
+                    var dataObj = {Name: name + '-' + type, Kgs: kgs};
+                    Sums(dataObj, sum);
+                }
+            }
+            for (i = 0; i < purchaseStock.length; i++) {
+                for (j = 0; j < purchaseStock[i].length; j++) {
+                    var name = (purchaseStock[i][j]._id);
+                    var kgs = (purchaseStock[i][j].Kgs);
+                    var dataObj = {Name: name + '-'+'Raw', Kgs: kgs};
+                    Sums(dataObj, sum);
+                }
+            }
+            for (i = 0; i < temp1.length; i++) {
+                for (j = 0; j < temp1[i].length; j++) {
+                    var name = (temp1[i][j]._id.name);
+                    var type = (temp1[i][j]._id.type);
+                    var kgs = (temp1[i][j].kgs);
                     var dataObj = {Name: name + '-' + type, Kgs: kgs};
                     Sums(dataObj, sum);
                 }
@@ -826,23 +942,15 @@ if (Meteor.isServer) {
                     var type = (sale[i][j]._id.type);
                     var kgs = (sale[i][j].kgs);
                     var dataObj = {Name: name + '-' + type, Kgs: kgs};
-                    deduce(dataObj, sum);
+                    deduceminus(dataObj, sum);
                 }
             }
             for (i = 0; i < raw.length; i++) {
                 for (j = 0; j < raw[i].length; j++) {
                     var name = (raw[i][j]._id);
                     var kgs = (raw[i][j].Kgs);
-                    var dataObj = {Name: name + '-Raw', Kgs: kgs};
-                    deduce(dataObj, sum);
-                }
-            }
-            for (i = 0; i < purchaseStock.length; i++) {
-                for (j = 0; j < purchaseStock[i].length; j++) {
-                    var name = (purchaseStock[i][j]._id);
-                    var kgs = (purchaseStock[i][j].Kgs);
-                    var dataObj = {Name: name + '-Raw', Kgs: kgs};
-                    Sums(dataObj, sum);
+                    var dataObj = {Name: name + '-'+'Raw', Kgs: kgs};
+                    Sumsminus(dataObj, sum);
                 }
             }
             return sum;
