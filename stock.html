@@ -1,0 +1,130 @@
+<!-- Begin page content -->
+<div class="container">
+    <div class="page-header row">
+        <div class="col-xs-6">
+            <h1>Opening Stock</h1>
+        </div>
+    </div>
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-lg-4 col-sm-5 col-xs-12">
+                <select id="godown" class="bigFonts hidden" ng-model="stock.godown">
+                    <option value="">Select Godown</option>
+                    <option ng-repeat="godown in Godowns"
+                            value="{{godown.Name}}">
+                        {{godown.Name}}
+                    </option>
+                </select>
+                <div>
+                    <br>
+                </div>
+                <select id="product" class="bigFonts" ng-model="stock.product">
+                    <option ng-repeat="product in ProductNames"
+                            value="{{product.Name}}">
+                        {{product.Name}}
+                    </option>
+                </select>
+                <div>
+                    <br>
+                </div>
+                <select id="type" class="bigFonts" style="width: 100%;" ng-model="processEntry.type">
+                    <option value="">Select a type</option>
+                    <option ng-repeat="maintype in ProductMainTypes"
+                            value="{{maintype.Name}}">
+
+                        {{maintype.Name}}
+                    </option>
+                </select>
+
+            </div>
+        </div>
+        <div id="entryFields">
+            <div class="form-group" ng-repeat="type in Stock"
+                 ng-hide="(stock.product != 'Supari')" data-name="{{type.Name}}">
+                <label for="" class="col-sm-2 col-xs-12  control-label">{{type.Name}}</label>
+                <div class="col-sm-3 col-xs-7 input-bags">
+                    <div class="input-group">
+                        <input type="number" id="{{type.Name + 'Bags'}}" pattern="\d*" class="form-control bigFonts "
+                               placeholder="Bags" aria-describedby="basic-addon2"/>
+                        <span class="input-group-addon addonStyle">x 65 KG</span>
+                    </div>
+                </div>
+                <div class="col-sm-3 col-xs-5">
+                    <div class="input-group">
+                        <input type="number" id="{{type.Name + 'Packets'}}" pattern="\d*" class="form-control bigFonts "
+                               placeholder="Packet" aria-describedby="basic-addon2"/>
+                        <span class="input-group-addon addonStyle"> KG</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" ng-repeat="type in MariTypes" ng-hide="(stock.product != 'Mari')"
+                 data-name="{{type.Name}}">
+                <label for="" class="col-sm-2 col-xs-12  control-label">{{type.Name}}</label>
+                <div class="col-sm-3 col-xs-7 input-bags">
+                    <div class="input-group">
+                        <input type="number" id="{{type.Name + 'Bags'}}" pattern="\d*" class="form-control bigFonts"
+                               placeholder="Bags" aria-describedby="basic-addon2"/>
+                        <span class="input-group-addon addonStyle">x 65 KG</span>
+                    </div>
+                </div>
+                <div class="col-sm-3 col-xs-5">
+                    <div class="input-group">
+                        <input type="number" id="{{type.Name + 'Packets'}}" pattern="\d*" class="form-control bigFonts"
+                               placeholder="Packet" aria-describedby="basic-addon2" min="0" max="65"/>
+                        <span class="input-group-addon addonStyle"> KG</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr/>
+
+    <hr/>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button id="saveBtn" type="submit" class="btn btn-success btn-block btn-block-xs bigFonts"
+                    data-toggle="modal" data-target="" ng-click="stock.fillModalHtml()">Save
+            </button>
+        </div>
+    </div>
+</div>
+<!-- Modal starts -->
+<div id="summary-modal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Stock</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <tbody id="recieptContainer">
+
+                    </tbody>
+                </table>
+                <div class="text-right" >
+                    {{stock.getAdjustment()}}
+                    *Weight loss/gain: {{stock.getAdjustment()}} KG
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-xs-6">
+                    <button type="button" class="btn btn-default bigFonts process-cancel" data-dismiss="modal"
+                            style="width: 100%;" ng-click="processcancel()">
+                        No
+                    </button>
+                </div>
+                <div class="col-xs-6">
+                    <button type="button" class="btn btn-success bigFonts process-save" data-dismiss="modal"
+                            style="width: 100%;" ng-click="processsave()">
+                        Yes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
