@@ -9,3 +9,14 @@
 .container-summary{
     padding:10px;
 }
+
+.alertStock{
+    outline: 2px solid #FF0000;
+}
+.fixed{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+}
