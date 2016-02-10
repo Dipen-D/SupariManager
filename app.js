@@ -443,7 +443,12 @@ if (Meteor.isClient) {
                                         console.log(err);
                                     }
                                 });
-                                window.location.href = "/purchase";
+                                $("html").mask("");
+                                setTimeout(function () {
+                                    window.location.href = "/purchase";
+                                    //$("html").unmask("");
+                                }, 299);
+
                             }
                             else {
                                 alert("This will be re-directed to login page");
@@ -1447,7 +1452,10 @@ if (Meteor.isClient) {
                                 });
                                 resetprocess();
                                 $("html").mask("");
-                                window.location.href = "/processlist";
+                                setTimeout(function () {
+                                    window.location.href = "/processlist";
+                                    $("html").unmask("");
+                                }, 199);
                             }
                         } else {
                             console.log(err);
@@ -1492,7 +1500,10 @@ if (Meteor.isClient) {
                     });
                     resetprocess();
                     $("html").mask("");
-                    window.location.href = "/processlist";
+                    setTimeout(function () {
+                        window.location.href = "/processlist";
+                        $("html").unmask("");
+                    }, 199);
                 }
                 $(document).ready(function () {
 
@@ -1684,7 +1695,10 @@ if (Meteor.isClient) {
                             clearPurchaseFields();
                             $("#summary-modal").modal('hide');
                             $("html").mask("");
-                            window.location.href = "/purchaselist";
+                            setTimeout(function () {
+                                window.location.href = "/purchaselist";
+                                $("html").unmask("");
+                            }, 199);
                         }
                     });
 
@@ -1753,7 +1767,11 @@ if (Meteor.isClient) {
                     });
                     clearPurchaseFields();
                     $("html").mask("");
-                    window.location.href = "/purchaselist";
+                    $("html").mask("");
+                    setTimeout(function () {
+                        window.location.href = "/purchaselist";
+                        $("html").unmask("");
+                    }, 199);
                 }
                 $(document).ready(function () {
 
@@ -2128,6 +2146,11 @@ if (Meteor.isClient) {
                             fillRecieptHtml();
                             $scope.salesave = function () {
                                 var date = $("#datePicker").val();
+                                var convertDate = function(usDate) {
+                                    var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+                                    return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                                }
+                                var outDate = convertDate(date);
                                 var salesAccountName = $('#accountName').val();
                                 var transportName = $('#transportName').val();
                                 var product = $('#product').val();
@@ -2139,6 +2162,7 @@ if (Meteor.isClient) {
                                 var po = {
                                     _id: id,
                                     CreatedDate: date,
+                                    mongoDate: outDate,
                                     salesAccountName: salesAccountName,
                                     TransportName: transportName,
                                     Product: product,
@@ -2156,7 +2180,10 @@ if (Meteor.isClient) {
                                 resetAll();
                                 clearAllFields();
                                 $("html").mask("");
-                                window.location.href = "/saleslist";
+                                setTimeout(function () {
+                                    window.location.href = "/saleslist";
+                                    $("html").unmask("");
+                                }, 199);
                             }
 
                         } else {
@@ -2196,7 +2223,10 @@ if (Meteor.isClient) {
                     resetAll();
                     clearAllFields();
                     $("html").mask("");
-                    window.location.href = "/saleslist";
+                    setTimeout(function () {
+                        window.location.href = "/saleslist";
+                        $("html").unmask("");
+                    }, 199);
                 }
 
 
