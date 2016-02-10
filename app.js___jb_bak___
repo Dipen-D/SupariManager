@@ -2128,6 +2128,11 @@ if (Meteor.isClient) {
                             fillRecieptHtml();
                             $scope.salesave = function () {
                                 var date = $("#datePicker").val();
+                                var convertDate = function(usDate) {
+                                    var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+                                    return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                                }
+                                var outDate = convertDate(date);
                                 var salesAccountName = $('#accountName').val();
                                 var transportName = $('#transportName').val();
                                 var product = $('#product').val();
@@ -2139,6 +2144,7 @@ if (Meteor.isClient) {
                                 var po = {
                                     _id: id,
                                     CreatedDate: date,
+                                    mongoDate: outDate,
                                     salesAccountName: salesAccountName,
                                     TransportName: transportName,
                                     Product: product,
@@ -2836,7 +2842,6 @@ if (Meteor.isClient) {
         $('body').on('click tap', '.redirect', function (e) {
             $("html").mask("");
             e.preventDefault();
-            window.location = '/sales';
-        });
+           });
     }
 }

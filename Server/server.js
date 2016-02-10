@@ -63,8 +63,6 @@ if (Meteor.isServer) {
             Counters.update({_id: "purchaseId"}, {$inc: {SequenceValue: 1}});
             var ret = Counters.findOne({_id: "purchaseId"});
             var id = ret.SequenceValue.toString();
-            console.log(id);
-            console.log(data);
             Purchase.insert({
                 _id: id,
                 CreatedDate: data.date,
@@ -86,7 +84,7 @@ if (Meteor.isServer) {
                 {
                     CreatedDate: data.date,
                     LastModifiedDate: data.mdate,
-                    MongoDate:new Date(data.mongoDate),
+                    MongoDate: new Date(data.mongoDate),
                     PurchaseAccountName: data.account,
                     Godown: data.godown,
                     Type: data.product,
@@ -103,7 +101,7 @@ if (Meteor.isServer) {
                 {
                     CreatedDate: datapro.date,
                     LastModifiedDate: datapro.mdate,
-                    MongoDate:new Date(data.mongoDate),
+                    MongoDate: new Date(datapro.mongoDate),
                     Product: datapro.product,
                     Godown: datapro.godown,
                     Type: datapro.type,
@@ -124,8 +122,8 @@ if (Meteor.isServer) {
             var final = {
                 _id: id,
                 CreatedDate: datapro.date,
-                LastModifiedDate: datapro.mdate,
-                MongoDate:new Date(data.mongoDate),
+                LastModifiedDate: datapro.date,
+                MongoDate:new Date(datapro.mongoDate),
                 Product: datapro.product,
                 Godown: datapro.godown,
                 Type: datapro.type,
@@ -196,7 +194,7 @@ if (Meteor.isServer) {
                 {
                     CreatedDate: datapro.CreatedDate,
                     LastModifiedDate: datapro.mdate,
-                    MongoDate: new Date(data.mongoDate),
+                    MongoDate: new Date(datapro.mongoDate),
                     salesAccountName: datapro.salesAccountName,
                     TransportName: datapro.TransportName,
                     Product: datapro.Product,
@@ -217,7 +215,7 @@ if (Meteor.isServer) {
                 _id: id,
                 CreatedDate: datapro.CreatedDate,
                 LastModifiedDate: datapro.CreatedDate,
-                MongoDate: new Date(data.mongoDate),
+                MongoDate: new Date(datapro.mongoDate),
                 salesAccountName: datapro.salesAccountName,
                 TransportName: datapro.TransportName,
                 Product: datapro.Product,
@@ -427,6 +425,7 @@ if (Meteor.isServer) {
                 return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
             }
             var outDate = convertDate(x);
+            console.log(outDate);
             var temp1 = [];
             var temp = [];
             var sum = [];
