@@ -20,3 +20,57 @@
     width: 100%;
     height: 100%;
 }
+
+.date{
+    margin-top:30px;
+}
+@media (max-width: 768px) {
+    .date {
+        margin-top:0px;
+    }
+}
+.godowns{
+     padding-top:30px;
+ }
+@media (max-width: 768px) {
+    .godowns {
+        padding-top:15px;
+    }
+}
+
+.loadbtn{
+    padding-top:30px;
+}
+@media (max-width: 768px) {
+    .loadbtn {
+        padding-top:0px;
+    }
+}
+@media (max-width: 768px) {
+    .loadingbtn {
+        width:100%;
+        box-shadow: 0px 7px 10px 0px rgba(50, 50, 50, 0.25);
+    }
+}
+.loadingbtn{
+    box-shadow: 0px 7px 10px 0px rgba(50, 50, 50, 0.25);
+
+}
+.del{
+padding-top:30px;
+}
+@media (max-width: 768px) {
+    .del {
+        padding-top:0px;
+
+    }
+}
+#deletebtn{
+    box-shadow: 0px 7px 10px 0px rgba(50, 50, 50, 0.25)
+}
+input#datePicker {
+    background: #fff;
+}
+.summary-table {
+    box-shadow: 0px 7px 10px 0px rgba(50, 50, 50, 0.25)
+}

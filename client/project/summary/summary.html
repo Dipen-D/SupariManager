@@ -1,15 +1,15 @@
-<div class="container-summary">
+<div class="container container-summary">
     <div class="page-header row summary-row">
         <div class="col-lg-6">
             <h1>Summary</h1>
         </div>
-        <div class="col-lg-2" style="padding-top: 15px">
-            <input id="datePicker" ng-model="datePicker" type="text" class="form-control bigFonts" placeholder="Date"
-                   style="margin-top: 15px;" readonly>
+        <div class="col-lg-2">
+            <input id="datePicker" ng-model="datePicker" type="text" class="form-control bigFonts date" placeholder="Date" readonly>
+
         </div>
-        <div class="col-lg-2" style="padding-top: 30px">
+        <div class="col-lg-2 godowns" >
             <div class="form-group">
-                <select class="form-control bigFonts godown hidden" id="godown">
+                <select class="form-control bigFonts godown hidden" id="godown" style="padding:4px;">
                     <option>Godown1</option>
                     <option>Godown2</option>
                     <option>Godown3</option>
@@ -17,18 +17,18 @@
                 </select>
             </div>
         </div>
-        <div class="col-lg-2" style="padding-top: 30px">
-            <button class="btn btn-success" ng-click="Summary()">Search</button>
+        <div class="col-lg-2 loadbtn">
+            <button class="btn btn-success loadingbtn" ng-click="Summary()">Load</button>
         </div>
 
 
     </div>
 
     <div class="row summary-row">
-        <div class="col-lg-3">
+        <div class="col-lg-6">
             <p class="center">OPP.STOCK</p>
             <div class="row summary-row">
-                <table class="table table-bordered table-opening">
+                <table class="summary-table table table-bordered table-opening">
                     <thead>
                     <tr>
                         <th></th>
@@ -42,66 +42,66 @@
                 </table>
             </div>
         </div>
-        <div class="col-lg-3">
-            <p class="center">PURCHASE</p>
-            <div class="row summary-row">
-                <table class="table table-bordered table-purchase">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>Bags</th>
-                        <th>Packets</th>
-                        <th>KGS</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <p class="center">PROCESS</p>
-            <div class="row summary-row">
-                <table class="table table-bordered table-process">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>Bags</th>
-                        <th>Packets</th>
-                        <th>KGS</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <p class="center">LOADING</p>
-            <div class="row summary-row">
-                <table class="table table-bordered table-loading">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>Bags</th>
-                        <th>Packets</th>
-                        <th>KGS</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="row summary-row">
-        <div class="col-lg-3">
+        <div class="col-lg-6">
             <p class="center">BALANCE STOCK</p>
             <div class="row summary-row">
-                <table class="table table-bordered table-balance">
+                <table class="summary-table table table-bordered table-balance">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Bags</th>
+                        <th>Packets</th>
+                        <th>KGS</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+    <div class="row summary-row">
+        <div class="col-lg-4">
+            <p class="center">PURCHASE</p>
+            <div class="row summary-row">
+                <table class="summary-table table table-bordered table-purchase">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Bags</th>
+                        <th>Packets</th>
+                        <th>KGS</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <p class="center">PROCESS</p>
+            <div class="row summary-row">
+                <table class="summary-table table table-bordered table-process">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Bags</th>
+                        <th>Packets</th>
+                        <th>KGS</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <p class="center">LOADING</p>
+            <div class="row summary-row">
+                <table class="summary-table table table-bordered table-loading">
                     <thead>
                     <tr>
                         <th></th>

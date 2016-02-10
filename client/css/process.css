@@ -2,18 +2,18 @@
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic);
 /***************** Styles for Header **************************/
 nav.navbar {
-    background-color: #FFF;
+    background-color: #1ABB9C;
     border-radius: 0;
     width: 100%;
     border-width: 0;
-    border-bottom: 1px solid #e7e7e7;
+   /* border-bottom: 1px solid #e7e7e7;*/
     -webkit-box-shadow: 0px 7px 10px 0px rgba(50, 50, 50, 0.25);
     -moz-box-shadow: 0px 7px 10px 0px rgba(50, 50, 50, 0.25);
     box-shadow: 0px 7px 10px 0px rgba(50, 50, 50, 0.25);
 }
 
 .tableContainer {
-
+    background-color:#3CC7AC;
 }
 
 .glyphicon-edit {
@@ -46,10 +46,25 @@ nav.navbar {
 }
 
 .navbar-default .navbar-nav > li > a {
-    color: #506A85;
+    color:#fff;
     text-transform: uppercase;
     font-size: 15px;
     font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .navbar-default .navbar-collapse, .navbar-default .navbar-form {
+        border-color: #e7e7e7;
+        background: #fff;}
+
+}
+@media (max-width: 768px) {
+    .navbar-default .navbar-nav > li > a {
+        color: #1ABB9C;
+        text-transform: uppercase;
+        font-size: 15px;
+        font-weight: bold;
+    }
 }
 
 .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:focus, .navbar-default .navbar-nav > .open > a:hover,
@@ -140,7 +155,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .addonStyle /* it shows style in all  add-on*/
 {
-    background-color: #506A85;
+    background-color: #1ABB9C;
     height: 34px;
     color: white;
     font-weight: bold;
@@ -174,7 +189,7 @@ h1, h2, h3, h4, h5, h6 {
 /**************************** Styles for processlist and puchaselist and sale list*******************/
 .tableHeader /*For background color in header of table*/
 {
-    background-color: #506A85;
+    background-color: #3CC7AC;
     color: white;
 
 }
@@ -204,14 +219,19 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
     text-transform: uppercase;
     color: #FFF;
+    box-shadow: 0px 7px 10px 0px rgba(50, 50, 50, 0.25);
 }
 
 .btn-success {
-    background-color: #3F8DBF;
+    background-color: #3CC7AC;
     border: none;
     font-weight: 500;
     text-transform: uppercase;
     color: #FFF;
+    box-shadow: 0px 7px 10px 0px rgba(50, 50, 50, 0.25);
+}
+.btn-success:hover{
+    background-color: #1ABB9C;
 }
 
 .btn-default.focus,
@@ -229,6 +249,7 @@ h1, h2, h3, h4, h5, h6 {
     background-color: #CC3300;
     color: #FFF;
     border: none;
+    box-shadow: 0px 7px 10px 0px rgba(50, 50, 50, 0.25);
 }
 
 .btn-success.focus,
@@ -243,9 +264,10 @@ h1, h2, h3, h4, h5, h6 {
 .btn-success.active,
 .btn-success:active,
 .btn-success:active:hover {
-    background-color: #3399FF;
+    background-color: #1ABB9C;
     color: #FFF;
     border: none;
+    box-shadow: 0px 7px 10px 0px rgba(50, 50, 50, 0.25);
 }
 
 .table {
@@ -262,8 +284,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    background-color: #000;
-    color: transparent;
+    background-color: #384047;
+   /* color: transparent;*/
     text-shadow: 0px 2px 3px rgba(255, 255, 255, 0.5);
     -webkit-background-clip: text;
     -moz-background-clip: text;

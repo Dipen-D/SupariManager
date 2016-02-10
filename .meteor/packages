@@ -20,4 +20,5 @@ angular@1.3.1
 angularui:angular-ui-router
 accounts-base
 accounts-password
+check
 meteorhacks:aggregate

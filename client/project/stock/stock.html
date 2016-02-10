@@ -1,11 +1,15 @@
 <!-- Begin page content -->
 <div class="container">
     <div class="page-header row">
-        <div class="col-xs-6">
+        <div class="col-xs-12 col-lg-10">
             <h1>Opening Stock</h1>
         </div>
+		 <div class="col-xs-12 col-lg-2 del">
+             <button id="deletebtn" type="submit" class="btn btn-success btn-block btn-block-xs bigFonts"
+                    data-toggle="modal" data-target="" ng-click="delstock()">Delete Stock
+            </button>
+        </div>
     </div>
-
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-lg-4 col-sm-5 col-xs-12">
@@ -79,9 +83,6 @@
             </div>
         </div>
     </div>
-    <hr/>
-
-    <hr/>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <button id="saveBtn" type="submit" class="btn btn-success btn-block btn-block-xs bigFonts"
@@ -107,8 +108,8 @@
                     </tbody>
                 </table>
                 <div class="text-right" >
-                    {{stock.getAdjustment()}}
-                    *Weight loss/gain: {{stock.getAdjustment()}} KG
+                    Total : {{stock.getAdjustment()}} KG
+                   <!-- *Weight loss/gain: {{stock.getAdjustment()}} KG-->
                 </div>
             </div>
             <div class="modal-footer">
@@ -121,6 +122,33 @@
                 <div class="col-xs-6">
                     <button type="button" class="btn btn-success bigFonts process-save" data-dismiss="modal"
                             style="width: 100%;" ng-click="processsave()">
+                        Yes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="delete-modals" class="modal fade" tabindex="-1" role="dialog" aria-hidden="false" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Delete All Entry</h4>
+            </div>
+            <div class="modal-body">
+                Are You Sure ?
+            </div>
+            <div class="modal-footer">
+                <div class="col-xs-6">
+                    <button type="button" class="btn btn-default bigFonts no" data-dismiss="modal" style="width: 100%;">
+                        No
+                    </button>
+                </div>
+                <div class="col-xs-6">
+                    <a class="id hidden"></a>
+                    <button type="button" class="btn btn-success bigFonts yes" data-dismiss="modal"  style="width: 100%;" ng-click="delall()">
                         Yes
                     </button>
                 </div>

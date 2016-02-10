@@ -1,13 +1,29 @@
+PurchaseAccountNames = new Mongo.Collection("PurchaseAccountName");
+SalesAccountNames = new Mongo.Collection("SalesAccountName");
+SupariTypes = new Mongo.Collection("SupariTypeMaster");
+MariTypes = new Mongo.Collection("MariTypeMaster");
+ProductNames = new Mongo.Collection("ProductNameMaster");
+ProductMainTypes = new Mongo.Collection("ProductMainType");
+ProductTypes = new Mongo.Collection("ProductTypeMaster");
+BrandTypes = new Mongo.Collection("BrandName");
+TransportTypes = new Mongo.Collection("TransportType");
+Counters = new Mongo.Collection("Counters");
+Purchase = new Mongo.Collection("Purchase");
+ProcessDetail = new Mongo.Collection("ProcessDetail");
+ProcessList = new Mongo.Collection("ProcessList");
+Process = new Mongo.Collection("Process");
+Sales = new Mongo.Collection("Sales");
+Login = new Mongo.Collection("Login");
+Cookie = new Mongo.Collection("Cookie");
+LoginDetails = new Mongo.Collection("LoginDetails");
+Godowns = new Mongo.Collection("Godowns");
+OpeningStock = new Mongo.Collection("OpeningStock");
+Stock = new Mongo.Collection("Stock");
+OpeningStockForDay = new Mongo.Collection("OpeningStockForDay");
+
 if (Meteor.isServer) {
-
-    /*Meteor.publish("accounts", function () {
-     return AccountNames.find({}, {fields: {name: 1}});
-     });*/
-
     Meteor.startup(function () {
         console.log("-------started-------")
-        //var a = AccountNames.find({},{fields: {'name':1}});
-        //console.log(a);
     });
 
     Meteor.methods({
@@ -109,7 +125,6 @@ if (Meteor.isServer) {
                     Output: datapro.output,
                     Info: data
                 })
-            console.log(id);
         },
         process: function (data, datapro) {
 
@@ -118,7 +133,6 @@ if (Meteor.isServer) {
             var ret = Counters.findOne({_id: "processId"});
             var id = ret.SequenceValue.toString();
             var object = {};
-            console.log(id);
             var final = {
                 _id: id,
                 CreatedDate: datapro.date,
@@ -131,8 +145,6 @@ if (Meteor.isServer) {
                 Output: datapro.output,
                 Info: data
             };
-
-            console.log(final);
             Process.insert(final);
 
         },
@@ -210,7 +222,6 @@ if (Meteor.isServer) {
             var ret = Counters.findOne({_id: "salesId"});
             var id = ret.SequenceValue.toString();
             var object = {};
-            console.log(id);
             var final = {
                 _id: id,
                 CreatedDate: datapro.CreatedDate,
@@ -251,7 +262,6 @@ if (Meteor.isServer) {
             var processlist = Login.findOne({"Pin": x}, {"_id": 0});
             if (processlist != null) {
                 return true;
-                console.log("success");
             }
             else {
                 return false;
@@ -260,43 +270,6 @@ if (Meteor.isServer) {
 
         LoginDetails: function (data) {
             LoginDetails.insert(data);
-        },
-
-        //Get Process summary for Admin
-        getProcessSummaryDate: function (x) {
-            var result = Process.find({"CreatedDate": x}).fetch();
-            return result;
-        },
-
-        //Get Process summary for individual go-down
-        getProcessSummaryDateByGodown: function (date, x) {
-            var result = Process.find({"CreatedDate": date, "Godown": x}).fetch();
-            return result;
-        },
-
-        //Get Process summary for Admin
-        getSalesSummaryDate: function (x) {
-            var result = Sales.find({"CreatedDate": x}).fetch();
-            return result;
-        },
-
-        //Get Process summary for individual go-down
-        getSalesSummaryDateByGodown: function (date, x) {
-            var result = Sales.find({"CreatedDate": date, "Godown": x}).fetch();
-            return result;
-        },
-
-
-        //Get Purchase Summary for admin
-        getPurchaseSummaryDate: function (x) {
-            var result = Purchase.find({"CreatedDate": x}).fetch();
-            return result;
-        },
-
-        //Get Purchase Summary for individual go-dowm
-        getPurchaseSummaryDateByGodown: function (date, x) {
-            var result = Purchase.find({"CreatedDate": date, "Godown": x}).fetch();
-            return result;
         },
 
         //Entering pin decode the go-down
@@ -425,7 +398,6 @@ if (Meteor.isServer) {
                 return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
             }
             var outDate = convertDate(x);
-            console.log(outDate);
             var temp1 = [];
             var temp = [];
             var sum = [];
@@ -443,17 +415,7 @@ if (Meteor.isServer) {
                     _id: {name: "$Info.Subtypename", type: "$Info.detail"},
                     kgs: {$sum: "$Info.weight"}
                 }
-            }])
-            console.log("Sales");
-            console.log(salesObj);
-            /*var openingstock = OpeningStock.aggregate([{$match: {Product: "Supari"}}, {$unwind: '$Info'}, {
-                $group: {
-                    _id: {
-                        name: "$Info.Type",
-                        type: "$Info.Subtypename"
-                    }, kgs: {$sum: "$Info.value"}
-                }
-            }]);*/
+            }]);
             var openingstock = OpeningStockForDay.aggregate([{$match: {Product: "Supari"}}, {$unwind: '$Info'}, {
                 $group: {
                     _id: {
@@ -461,8 +423,6 @@ if (Meteor.isServer) {
                     }, kgs: {$sum: "$Info.value"}
                 }
             }]);
-            console.log("OP");
-            console.log(openingstock);
             var processObj = Process.aggregate([{
                 $match: {
                     Product: "Supari",
@@ -474,24 +434,18 @@ if (Meteor.isServer) {
                     kgs: {$sum: "$Info.value"}
                 }
             }])
-            console.log("Process");
-            console.log(processObj);
             var deductRaw = Process.aggregate([{
                 $match: {
                     Product: "Supari",
                     MongoDate: {$lt: new Date(outDate)}
                 }
             }, {$group: {_id: "$Type", Kgs: {$sum: "$Input"}}}]);
-            console.log("Process-Raw");
-            console.log(deductRaw);
             var purchaseRaw = Purchase.aggregate([{
                 $match: {
                     Type: "Supari",
                     MongoDate: {$lt: new Date(outDate)}
                 }
             }, {$group: {_id: "$ProductTypeAlias", Kgs: {$sum: "$kgs"}}}]);
-            console.log("Purchase");
-            console.log(purchaseRaw);
             purchaseStock.push(purchaseRaw);
             raw.push(deductRaw);
             temp.push(openingstock);
@@ -499,10 +453,8 @@ if (Meteor.isServer) {
             //return temp;
             for (i = 0; i < temp.length; i++) {
                 for (j = 0; j < temp[i].length; j++) {
-                   /* var name = (temp[i][j]._id.name);*/
                     var type = (temp[i][j]._id.type);
                     var kgs = (temp[i][j].kgs);
-                  /*  var dataObj = {Name: name + '-' + type, Kgs: kgs};*/
                      var dataObj = {Name: type, Kgs: kgs};
                     Sums(dataObj, sum);
                 }
@@ -670,7 +622,6 @@ if (Meteor.isServer) {
                     if (list[i].Name === obj.Name) {
                         list[i].Kgs = parseInt(obj.Kgs) + parseInt(list[i].Kgs);
                         found = true;
-                        //return true;
                     }
                 }
                 if (!found) {
@@ -711,7 +662,6 @@ if (Meteor.isServer) {
                     if (list[i].Name === obj.Name) {
                         list[i].Kgs = parseInt(list[i].Kgs) - parseInt(obj.Kgs);
                         found = true;
-                        //return true;
                     }
                 }
                 if (!found) {
@@ -739,14 +689,6 @@ if (Meteor.isServer) {
                     kgs: {$sum: "$Info.weight"}
                 }
             }])
-          /*  var openingstock = OpeningStock.aggregate([{$match: {Product: "Supari"}}, {$unwind: '$Info'}, {
-                $group: {
-                    _id: {
-                        name: "$Info.Type",
-                        type: "$Info.Subtypename"
-                    }, kgs: {$sum: "$Info.value"}
-                }
-            }]);*/
             var openingstock = OpeningStockForDay.aggregate([{$match: {Product: "Supari"}}, {$unwind: '$Info'}, {
                 $group: {
                     _id: {
@@ -771,8 +713,6 @@ if (Meteor.isServer) {
                     MongoDate: {$lte: new Date(outDate)}
                 }
             }, {$group: {_id: "$Type", Kgs: {$sum: "$Input"}}}]);
-            console.log("Process-Raw");
-            console.log(deductRaw);
             var purchaseRaw = Purchase.aggregate([{
                 $match: {
                     Type: "Supari",
@@ -912,21 +852,6 @@ if (Meteor.isServer) {
                     kgs: {$sum: "$Info.weight"}
                 }
             }])
-            console.log("Sales");
-            console.log(salesObj);
-           /* var openingstock = OpeningStock.aggregate([{
-                $match: {
-                    Product: "Supari",
-                    Godown: Godown,
-                }
-            }, {$unwind: '$Info'}, {
-                $group: {
-                    _id: {
-                        name: "$Info.Type",
-                        type: "$Info.Subtypename"
-                    }, kgs: {$sum: "$Info.value"}
-                }
-            }]);*/
             var openingstock = OpeningStockForDay.aggregate([{$match: {Product: "Supari", Godown: Godown}}, {$unwind: '$Info'}, {
                 $group: {
                     _id: {
@@ -934,8 +859,6 @@ if (Meteor.isServer) {
                     }, kgs: {$sum: "$Info.value"}
                 }
             }]);
-            console.log("OP");
-            console.log(openingstock);
             var processObj = Process.aggregate([{
                 $match: {
                     Product: "Supari",
@@ -948,8 +871,6 @@ if (Meteor.isServer) {
                     kgs: {$sum: "$Info.value"}
                 }
             }])
-            console.log("Process");
-            console.log(processObj);
             var deductRaw = Process.aggregate([{
                 $match: {
                     Product: "Supari",
@@ -957,8 +878,6 @@ if (Meteor.isServer) {
                     MongoDate: {$lt: new Date(outDate)}
                 }
             }, {$group: {_id: "$Type", Kgs: {$sum: "$Input"}}}]);
-            console.log("Process-Raw");
-            console.log(deductRaw);
             var purchaseRaw = Purchase.aggregate([{
                 $match: {
                     Type: "Supari",
@@ -966,8 +885,6 @@ if (Meteor.isServer) {
                     MongoDate: {$lt: new Date(outDate)}
                 }
             }, {$group: {_id: "$ProductTypeAlias", Kgs: {$sum: "$kgs"}}}]);
-            console.log("Purchase");
-            console.log(purchaseRaw);
             purchaseStock.push(purchaseRaw);
             raw.push(deductRaw);
             temp.push(openingstock);
@@ -1020,7 +937,6 @@ if (Meteor.isServer) {
             }
             return sum;
         },
-
         getBalanceSheetViaDateForGodown: function (x, Godown) {
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
@@ -1104,21 +1020,6 @@ if (Meteor.isServer) {
                     kgs: {$sum: "$Info.weight"}
                 }
             }])
-            console.log("Sales");
-            console.log(salesObj);
-           /* var openingstocks = OpeningStock.aggregate([{
-                $match: {
-                    Product: "Supari",
-                    Godown: Godown
-                }
-            }, {$unwind: '$Info'}, {
-                $group: {
-                    _id: {
-                        name: "$Info.Type",
-                        type: "$Info.Subtypename"
-                    }, kgs: {$sum: "$Info.value"}
-                }
-            }]);*/
             var openingstocks = OpeningStockForDay.aggregate([{$match: {Product: "Supari", Godown: Godown}}, {$unwind: '$Info'}, {
                 $group: {
                     _id: {
@@ -1126,8 +1027,6 @@ if (Meteor.isServer) {
                     }, kgs: {$sum: "$Info.value"}
                 }
             }]);
-            console.log("OP");
-            console.log(openingstocks);
             var processObj = Process.aggregate([{
                 $match: {
                     Product: "Supari",
@@ -1140,8 +1039,6 @@ if (Meteor.isServer) {
                     kgs: {$sum: "$Info.value"}
                 }
             }])
-            console.log("Process");
-            console.log(processObj);
             var deductRaw = Process.aggregate([{
                 $match: {
                     Product: "Supari",
@@ -1149,8 +1046,6 @@ if (Meteor.isServer) {
                     MongoDate: {$lte: new Date(outDate)}
                 }
             }, {$group: {_id: "$Type", Kgs: {$sum: "$Input"}}}]);
-            console.log("Process-Raw");
-            console.log(deductRaw);
             var purchaseRaw = Purchase.aggregate([{
                 $match: {
                     Type: "Supari",
@@ -1158,57 +1053,10 @@ if (Meteor.isServer) {
                     MongoDate: {$lte: new Date(outDate)}
                 }
             }, {$group: {_id: "$ProductTypeAlias", Kgs: {$sum: "$kgs"}}}]);
-            console.log("Purchase");
-            console.log(purchaseRaw);
             purchaseStock.push(purchaseRaw);
             raw.push(deductRaw);
             temp.push(openingstocks);
             temp1.push(processObj);
-            //return temp;
-            /*for (i = 0; i < temp.length; i++) {
-             for (j = 0; j < temp[i].length; j++) {
-             var name = (temp[i][j]._id.name);
-             var type = (temp[i][j]._id.type);
-             var kgs = (temp[i][j].kgs);
-             var dataObj = {Name: name + '-' + type, Kgs: kgs};
-             Sums(dataObj, sum);
-             }
-             }
-             console.log("SUM of op + process");
-             console.log(sum);
-             sale.push(salesObj);
-             for (i = 0; i < sale.length; i++) {
-             for (j = 0; j < sale[i].length; j++) {
-             var name = (sale[i][j]._id.name);
-             var type = (sale[i][j]._id.type);
-             var kgs = (sale[i][j].kgs);
-             var dataObj = {Name: name + '-' + type, Kgs: kgs};
-             deduce(dataObj, sum);
-             }
-             }
-             console.log("sum of op + process - sales");
-             console.log(sum);
-             for (i = 0; i < raw.length; i++) {
-             for (j = 0; j < raw[i].length; j++) {
-             var name = (raw[i][j]._id);
-             var kgs = (raw[i][j].Kgs);
-             var dataObj = {Name: name + '-'+'Raw', Kgs: kgs};
-             deduce(dataObj, sum);
-             }
-             }
-             console.log("sum of op + process - sales - processraw");
-             console.log(sum);
-             for (i = 0; i < purchaseStock.length; i++) {
-             for (j = 0; j < purchaseStock[i].length; j++) {
-             var name = (purchaseStock[i][j]._id);
-             var kgs = (purchaseStock[i][j].Kgs);
-             var dataObj = {Name: name + '-'+'Raw', Kgs: kgs};
-             Sums(dataObj, sum);
-             }
-             }
-             console.log("sum of op + process - sales - processraw + purchase");
-             console.log(sum);
-             return sum;*/
             for (i = 0; i < temp.length; i++) {
                 for (j = 0; j < temp[i].length; j++) {
                   /*  var name = (temp[i][j]._id.name);*/
@@ -1254,6 +1102,10 @@ if (Meteor.isServer) {
                 }
             }
             return sum;
-        }
+        },
+		deleteAllStock : function(){
+			var deleteAllStock = OpeningStockForDay.remove({});
+			return deleteAllstock;
+		}
     });
 }
