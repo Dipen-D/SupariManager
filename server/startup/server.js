@@ -24,6 +24,7 @@ OpeningStockForDay = new Mongo.Collection("OpeningStockForDay");
 if (Meteor.isServer) {
     Meteor.startup(function () {
         console.log("-------started-------")
+        process.env.MAIL_URL = 'smtp://postmaster%40sandbox7af40b8faa404edeac80024df30c445b.mailgun.org:e3d4aad4b53507080f05eec594a6ef18@smtp.mailgun.org:587';
     });
 
     Meteor.methods({
@@ -1106,6 +1107,16 @@ if (Meteor.isServer) {
 		deleteAllStock : function(){
 			var deleteAllStock = OpeningStockForDay.remove({});
 			return deleteAllstock;
-		}
+		},
+        sendEmail: function (subject,message) {
+            var email = {
+                to: "harsh.makadia@marutitech.com",
+                cc:"dipen.dedania@marutitech.com",
+                from: "supari-manager@meteor.com",
+                subject: "Meteor notification",
+                text: subject+'\n'+message
+            };
+            Email.send(email);
+        }
     });
 }

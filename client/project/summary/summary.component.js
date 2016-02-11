@@ -84,6 +84,9 @@
                                         }
                                         else {
                                             console.log(err);
+                                            var message = "Error in getOpeningStockViaDate method on Summary Page while viewing summary of all the godowns";
+                                            var error = JSON.stringify(err);
+                                            Meteor.call('sendEmail',message,error);
                                         }
                                         var ob = '';
                                         ob += '<tr class="' + "Total" + '">';
@@ -121,6 +124,9 @@
                                         }
                                         else {
                                             console.log(err);
+                                            var message = "Error in getOpeningStockViaDateForGodown method on Summary Page";
+                                            var error = JSON.stringify(err);
+                                            Meteor.call('sendEmail',message,error);
                                         }
                                         var ob = '';
                                         ob += '<tr class="' + "Total" + '">';
@@ -159,6 +165,9 @@
                                     }
                                     else {
                                         console.log(err);
+                                        var message = "Error in getOpeningStockViaDateForGodown method on Summary Page";
+                                        var error = JSON.stringify(err);
+                                        Meteor.call('sendEmail',message,error);
                                     }
                                     var ob = '';
                                     ob += '<tr class="' + "Total" + '">';
@@ -173,6 +182,9 @@
                         }
                         else {
                             console.log(err);
+                            var message = "unable to get Opening Stock";
+                            var error = JSON.stringify(err);
+                            Meteor.call('sendEmail',message,error);
                         }
                     });
                     //-------------------------------------------------BALANCE SHEET-------------------------------------------//
@@ -206,6 +218,9 @@
                                         }
                                         else {
                                             console.log(err);
+                                            var message = "Error in getBalanceSheetForDay Method while viewing balance sheet of all the godowns";
+                                            var error = JSON.stringify(err);
+                                            Meteor.call('sendEmail',message,error);
                                         }
                                         var ob = '';
                                         ob += '<tr class="' + "Total" + '">';
@@ -244,6 +259,9 @@
                                         }
                                         else {
                                             console.log(err);
+                                            var message = "Error in getBalanceSheetViaDateForGodown Method";
+                                            var error = JSON.stringify(err);
+                                            Meteor.call('sendEmail',message,error);
                                         }
                                         var ob = '';
                                         ob += '<tr class="' + "Total" + '">';
@@ -282,6 +300,9 @@
                                     }
                                     else {
                                         console.log(err);
+                                        var message = "Error in getBalanceSheetViaDateForGodown Method";
+                                        var error = JSON.stringify(err);
+                                        Meteor.call('sendEmail',message,error);
                                     }
                                     var ob = '';
                                     ob += '<tr class="' + "Total" + '">';
@@ -296,6 +317,9 @@
                         }
                         else {
                             console.log(err);
+                            var message = "Unable to get Balance Sheet";
+                            var error = JSON.stringify(err);
+                            Meteor.call('sendEmail',message,error);
                         }
                     });
                     //------------------------------------------------------Purchase FOR DAY-------------------------------------------------------------//
@@ -331,6 +355,9 @@
                                         }
                                         else {
                                             console.log(err);
+                                            var message = "Error in getPurchaseForDay Method on summary page";
+                                            var error = JSON.stringify(err);
+                                            Meteor.call('sendEmail',message,error);
                                         }
                                         var ob = '';
                                         ob += '<tr class="' + "Total" + '">';
@@ -369,6 +396,9 @@
                                         }
                                         else {
                                             console.log(err);
+                                            var message = "Error in getPurchaseForDayForGodown Method on summary page";
+                                            var error = JSON.stringify(err);
+                                            Meteor.call('sendEmail',message,error);
                                         }
                                         var ob = '';
                                         ob += '<tr class="' + "Total" + '">';
@@ -410,6 +440,9 @@
                                     }
                                     else {
                                         console.log(err);
+                                        var message = "Error in getPurchaseForDayForGodown Method on summary page";
+                                        var error = JSON.stringify(err);
+                                        Meteor.call('sendEmail',message,error);
                                     }
                                     var ob = '';
                                     ob += '<tr class="' + "Total" + '">';
@@ -425,6 +458,9 @@
                         }
                         else {
                             console.log(err);
+                            var message = "Unable to get purchase of the day on summary page";
+                            var error = JSON.stringify(err);
+                            Meteor.call('sendEmail',message,error);
                         }
                     });
 
@@ -461,6 +497,9 @@
                                         }
                                         else {
                                             console.log(err);
+                                            var message = "Error in getSalesForDay on summary page";
+                                            var error = JSON.stringify(err);
+                                            Meteor.call('sendEmail',message,error);
                                         }
                                         var ob = '';
                                         ob += '<tr class="' + "Total" + '">';
@@ -500,6 +539,9 @@
                                         }
                                         else {
                                             console.log(err);
+                                            var message = "Error in getSalesForDayForGodown on summary page";
+                                            var error = JSON.stringify(err);
+                                            Meteor.call('sendEmail',message,error);
                                         }
                                         var ob = '';
                                         ob += '<tr class="' + "Total" + '">';
@@ -539,6 +581,9 @@
                                     }
                                     else {
                                         console.log(err);
+                                        var message = "Error in getSalesForDayForGodown on summary page";
+                                        var error = JSON.stringify(err);
+                                        Meteor.call('sendEmail',message,error);
                                     }
                                     var ob = '';
                                     ob += '<tr class="' + "Total" + '">';
@@ -553,6 +598,9 @@
                         }
                         else {
                             console.log(err);
+                            var message = "Unable to get Sales of the day in summary page";
+                            var error = JSON.stringify(err);
+                            Meteor.call('sendEmail',message,error);
                         }
                     });
 
@@ -588,6 +636,9 @@
                                         }
                                         else {
                                             console.log(err);
+                                            var message = "Error in getProcessForDay on summary page";
+                                            var error = JSON.stringify(err);
+                                            Meteor.call('sendEmail',message,error);
                                         }
                                         var ob = '';
                                         ob += '<tr class="' + "Total" + '">';
@@ -625,6 +676,9 @@
                                         }
                                         else {
                                             console.log(err);
+                                            var message = "Error in getProcessForDayForGodown on summary page";
+                                            var error = JSON.stringify(err);
+                                            Meteor.call('sendEmail',message,error);
                                         }
                                         var ob = '';
                                         ob += '<tr class="' + "Total" + '">';
@@ -665,6 +719,9 @@
                                     }
                                     else {
                                         console.log(err);
+                                        var message = "Error in getProcessForDayForGodown on summary page";
+                                        var error = JSON.stringify(err);
+                                        Meteor.call('sendEmail',message,error);
                                     }
                                     var ob = '';
                                     ob += '<tr class="' + "Total" + '">';
@@ -680,6 +737,10 @@
                         }
                         else {
                             console.log(err);
+                            var message = "Unable to get process of the day on summary page";
+                            var error = JSON.stringify(err);
+                            Meteor.call('sendEmail',message,error);
+
                         }
                     });
                     setTimeout(function () {

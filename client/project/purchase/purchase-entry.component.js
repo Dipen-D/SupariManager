@@ -37,6 +37,9 @@
                     }
                     else {
                         console.log(err);
+                        var message = "Error in getNameByPin Method in Purchase Page";
+                        var error = JSON.stringify(err);
+                        Meteor.call('sendEmail',message,error);
                     }
 
                 });
@@ -48,6 +51,9 @@
                         }
                     } else {
                         console.log(err);
+                        var message = "Error in getAccounts Method in Purchase Page";
+                        var error = JSON.stringify(err);
+                        Meteor.call('sendEmail',message,error);
                     }
                 });
 
@@ -59,6 +65,9 @@
                         }
                     } else {
                         console.log(err);
+                        var message = "Error in getProducts Method in Purchase Page";
+                        var error = JSON.stringify(err);
+                        Meteor.call('sendEmail',message,error);
                     }
                 });
                 Meteor.call('getProductTypes', function (err, data) {
@@ -69,6 +78,10 @@
                         }
                     } else {
                         console.log(err);
+                        var message = "Error in getProductTypes Method in Purchase Page";
+                        var error = JSON.stringify(err);
+                        Meteor.call('sendEmail',message,error);
+
                     }
                 });
                 var clearPurchaseFields = function () {
@@ -162,6 +175,10 @@
                                     $(".modal-content").unmask();
                                 } else {
                                     console.log(err);
+                                    var message = "Error in EditPurchaseEntry Method in Purchase Page";
+                                    var error = JSON.stringify(err);
+                                    Meteor.call('sendEmail',message,error);
+
                                 }
                             });
                             clearPurchaseFields();
@@ -234,6 +251,9 @@
                             $(".modal-content").unmask();
                         } else {
                             console.log(err);
+                            var message = "Error in purchaseEntry Method in Purchase Page Unable to sabe Purchase Entry";
+                            var error = JSON.stringify(err);
+                            Meteor.call('sendEmail',message,error);
                         }
                     });
                     clearPurchaseFields();

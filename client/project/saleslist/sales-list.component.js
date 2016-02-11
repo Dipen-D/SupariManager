@@ -82,6 +82,9 @@ angular.module('supariApp').directive('salesList', function () {
                                     $('[data-toggle="popover"]').popover();
                                 } else {
                                     console.log(err);
+                                    var message = "Error in getNameByPin Method on Sales List Page";
+                                    var error = JSON.stringify(err);
+                                    Meteor.call('sendEmail',message,error);
                                 }
                             });
                         }
@@ -102,12 +105,18 @@ angular.module('supariApp').directive('salesList', function () {
                                     $('[data-toggle="popover"]').popover();
                                 } else {
                                     console.log(err);
+                                    var message = "Error in getSalesDataByGodown Method on Sales List Page for admin";
+                                    var error = JSON.stringify(err);
+                                    Meteor.call('sendEmail',message,error);
                                 }
                             });
                         }
                     }
                     else {
                         console.log(err);
+                        var message = "Error in access on Sales List Page for admin";
+                        var error = JSON.stringify(err);
+                        Meteor.call('sendEmail',message,error);
                     }
 
                 });
@@ -123,6 +132,9 @@ angular.module('supariApp').directive('salesList', function () {
                                 $scope.updateProcessObj(id);
                             } else {
                                 console.log(err);
+                                var message = "Error in deleteSaleEntry method  on Sales List Page";
+                                var error = JSON.stringify(err);
+                                Meteor.call('sendEmail',message,error);
                             }
                         });
                     });
@@ -138,6 +150,9 @@ angular.module('supariApp').directive('salesList', function () {
                                 $scope.updateProcessObj(id);
                             } else {
                                 console.log(err);
+                                var message = "Error in deleteSaleEntry method  on Sales List Page Mobile view";
+                                var error = JSON.stringify(err);
+                                Meteor.call('sendEmail',message,error);
                             }
                         });
                     });

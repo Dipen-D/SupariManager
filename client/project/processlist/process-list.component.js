@@ -52,6 +52,9 @@ angular.module('supariApp').directive('processList', function () {
                         }
                     } else {
                         console.log(err);
+                        var message = "Error in getAccounts Process-List Page";
+                        var error = JSON.stringify(err);
+                        Meteor.call('sendEmail',message,error);
                     }
                 });
                 var x = getCookie("LoginUser");
@@ -75,6 +78,9 @@ angular.module('supariApp').directive('processList', function () {
                                     $('[data-toggle="popover"]').popover();
                                 } else {
                                     console.log(err);
+                                    var message = "Error in getAccounts Process-List Page for Admin";
+                                    var error = JSON.stringify(err);
+                                    Meteor.call('sendEmail',message,error);
                                 }
                             });
                         }
@@ -95,6 +101,9 @@ angular.module('supariApp').directive('processList', function () {
                                     $('[data-toggle="popover"]').popover();
                                 } else {
                                     console.log(err);
+                                    var message = "Error in getProcessDataByGodown Process-List Page for Admin";
+                                    var error = JSON.stringify(err);
+                                    Meteor.call('sendEmail',message,error);
                                 }
                             });
 
@@ -102,6 +111,9 @@ angular.module('supariApp').directive('processList', function () {
                     }
                     else {
                         console.log(err);
+                        var message = "Error in getProcessDataByGodown Process-List Page";
+                        var error = JSON.stringify(err);
+                        Meteor.call('sendEmail',message,error);
                     }
                 });
                 $scope.delete = function (id) {
@@ -115,6 +127,9 @@ angular.module('supariApp').directive('processList', function () {
                                 $scope.updateProcessObj(id);
                             } else {
                                 console.log(err);
+                                var message = "Error in deleteProcessEntry Method in Process-List Page";
+                                var error = JSON.stringify(err);
+                                Meteor.call('sendEmail',message,error);
                             }
                         });
                     });
@@ -130,6 +145,9 @@ angular.module('supariApp').directive('processList', function () {
                                 $scope.updateProcessObj(id);
                             } else {
                                 console.log(err);
+                                var message = "Error in deleteProcessEntry Method in Process-List Page Mobile View";
+                                var error = JSON.stringify(err);
+                                Meteor.call('sendEmail',message,error);
                             }
                         });
                     });

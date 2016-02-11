@@ -25,7 +25,7 @@ angular.module('supariApp').config(function ($urlRouterProvider, $stateProvider,
                 template: '<sales-list></sales-list>'
             })
             .state('purchaseEntry', {
-                //resolve: {authenticate: authenticate},
+				resolve: {authenticate: authenticate},
                 url: '/purchase',
                 template: '<purchase-entry></purchase-entry>'
 
@@ -55,10 +55,12 @@ angular.module('supariApp').config(function ($urlRouterProvider, $stateProvider,
                 template: '<login-list></login-list>'
             })
              .state('Summary', {
+				resolve: {authenticate: authenticate},
                 url: '/summary',
                 template: '<summary></summary>'
             })
             .state('stock', {
+				resolve: {authenticate: authenticate},
                 url: '/stock',
                 template: '<stock></stock>'
             });

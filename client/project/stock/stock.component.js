@@ -12,9 +12,13 @@
 				$scope.delall = function(){
 					Meteor.call('deleteAllStock', function (err, data) {
                                 if (!err) {
+
                                     
                                 } else {
                                     console.log(err);
+                                    var message = "Opening Stock was Deleted";
+                                    var error = new Date();
+                                    Meteor.call('sendEmail',message,error);
                                 }
                             });
 				}
@@ -45,6 +49,9 @@
                     }
                     else {
                         console.log(err);
+                        var message = " Error in getNameByPin Method on Stock page";
+                        var error = new Date();
+                        Meteor.call('sendEmail',message,error);
                     }
 
                 });
@@ -54,6 +61,9 @@
                         $scope.Stock = data;
                     } else {
                         console.log(err);
+                        var message = " Error in getStock Method on Stock page";
+                        var error = new Date();
+                        Meteor.call('sendEmail',message,error);
                     }
                 });
                 Meteor.call('getProducts', function (err, data) {
@@ -61,6 +71,9 @@
                         $scope.ProductNames = data;
                     } else {
                         console.log(err);
+                        var message = " Error in getProducts Method on Stock page";
+                        var error = new Date();
+                        Meteor.call('sendEmail',message,error);
                     }
                 });
                 Meteor.call('getProductMainTypes', function (err, data) {
@@ -68,13 +81,9 @@
                         $scope.ProductMainTypes = data;
                     } else {
                         console.log(err);
-                    }
-                });
-                Meteor.call('getMariTypes', function (err, data) {
-                    if (!err) {
-                        $scope.MariTypes = data;
-                    } else {
-                        console.log(err);
+                        var message = " Error in getProductMainTypes Method on Stock page";
+                        var error = new Date();
+                        Meteor.call('sendEmail',message,error);
                     }
                 });
 				 var type = $("#product").val();
@@ -218,6 +227,9 @@
                             $(".modal-content").unmask();
                         } else {
                             console.log(err);
+                            var message = " Error in DayStock Method on Stock page While saving opening stock";
+                            var error = new Date();
+                            Meteor.call('sendEmail',message,error);
                         }
                     });
                     resetprocess();

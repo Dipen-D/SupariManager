@@ -34,6 +34,10 @@ angular.module('supariApp').directive('processEntry', function () {
                     }
                     else {
                         console.log(err);
+                        var error = JSON.stringify(err);
+                        var message = "Error in fetching values for Process Entry";
+                        Meteor.call('sendEmail',message,error);
+
                     }
                 });
                 Meteor.call('getSupariTypes', function (err, data) {
@@ -44,6 +48,9 @@ angular.module('supariApp').directive('processEntry', function () {
                         }
                     } else {
                         console.log(err);
+                        var error = JSON.stringify(err);
+                        var message = "Supari Types not found";
+                        Meteor.call('sendEmail',message,error);
                     }
                 });
                 Meteor.call('getProducts', function (err, data) {
@@ -54,6 +61,9 @@ angular.module('supariApp').directive('processEntry', function () {
                         }
                     } else {
                         console.log(err);
+                        var message = "Error in getProducts Method";
+                        var error = JSON.stringify(err);
+                        Meteor.call('sendEmail',message,error);
                     }
                 });
                 Meteor.call('getProductMainTypes', function (err, data) {
@@ -64,16 +74,9 @@ angular.module('supariApp').directive('processEntry', function () {
                         }
                     } else {
                         console.log(err);
-                    }
-                });
-                Meteor.call('getMariTypes', function (err, data) {
-                    if (!err) {
-                        $scope.MariTypes = data;
-                        if (!$scope.$$phase) {
-                            $scope.$digest();
-                        }
-                    } else {
-                        console.log(err);
+                        var message = "Error in getProductMainTypes Method";
+                        var error = JSON.stringify(err);
+                        Meteor.call('sendEmail',message,error);
                     }
                 });
                 var x = $("#datePicker").datepicker({
@@ -264,6 +267,9 @@ angular.module('supariApp').directive('processEntry', function () {
                             }
                         } else {
                             console.log(err);
+                            var message = "Error in While saving edited record in process";
+                            var error = JSON.stringify(err);
+                            Meteor.call('sendEmail',message,error);
                         }
                     });
 
@@ -300,6 +306,9 @@ angular.module('supariApp').directive('processEntry', function () {
                             $(".modal-content").unmask();
                         } else {
                             console.log(err);
+                            var message = "Error in While Saving Record in Process Page";
+                            var error = JSON.stringify(err);
+                            Meteor.call('sendEmail',message,error);
                         }
                     });
 

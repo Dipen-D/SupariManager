@@ -31,6 +31,9 @@
                     }
                     else {
                         console.log(err);
+                        var message = "Error in getNameByPin Method on Sales Page";
+                        var error = JSON.stringify(err);
+                        Meteor.call('sendEmail',message,error);
                     }
                 });
                 Meteor.call('getProductMainTypes', function (err, data) {
@@ -41,6 +44,9 @@
                         }
                     } else {
                         console.log(err);
+                        var message = "Error in getProductMainTypes Method on Sales Page";
+                        var error = JSON.stringify(err);
+                        Meteor.call('sendEmail',message,error);
                     }
                 });
                 Meteor.call('getSalesAccountName', function (err, data) {
@@ -51,6 +57,9 @@
                         }
                     } else {
                         console.log(err);
+                        var message = "Error in getSalesAccountName Method on Sales Page";
+                        var error = JSON.stringify(err);
+                        Meteor.call('sendEmail',message,error);
                     }
                 });
                 Meteor.call('getBrandName', function (err, data) {
@@ -61,6 +70,9 @@
                         }
                     } else {
                         console.log(err);
+                        var message = "Error in getBrandName Method on Sales Page";
+                        var error = JSON.stringify(err);
+                        Meteor.call('sendEmail',message,error);
                     }
                 });
                 Meteor.call('getTransportTypes', function (err, data) {
@@ -71,6 +83,9 @@
                         }
                     } else {
                         console.log(err);
+                        var message = "Error in getTransportTypes Method on Sales Page";
+                        var error = JSON.stringify(err);
+                        Meteor.call('sendEmail',message,error);
                     }
                 });
                 Meteor.call('getProducts', function (err, data) {
@@ -81,6 +96,9 @@
                         }
                     } else {
                         console.log(err);
+                        var message = "Error in getProducts Method on Sales Page";
+                        var error = JSON.stringify(err);
+                        Meteor.call('sendEmail',message,error);
                     }
                 });
                 Meteor.call('getSupariTypes', function (err, data) {
@@ -91,6 +109,10 @@
                         }
                     } else {
                         console.log(err);
+                        var message = "Error in getSupariTypes Method on Sales Page";
+                        var error = JSON.stringify(err);
+                        Meteor.call('sendEmail',message,error);
+
                     }
                 });
                 this.product = "Supari";
@@ -389,6 +411,9 @@
 
                         } else {
                             console.log(err);
+                            var message = "Error in EditSalesEntry Method on Sales Page Unable to save edited record";
+                            var error = JSON.stringify(err);
+                            Meteor.call('sendEmail',message,error);
                         }
                     });
                 }
@@ -419,6 +444,9 @@
                             $(".modal-content").unmask();
                         } else {
                             console.log(err);
+                            var message = "Error in SalesEntry Method on Sales Page Unable to save record";
+                            var error = JSON.stringify(err);
+                            Meteor.call('sendEmail',message,error);
                         }
                     });
                     resetAll();

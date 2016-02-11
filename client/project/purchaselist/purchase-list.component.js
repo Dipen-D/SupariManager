@@ -27,6 +27,9 @@ angular.module('supariApp').directive('purchaseList', function () {
                                     $('[data-toggle="popover"]').popover();
                                 } else {
                                     console.log(err);
+                                    var message = "Error in getPurchaseList Method in Purchase List for Admin";
+                                    var error = JSON.stringify(err);
+                                    Meteor.call('sendEmail',message,error);
                                 }
 
 
@@ -49,6 +52,9 @@ angular.module('supariApp').directive('purchaseList', function () {
                                     $('[data-toggle="popover"]').popover();
                                 } else {
                                     console.log(err);
+                                    var message = "Error in getPurchaseDataByGodown Method in Purchase List for Admin";
+                                    var error = JSON.stringify(err);
+                                    Meteor.call('sendEmail',message,error);
                                 }
 
                             });
@@ -57,6 +63,9 @@ angular.module('supariApp').directive('purchaseList', function () {
                     }
                     else {
                         console.log(err);
+                        var message = "Error in fetching purchase list records for admin";
+                        var error = JSON.stringify(err);
+                        Meteor.call('sendEmail',message,error);
                     }
 
                 });
@@ -124,6 +133,9 @@ angular.module('supariApp').directive('purchaseList', function () {
                                 $scope.updateProcessObj(id);
                             } else {
                                 console.log(err);
+                                var message = "Error in deletePurchaseEntry Method on purchase list";
+                                var error = JSON.stringify(err);
+                                Meteor.call('sendEmail',message,error);
                             }
                             $("html").unmask();
                         });
@@ -142,6 +154,9 @@ angular.module('supariApp').directive('purchaseList', function () {
                                 $scope.updateProcessObj(id);
                             } else {
                                 console.log(err);
+                                var message = "Error in deletePurchaseEntry Method on purchase list for Mobile view";
+                                var error = JSON.stringify(err);
+                                Meteor.call('sendEmail',message,error);
                             }
                             $("html").unmask();
                         });
