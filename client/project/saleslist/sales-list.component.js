@@ -18,15 +18,8 @@ angular.module('supariApp').directive('salesList', function () {
                 }
                 $scope.SaleEntry = function () {
                     $("html").mask("");
-                    setInterval(function () {
                         window.location.href = "/sales";
-                    }, 100);
-                    $("html").mask("");
-                    window.onload = function () {
-                        $("html").unmask();
-                        $("body").show();
                     };
-                }
                 $scope.trim = function (x) {
                     x = x.substring(0, 5);
                     return x;

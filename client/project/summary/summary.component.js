@@ -6,6 +6,7 @@
          controller: function ($scope, $reactive, $meteor, $stateParams) {
                 $("p").hide();
                 $(".table").hide();
+                var admin;
                 function add_commasInAmount(nStr) { //regulerExpression function add coma(,) in price range
                     nStr += '';
                     x = nStr.split('.');
@@ -25,6 +26,7 @@
 
                 $("#datePicker").datepicker({
                     autoclose: true,
+                    format:"dd/mm/yyyy",
                     todayHighlight: true
                 });
                 var x = getCookie("LoginUser");
@@ -49,12 +51,12 @@
                     var date = $("#datePicker").val();
                     var convertDate = function (usDate) {
                         var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-                        return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                        return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
                     }
 
                     var outDate = convertDate(date);
                     //-------------------------------------------------OPP STOCK-------------------------------------------//
-                    Meteor.call('getNameByPin', x, function (err, data) {
+                  Meteor.call('getNameByPin', x, function (err, data) {
 
                         var godownchoice = $("#godown").val();
                         if (!err) {
@@ -62,6 +64,7 @@
                                 $(".table-opening tbody").html('');
                                 if (godownchoice == "All") {
                                     Meteor.call('getOpeningStockViaDate', date, function (err, data) {
+
                                         var bags = 0;
                                         var packets = 0;
                                         var kgs = 0;
@@ -321,9 +324,10 @@
                             var error = JSON.stringify(err);
                             Meteor.call('sendEmail',message,error);
                         }
+
                     });
                     //------------------------------------------------------Purchase FOR DAY-------------------------------------------------------------//
-                    Meteor.call('getNameByPin', x, function (err, data) {
+                   Meteor.call('getNameByPin', x, function (err, data) {
 
                         var godownchoice = $("#godown").val();
                         if (!err) {

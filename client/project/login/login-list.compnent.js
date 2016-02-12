@@ -86,9 +86,9 @@
                                 Meteor.call('LoginDetails', details, function (err, data) {
                                     if (!err) {
                                         console.log("success");
-                                        var message ="Login Details";
+                                       /* var message ="Login Details";
                                         var detail = JSON.stringify(details);
-                                        Meteor.call('sendEmail',message,detail);
+                                        Meteor.call('sendEmail',message,detail);*/
                                     } else {
                                         console.log(err);
                                     }

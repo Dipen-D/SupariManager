@@ -7,7 +7,7 @@
                 $reactive(this).attach($scope);
                 var convertDate = function (usDate) {
                     var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-                    return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                    return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
                 }
 
                 var x = getCookie("LoginUser");
@@ -141,7 +141,7 @@
                           //----------------Date Conversion------------------------//
                             var convertDate = function(usDate) {
                                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-                                return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                                return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
                             }
                             var outDate = convertDate(date);
                             var dates = new Date();
@@ -195,6 +195,7 @@
                 this.product = "Supari";
                 var x = $("#datePicker").datepicker({
                     autoclose: true,
+                    format:"dd/mm/yyyy",
                     todayHighlight: true
                 }).datepicker("setDate", new Date()).val();
                 $scope.datePicker = x;
@@ -230,7 +231,7 @@
                     var date = ($scope.datePicker);
                     var convertDate = function(usDate) {
                         var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-                        return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                        return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
                     }
                     var outDate = convertDate(date);
                     var data = {

@@ -81,6 +81,7 @@ angular.module('supariApp').directive('processEntry', function () {
                 });
                 var x = $("#datePicker").datepicker({
                     autoclose: true,
+                    format:"dd/mm/yyyy",
                     todayHighlight: true
                 }).datepicker("setDate", new Date()).val();
                 $scope.datePicker = x;
@@ -227,7 +228,7 @@ angular.module('supariApp').directive('processEntry', function () {
                                 var date = $("#datePicker").val();
                                 var convertDate = function(usDate) {
                                     var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-                                    return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                                    return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
                                 }
                                 var outDate = convertDate(date);
                                 var product = $("#product").val();
@@ -281,7 +282,7 @@ angular.module('supariApp').directive('processEntry', function () {
                     var date = $("#datePicker").val();
                     var convertDate = function(usDate) {
                         var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-                        return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                        return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
                     }
                     var outDate = convertDate(date);
                     var product = $("#product").val();
@@ -323,7 +324,8 @@ angular.module('supariApp').directive('processEntry', function () {
                         $(this).removeClass("invalidInput");
                     });
                     $('#datePicker').datepicker({
-                        calendarWeeks: true,
+                        autoclose: true,
+                        format: "dd/mm/yyyy",
                         todayHighlight: true
                     });
                 });

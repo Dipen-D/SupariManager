@@ -12,13 +12,13 @@
 				$scope.delall = function(){
 					Meteor.call('deleteAllStock', function (err, data) {
                                 if (!err) {
-
-                                    
-                                } else {
-                                    console.log(err);
                                     var message = "Opening Stock was Deleted";
                                     var error = new Date();
                                     Meteor.call('sendEmail',message,error);
+                                    
+                                } else {
+                                    console.log(err);
+
                                 }
                             });
 				}

@@ -14,10 +14,8 @@ ProcessList = new Mongo.Collection("ProcessList");
 Process = new Mongo.Collection("Process");
 Sales = new Mongo.Collection("Sales");
 Login = new Mongo.Collection("Login");
-Cookie = new Mongo.Collection("Cookie");
 LoginDetails = new Mongo.Collection("LoginDetails");
 Godowns = new Mongo.Collection("Godowns");
-OpeningStock = new Mongo.Collection("OpeningStock");
 Stock = new Mongo.Collection("Stock");
 OpeningStockForDay = new Mongo.Collection("OpeningStockForDay");
 
@@ -396,7 +394,7 @@ if (Meteor.isServer) {
             };
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-                return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
             }
             var outDate = convertDate(x);
             var temp1 = [];
@@ -500,7 +498,7 @@ if (Meteor.isServer) {
         getPurchaseForDay: function (x) {
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-                return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
             }
             var outDate = convertDate(x);
             var Purchaseo = Purchase.aggregate([{
@@ -514,7 +512,7 @@ if (Meteor.isServer) {
         getSalesForDay: function (x) {
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-                return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
             }
             var outDate = convertDate(x);
             var saleData = Sales.aggregate([{
@@ -536,7 +534,7 @@ if (Meteor.isServer) {
         getProcessForDay: function (x) {
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-                return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
             }
             var outDate = convertDate(x);
             var processData = Process.aggregate([{
@@ -555,7 +553,7 @@ if (Meteor.isServer) {
         getPurchaseForDayForGodown: function (x, Godown) {
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-                return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
             }
             var outDate = convertDate(x);
             var Purchaseo = Purchase.aggregate([{
@@ -570,7 +568,7 @@ if (Meteor.isServer) {
         getSalesForDayForGodown: function (x, Godown) {
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-                return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
             }
             var outDate = convertDate(x);
             var saleData = Sales.aggregate([{
@@ -593,7 +591,7 @@ if (Meteor.isServer) {
         getProcessForDayForGodown: function (x, Godown) {
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-                return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
             }
             var outDate = convertDate(x);
             var processData = Process.aggregate([{
@@ -613,7 +611,7 @@ if (Meteor.isServer) {
         getBalanceSheetForDay: function (x) {
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-                return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
             }
             var outDate = convertDate(x);
             var Sums = function (obj, list) {
@@ -773,7 +771,7 @@ if (Meteor.isServer) {
         getOpeningStockViaDateForGodown: function (x, Godown) {
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-                return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
             }
             var outDate = convertDate(x);
             var Sums = function (obj, list) {
@@ -941,7 +939,7 @@ if (Meteor.isServer) {
         getBalanceSheetViaDateForGodown: function (x, Godown) {
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-                return dateParts[3] + "-" + dateParts[1] + "-" + dateParts[2];
+                return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
             }
             var outDate = convertDate(x);
             var Sums = function (obj, list) {
@@ -1105,8 +1103,8 @@ if (Meteor.isServer) {
             return sum;
         },
 		deleteAllStock : function(){
-			var deleteAllStock = OpeningStockForDay.remove({});
-			return deleteAllstock;
+			var sto = OpeningStockForDay.remove({});
+			return true;
 		},
         sendEmail: function (subject,message) {
             var email = {

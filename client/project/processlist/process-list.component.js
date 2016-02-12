@@ -17,14 +17,7 @@ angular.module('supariApp').directive('processList', function () {
                 }
                 $scope.ProcessEntry = function () {
                     $("html").mask("");
-                    setInterval(function () {
                         window.location.href = "/process";
-                    }, 100);
-                    $("html").mask("");
-                    window.onload = function () {
-                        $("html").unmask();
-                        $("body").show();
-                    };
                 }
                 $scope.trim = function (x) {
                     x = x.substring(0, 5);

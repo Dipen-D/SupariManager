@@ -83,20 +83,11 @@ angular.module('supariApp').directive('purchaseList', function () {
                 }
                 $scope.Purchase1 = function () {
                     $("html").mask("");
-                    setInterval(function () {
                         window.location.href = "/purchase";
-                    }, 500);
-                    $("html").mask("");
-                    window.onload = function () {
-                        $("html").unmask();
-                        $("body").show();
-                    };
-
                 }
                 $scope.loader = function (id) {
                     alert(id);
                 }
-
                 $scope.pop = function (x) {
                     var bags = Math.floor(x / 65);
                     var packets = x - Math.floor(x / 65) * 65;
@@ -110,6 +101,14 @@ angular.module('supariApp').directive('purchaseList', function () {
                         return stringObj + '+ ' + packetObj + ' = ' + x;
                     }
                 };
+               /* $scope.trim = function (x) {
+                    var pattern=/(.*?)\/(.*?)\/(.*?)$/;
+                    var result = x.replace(pattern,function(match,p2,p1){
+                        var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                        return (p2<10?p2:p2)+" "+months[(p1-1)];
+                    });
+                    return result;
+                };*/
                 $scope.trim = function (x) {
                     x = x.substring(0, 5);
                     return x;
