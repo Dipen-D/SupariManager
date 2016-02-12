@@ -82,7 +82,6 @@ angular.module('supariApp').directive('purchaseList', function () {
                     return x1 + x2;
                 }
                 $scope.Purchase1 = function () {
-                    $("html").mask("");
                         window.location.href = "/purchase";
                 }
                 $scope.loader = function (id) {

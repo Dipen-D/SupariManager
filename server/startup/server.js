@@ -333,7 +333,7 @@ if (Meteor.isServer) {
             return stock;
         },
 
-        getOpeningStockViaDate: function (x) {
+      /*  getOpeningStockViaDate: function (x) {
             var Sums = function (obj, list) {
                 var i;
                 var found = false;
@@ -494,8 +494,8 @@ if (Meteor.isServer) {
                 }
             }
             return sum;
-        },
-        getPurchaseForDay: function (x) {
+        },*/
+      /*  getPurchaseForDay: function (x) {
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
                 return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
@@ -508,8 +508,8 @@ if (Meteor.isServer) {
                 }
             }, {$group: {_id: "$ProductTypeAlias", Kgs: {$sum: "$kgs"}}}]);
             return Purchaseo;
-        },
-        getSalesForDay: function (x) {
+        },*/
+       /* getSalesForDay: function (x) {
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
                 return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
@@ -530,8 +530,8 @@ if (Meteor.isServer) {
                 }
             }]);
             return saleData;
-        },
-        getProcessForDay: function (x) {
+        },*/
+       /* getProcessForDay: function (x) {
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
                 return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
@@ -549,21 +549,33 @@ if (Meteor.isServer) {
                 }
             }]);
             return processData;
-        },
+        },*/
         getPurchaseForDayForGodown: function (x, Godown) {
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
                 return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
             }
             var outDate = convertDate(x);
-            var Purchaseo = Purchase.aggregate([{
-                $match: {
-                    Type: "Supari",
-                    MongoDate : new Date(outDate),
-                    Godown: Godown
-                }
-            }, {$group: {_id: "$ProductTypeAlias", Kgs: {$sum: "$kgs"}}}]);
-            return Purchaseo;
+            if(Godown == ""){
+                var Purchaseo = Purchase.aggregate([{
+                    $match: {
+                        Type: "Supari",
+                        MongoDate : new Date(outDate)
+                    }
+                }, {$group: {_id: "$ProductTypeAlias", Kgs: {$sum: "$kgs"}}}]);
+                return Purchaseo;
+            }
+            else{
+                var Purchaseo = Purchase.aggregate([{
+                    $match: {
+                        Type: "Supari",
+                        MongoDate : new Date(outDate),
+                        Godown: Godown
+                    }
+                }, {$group: {_id: "$ProductTypeAlias", Kgs: {$sum: "$kgs"}}}]);
+                return Purchaseo;
+            }
+
         },
         getSalesForDayForGodown: function (x, Godown) {
             var convertDate = function(usDate) {
@@ -571,22 +583,42 @@ if (Meteor.isServer) {
                 return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
             }
             var outDate = convertDate(x);
-            var saleData = Sales.aggregate([{
-                $match: {
-                    Product: "Supari",
-                    MongoDate : new Date(outDate),
-                    Godown: Godown
-                }
-            }, {$unwind: '$Info'}, {
-                $group: {
-                    _id: {
-                        name: "$Info.Subtypename",
-                        type: "$Info.detail",
-                        detail: "$Info.brand"
-                    }, Kgs: {$sum: "$Info.weight"}
-                }
-            }]);
-            return saleData;
+            if(Godown == ""){
+                var saleData = Sales.aggregate([{
+                    $match: {
+                        Product: "Supari",
+                        MongoDate : new Date(outDate)
+                    }
+                }, {$unwind: '$Info'}, {
+                    $group: {
+                        _id: {
+                            name: "$Info.Subtypename",
+                            type: "$Info.detail",
+                            detail: "$Info.brand"
+                        }, Kgs: {$sum: "$Info.weight"}
+                    }
+                }]);
+                return saleData;
+            }
+            else{
+                var saleData = Sales.aggregate([{
+                    $match: {
+                        Product: "Supari",
+                        MongoDate : new Date(outDate),
+                        Godown: Godown
+                    }
+                }, {$unwind: '$Info'}, {
+                    $group: {
+                        _id: {
+                            name: "$Info.Subtypename",
+                            type: "$Info.detail",
+                            detail: "$Info.brand"
+                        }, Kgs: {$sum: "$Info.weight"}
+                    }
+                }]);
+                return saleData;
+            }
+
         },
         getProcessForDayForGodown: function (x, Godown) {
             var convertDate = function(usDate) {
@@ -594,21 +626,38 @@ if (Meteor.isServer) {
                 return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
             }
             var outDate = convertDate(x);
-            var processData = Process.aggregate([{
-                $match: {
-                    Product: "Supari",
-                    MongoDate : new Date(outDate),
-                    Godown: Godown
-                }
-            }, {$unwind: '$Info'}, {
-                $group: {
-                    _id: {name: "$Type", type: "$Info.Subtypename"},
-                    Kgs: {$sum: "$Info.value"}
-                }
-            }]);
-            return processData;
+            if(Godown == ""){
+                var processData = Process.aggregate([{
+                    $match: {
+                        Product: "Supari",
+                        MongoDate : new Date(outDate)
+                    }
+                }, {$unwind: '$Info'}, {
+                    $group: {
+                        _id: {name: "$Type", type: "$Info.Subtypename"},
+                        Kgs: {$sum: "$Info.value"}
+                    }
+                }]);
+                return processData;
+            }
+            else{
+                var processData = Process.aggregate([{
+                    $match: {
+                        Product: "Supari",
+                        MongoDate : new Date(outDate),
+                        Godown: Godown
+                    }
+                }, {$unwind: '$Info'}, {
+                    $group: {
+                        _id: {name: "$Type", type: "$Info.Subtypename"},
+                        Kgs: {$sum: "$Info.value"}
+                    }
+                }]);
+                return processData;
+            }
+
         },
-        getBalanceSheetForDay: function (x) {
+       /* getBalanceSheetForDay: function (x) {
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
                 return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
@@ -767,7 +816,8 @@ if (Meteor.isServer) {
                 }
             }
             return sum;
-        },
+        },*/
+
         getOpeningStockViaDateForGodown: function (x, Godown) {
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
@@ -839,103 +889,199 @@ if (Meteor.isServer) {
             var result = [];
             var raw = [];
             var purchaseStock = [];
-            var salesObj = Sales.aggregate([{
-                $match: {
-                    Product: "Supari",
-                    Godown: Godown,
-                    MongoDate: {$lt: new Date(outDate)}
+            if(Godown == ""){
+                var salesObj = Sales.aggregate([{
+                    $match: {
+                        Product: "Supari",
+                        MongoDate: {$lt: new Date(outDate)}
+                    }
+                }, {$unwind: '$Info'}, {
+                    $group: {
+                        _id: {name: "$Info.Subtypename", type: "$Info.detail"},
+                        kgs: {$sum: "$Info.weight"}
+                    }
+                }]);
+                var openingstock = OpeningStockForDay.aggregate([{$match: {Product: "Supari"}}, {$unwind: '$Info'}, {
+                    $group: {
+                        _id: {
+                            type: "$Info.Subtypename"
+                        }, kgs: {$sum: "$Info.value"}
+                    }
+                }]);
+                var processObj = Process.aggregate([{
+                    $match: {
+                        Product: "Supari",
+                        MongoDate: {$lt: new Date(outDate)}
+                    }
+                }, {$unwind: '$Info'}, {
+                    $group: {
+                        _id: {name: "$Type", type: "$Info.Subtypename"},
+                        kgs: {$sum: "$Info.value"}
+                    }
+                }])
+                var deductRaw = Process.aggregate([{
+                    $match: {
+                        Product: "Supari",
+                        MongoDate: {$lt: new Date(outDate)}
+                    }
+                }, {$group: {_id: "$Type", Kgs: {$sum: "$Input"}}}]);
+                var purchaseRaw = Purchase.aggregate([{
+                    $match: {
+                        Type: "Supari",
+                        MongoDate: {$lt: new Date(outDate)}
+                    }
+                }, {$group: {_id: "$ProductTypeAlias", Kgs: {$sum: "$kgs"}}}]);
+                purchaseStock.push(purchaseRaw);
+                raw.push(deductRaw);
+                temp.push(openingstock);
+                temp1.push(processObj);
+                //return temp;
+                for (i = 0; i < temp.length; i++) {
+                    for (j = 0; j < temp[i].length; j++) {
+                        var type = (temp[i][j]._id.type);
+                        var kgs = (temp[i][j].kgs);
+                        var dataObj = {Name: type, Kgs: kgs};
+                        Sums(dataObj, sum);
+                    }
                 }
-            }, {$unwind: '$Info'}, {
-                $group: {
-                    _id: {name: "$Info.Subtypename", type: "$Info.detail"},
-                    kgs: {$sum: "$Info.weight"}
+                for (i = 0; i < purchaseStock.length; i++) {
+                    for (j = 0; j < purchaseStock[i].length; j++) {
+                        var name = (purchaseStock[i][j]._id);
+                        var kgs = (purchaseStock[i][j].Kgs);
+                        var dataObj = {Name: name + '-' + 'Raw', Kgs: kgs};
+                        Sums(dataObj, sum);
+                    }
                 }
-            }])
-            var openingstock = OpeningStockForDay.aggregate([{$match: {Product: "Supari", Godown: Godown}}, {$unwind: '$Info'}, {
-                $group: {
-                    _id: {
-                        type: "$Info.Subtypename"
-                    }, kgs: {$sum: "$Info.value"}
+                for (i = 0; i < temp1.length; i++) {
+                    for (j = 0; j < temp1[i].length; j++) {
+                        var name = (temp1[i][j]._id.name);
+                        var type = (temp1[i][j]._id.type);
+                        var kgs = (temp1[i][j].kgs);
+                        var dataObj = {Name: name + '-' + type, Kgs: kgs};
+                        Sums(dataObj, sum);
+                    }
                 }
-            }]);
-            var processObj = Process.aggregate([{
-                $match: {
-                    Product: "Supari",
-                    Godown: Godown,
-                    MongoDate: {$lt: new Date(outDate)}
+                sale.push(salesObj);
+                for (i = 0; i < sale.length; i++) {
+                    for (j = 0; j < sale[i].length; j++) {
+                        var name = (sale[i][j]._id.name);
+                        var type = (sale[i][j]._id.type);
+                        var kgs = (sale[i][j].kgs);
+                        var dataObj = {Name: name + '-' + type, Kgs: kgs};
+                        deduceminus(dataObj, sum);
+                    }
                 }
-            }, {$unwind: '$Info'}, {
-                $group: {
-                    _id: {name: "$Type", type: "$Info.Subtypename"},
-                    kgs: {$sum: "$Info.value"}
+                for (i = 0; i < raw.length; i++) {
+                    for (j = 0; j < raw[i].length; j++) {
+                        var name = (raw[i][j]._id);
+                        var kgs = (raw[i][j].Kgs);
+                        var dataObj = {Name: name + '-' + 'Raw', Kgs: kgs};
+                        Sumsminus(dataObj, sum);
+                    }
                 }
-            }])
-            var deductRaw = Process.aggregate([{
-                $match: {
-                    Product: "Supari",
-                    Godown: Godown,
-                    MongoDate: {$lt: new Date(outDate)}
-                }
-            }, {$group: {_id: "$Type", Kgs: {$sum: "$Input"}}}]);
-            var purchaseRaw = Purchase.aggregate([{
-                $match: {
-                    Type: "Supari",
-                    Godown: Godown,
-                    MongoDate: {$lt: new Date(outDate)}
-                }
-            }, {$group: {_id: "$ProductTypeAlias", Kgs: {$sum: "$kgs"}}}]);
-            purchaseStock.push(purchaseRaw);
-            raw.push(deductRaw);
-            temp.push(openingstock);
-            temp1.push(processObj);
-            //return temp;
+                return sum;
+            }
+            else{
+                var salesObj = Sales.aggregate([{
+                    $match: {
+                        Product: "Supari",
+                        Godown: Godown,
+                        MongoDate: {$lt: new Date(outDate)}
+                    }
+                }, {$unwind: '$Info'}, {
+                    $group: {
+                        _id: {name: "$Info.Subtypename", type: "$Info.detail"},
+                        kgs: {$sum: "$Info.weight"}
+                    }
+                }])
+                var openingstock = OpeningStockForDay.aggregate([{$match: {Product: "Supari", Godown: Godown}}, {$unwind: '$Info'}, {
+                    $group: {
+                        _id: {
+                            type: "$Info.Subtypename"
+                        }, kgs: {$sum: "$Info.value"}
+                    }
+                }]);
+                var processObj = Process.aggregate([{
+                    $match: {
+                        Product: "Supari",
+                        Godown: Godown,
+                        MongoDate: {$lt: new Date(outDate)}
+                    }
+                }, {$unwind: '$Info'}, {
+                    $group: {
+                        _id: {name: "$Type", type: "$Info.Subtypename"},
+                        kgs: {$sum: "$Info.value"}
+                    }
+                }])
+                var deductRaw = Process.aggregate([{
+                    $match: {
+                        Product: "Supari",
+                        Godown: Godown,
+                        MongoDate: {$lt: new Date(outDate)}
+                    }
+                }, {$group: {_id: "$Type", Kgs: {$sum: "$Input"}}}]);
+                var purchaseRaw = Purchase.aggregate([{
+                    $match: {
+                        Type: "Supari",
+                        Godown: Godown,
+                        MongoDate: {$lt: new Date(outDate)}
+                    }
+                }, {$group: {_id: "$ProductTypeAlias", Kgs: {$sum: "$kgs"}}}]);
+                purchaseStock.push(purchaseRaw);
+                raw.push(deductRaw);
+                temp.push(openingstock);
+                temp1.push(processObj);
+                //return temp;
 
-            for (i = 0; i < temp.length; i++) {
-                for (j = 0; j < temp[i].length; j++) {
-                  /*  var name = (temp[i][j]._id.name);*/
-                    var type = (temp[i][j]._id.type);
-                    var kgs = (temp[i][j].kgs);
-                    var dataObj = {Name: type, Kgs: kgs};
-                    Sums(dataObj, sum);
+                for (i = 0; i < temp.length; i++) {
+                    for (j = 0; j < temp[i].length; j++) {
+                        /*  var name = (temp[i][j]._id.name);*/
+                        var type = (temp[i][j]._id.type);
+                        var kgs = (temp[i][j].kgs);
+                        var dataObj = {Name: type, Kgs: kgs};
+                        Sums(dataObj, sum);
+                    }
                 }
-            }
-            for (i = 0; i < purchaseStock.length; i++) {
-                for (j = 0; j < purchaseStock[i].length; j++) {
-                    var name = (purchaseStock[i][j]._id);
-                    var kgs = (purchaseStock[i][j].Kgs);
-                    var dataObj = {Name: name + '-' + 'Raw', Kgs: kgs};
-                    Sums(dataObj, sum);
+                for (i = 0; i < purchaseStock.length; i++) {
+                    for (j = 0; j < purchaseStock[i].length; j++) {
+                        var name = (purchaseStock[i][j]._id);
+                        var kgs = (purchaseStock[i][j].Kgs);
+                        var dataObj = {Name: name + '-' + 'Raw', Kgs: kgs};
+                        Sums(dataObj, sum);
+                    }
                 }
-            }
-            for (i = 0; i < temp1.length; i++) {
-                for (j = 0; j < temp1[i].length; j++) {
-                    var name = (temp1[i][j]._id.name);
-                    var type = (temp1[i][j]._id.type);
-                    var kgs = (temp1[i][j].kgs);
-                    var dataObj = {Name: name + '-' + type, Kgs: kgs};
-                    Sums(dataObj, sum);
+                for (i = 0; i < temp1.length; i++) {
+                    for (j = 0; j < temp1[i].length; j++) {
+                        var name = (temp1[i][j]._id.name);
+                        var type = (temp1[i][j]._id.type);
+                        var kgs = (temp1[i][j].kgs);
+                        var dataObj = {Name: name + '-' + type, Kgs: kgs};
+                        Sums(dataObj, sum);
+                    }
                 }
-            }
-            sale.push(salesObj);
-            for (i = 0; i < sale.length; i++) {
-                for (j = 0; j < sale[i].length; j++) {
-                    var name = (sale[i][j]._id.name);
-                    var type = (sale[i][j]._id.type);
-                    var kgs = (sale[i][j].kgs);
-                    var dataObj = {Name: name + '-' + type, Kgs: kgs};
-                    deduceminus(dataObj, sum);
+                sale.push(salesObj);
+                for (i = 0; i < sale.length; i++) {
+                    for (j = 0; j < sale[i].length; j++) {
+                        var name = (sale[i][j]._id.name);
+                        var type = (sale[i][j]._id.type);
+                        var kgs = (sale[i][j].kgs);
+                        var dataObj = {Name: name + '-' + type, Kgs: kgs};
+                        deduceminus(dataObj, sum);
+                    }
                 }
-            }
-            for (i = 0; i < raw.length; i++) {
-                for (j = 0; j < raw[i].length; j++) {
-                    var name = (raw[i][j]._id);
-                    var kgs = (raw[i][j].Kgs);
-                    var dataObj = {Name: name + '-' + 'Raw', Kgs: kgs};
-                    Sumsminus(dataObj, sum);
+                for (i = 0; i < raw.length; i++) {
+                    for (j = 0; j < raw[i].length; j++) {
+                        var name = (raw[i][j]._id);
+                        var kgs = (raw[i][j].Kgs);
+                        var dataObj = {Name: name + '-' + 'Raw', Kgs: kgs};
+                        Sumsminus(dataObj, sum);
+                    }
                 }
+                return sum;
             }
-            return sum;
+
         },
+
         getBalanceSheetViaDateForGodown: function (x, Godown) {
             var convertDate = function(usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
@@ -1007,100 +1153,196 @@ if (Meteor.isServer) {
             var result = [];
             var raw = [];
             var purchaseStock = [];
-            var salesObj = Sales.aggregate([{
-                $match: {
-                    Product: "Supari",
-                    Godown: Godown,
-                    MongoDate: {$lte: new Date(outDate)}
+            if(Godown == "") {
+
+                var salesObj = Sales.aggregate([{
+                    $match: {
+                        Product: "Supari",
+                        MongoDate: {$lte: new Date(outDate)}
+                    }
+                }, {$unwind: '$Info'}, {
+                    $group: {
+                        _id: {name: "$Info.Subtypename", type: "$Info.detail"},
+                        kgs: {$sum: "$Info.weight"}
+                    }
+                }])
+                var openingstock = OpeningStockForDay.aggregate([{$match: {Product: "Supari"}}, {$unwind: '$Info'}, {
+                    $group: {
+                        _id: {
+                            type: "$Info.Subtypename"
+                        }, kgs: {$sum: "$Info.value"}
+                    }
+                }]);
+                var processObj = Process.aggregate([{
+                    $match: {
+                        Product: "Supari",
+                        MongoDate: {$lte: new Date(outDate)}
+                    }
+                }, {$unwind: '$Info'}, {
+                    $group: {
+                        _id: {name: "$Type", type: "$Info.Subtypename"},
+                        kgs: {$sum: "$Info.value"}
+                    }
+                }])
+                var deductRaw = Process.aggregate([{
+                    $match: {
+                        Product: "Supari",
+                        MongoDate: {$lte: new Date(outDate)}
+                    }
+                }, {$group: {_id: "$Type", Kgs: {$sum: "$Input"}}}]);
+                var purchaseRaw = Purchase.aggregate([{
+                    $match: {
+                        Type: "Supari",
+                        MongoDate: {$lte: new Date(outDate)}
+                    }
+                }, {$group: {_id: "$ProductTypeAlias", Kgs: {$sum: "$kgs"}}}]);
+                purchaseStock.push(purchaseRaw);
+                raw.push(deductRaw);
+                temp.push(openingstock);
+                temp1.push(processObj);
+                //return temp;
+                for (i = 0; i < temp.length; i++) {
+                    for (j = 0; j < temp[i].length; j++) {
+                        var type = (temp[i][j]._id.type);
+                        var kgs = (temp[i][j].kgs);
+                        var dataObj = {Name: type, Kgs: kgs};
+                        Sums(dataObj, sum);
+                    }
                 }
-            }, {$unwind: '$Info'}, {
-                $group: {
-                    _id: {name: "$Info.Subtypename", type: "$Info.detail"},
-                    kgs: {$sum: "$Info.weight"}
+                for (i = 0; i < purchaseStock.length; i++) {
+                    for (j = 0; j < purchaseStock[i].length; j++) {
+                        var name = (purchaseStock[i][j]._id);
+                        var kgs = (purchaseStock[i][j].Kgs);
+                        var dataObj = {Name: name + '-' + 'Raw', Kgs: kgs};
+                        Sums(dataObj, sum);
+                    }
                 }
-            }])
-            var openingstocks = OpeningStockForDay.aggregate([{$match: {Product: "Supari", Godown: Godown}}, {$unwind: '$Info'}, {
-                $group: {
-                    _id: {
-                        type: "$Info.Subtypename"
-                    }, kgs: {$sum: "$Info.value"}
+                for (i = 0; i < temp1.length; i++) {
+                    for (j = 0; j < temp1[i].length; j++) {
+                        var name = (temp1[i][j]._id.name);
+                        var type = (temp1[i][j]._id.type);
+                        var kgs = (temp1[i][j].kgs);
+                        var dataObj = {Name: name + '-' + type, Kgs: kgs};
+                        Sums(dataObj, sum);
+                    }
                 }
-            }]);
-            var processObj = Process.aggregate([{
-                $match: {
-                    Product: "Supari",
-                    Godown: Godown,
-                    MongoDate: {$lte: new Date(outDate)}
+                sale.push(salesObj);
+                for (i = 0; i < sale.length; i++) {
+                    for (j = 0; j < sale[i].length; j++) {
+                        var name = (sale[i][j]._id.name);
+                        var type = (sale[i][j]._id.type);
+                        var kgs = (sale[i][j].kgs);
+                        var dataObj = {Name: name + '-' + type, Kgs: kgs};
+                        deduceminus(dataObj, sum);
+                    }
                 }
-            }, {$unwind: '$Info'}, {
-                $group: {
-                    _id: {name: "$Type", type: "$Info.Subtypename"},
-                    kgs: {$sum: "$Info.value"}
+                for (i = 0; i < raw.length; i++) {
+                    for (j = 0; j < raw[i].length; j++) {
+                        var name = (raw[i][j]._id);
+                        var kgs = (raw[i][j].Kgs);
+                        var dataObj = {Name: name + '-' + 'Raw', Kgs: kgs};
+                        Sumsminus(dataObj, sum);
+                    }
                 }
-            }])
-            var deductRaw = Process.aggregate([{
-                $match: {
-                    Product: "Supari",
-                    Godown: Godown,
-                    MongoDate: {$lte: new Date(outDate)}
-                }
-            }, {$group: {_id: "$Type", Kgs: {$sum: "$Input"}}}]);
-            var purchaseRaw = Purchase.aggregate([{
-                $match: {
-                    Type: "Supari",
-                    Godown: Godown,
-                    MongoDate: {$lte: new Date(outDate)}
-                }
-            }, {$group: {_id: "$ProductTypeAlias", Kgs: {$sum: "$kgs"}}}]);
-            purchaseStock.push(purchaseRaw);
-            raw.push(deductRaw);
-            temp.push(openingstocks);
-            temp1.push(processObj);
-            for (i = 0; i < temp.length; i++) {
-                for (j = 0; j < temp[i].length; j++) {
-                  /*  var name = (temp[i][j]._id.name);*/
-                    var type = (temp[i][j]._id.type);
-                    var kgs = (temp[i][j].kgs);
-                    var dataObj = {Name: type, Kgs: kgs};
-                    Sums(dataObj, sum);
-                }
+                return sum;
             }
-            for (i = 0; i < purchaseStock.length; i++) {
-                for (j = 0; j < purchaseStock[i].length; j++) {
-                    var name = (purchaseStock[i][j]._id);
-                    var kgs = (purchaseStock[i][j].Kgs);
-                    var dataObj = {Name: name + '-' + 'Raw', Kgs: kgs};
-                    Sums(dataObj, sum);
+            else{
+                var salesObj = Sales.aggregate([{
+                    $match: {
+                        Product: "Supari",
+                        Godown: Godown,
+                        MongoDate: {$lte: new Date(outDate)}
+                    }
+                }, {$unwind: '$Info'}, {
+                    $group: {
+                        _id: {name: "$Info.Subtypename", type: "$Info.detail"},
+                        kgs: {$sum: "$Info.weight"}
+                    }
+                }])
+                var openingstocks = OpeningStockForDay.aggregate([{$match: {Product: "Supari", Godown: Godown}}, {$unwind: '$Info'}, {
+                    $group: {
+                        _id: {
+                            type: "$Info.Subtypename"
+                        }, kgs: {$sum: "$Info.value"}
+                    }
+                }]);
+                var processObj = Process.aggregate([{
+                    $match: {
+                        Product: "Supari",
+                        Godown: Godown,
+                        MongoDate: {$lte: new Date(outDate)}
+                    }
+                }, {$unwind: '$Info'}, {
+                    $group: {
+                        _id: {name: "$Type", type: "$Info.Subtypename"},
+                        kgs: {$sum: "$Info.value"}
+                    }
+                }])
+                var deductRaw = Process.aggregate([{
+                    $match: {
+                        Product: "Supari",
+                        Godown: Godown,
+                        MongoDate: {$lte: new Date(outDate)}
+                    }
+                }, {$group: {_id: "$Type", Kgs: {$sum: "$Input"}}}]);
+                var purchaseRaw = Purchase.aggregate([{
+                    $match: {
+                        Type: "Supari",
+                        Godown: Godown,
+                        MongoDate: {$lte: new Date(outDate)}
+                    }
+                }, {$group: {_id: "$ProductTypeAlias", Kgs: {$sum: "$kgs"}}}]);
+                purchaseStock.push(purchaseRaw);
+                raw.push(deductRaw);
+                temp.push(openingstocks);
+                temp1.push(processObj);
+                for (i = 0; i < temp.length; i++) {
+                    for (j = 0; j < temp[i].length; j++) {
+                        /*  var name = (temp[i][j]._id.name);*/
+                        var type = (temp[i][j]._id.type);
+                        var kgs = (temp[i][j].kgs);
+                        var dataObj = {Name: type, Kgs: kgs};
+                        Sums(dataObj, sum);
+                    }
                 }
-            }
-            for (i = 0; i < temp1.length; i++) {
-                for (j = 0; j < temp1[i].length; j++) {
-                    var name = (temp1[i][j]._id.name);
-                    var type = (temp1[i][j]._id.type);
-                    var kgs = (temp1[i][j].kgs);
-                    var dataObj = {Name: name + '-' + type, Kgs: kgs};
-                    Sums(dataObj, sum);
+                for (i = 0; i < purchaseStock.length; i++) {
+                    for (j = 0; j < purchaseStock[i].length; j++) {
+                        var name = (purchaseStock[i][j]._id);
+                        var kgs = (purchaseStock[i][j].Kgs);
+                        var dataObj = {Name: name + '-' + 'Raw', Kgs: kgs};
+                        Sums(dataObj, sum);
+                    }
                 }
-            }
-            sale.push(salesObj);
-            for (i = 0; i < sale.length; i++) {
-                for (j = 0; j < sale[i].length; j++) {
-                    var name = (sale[i][j]._id.name);
-                    var type = (sale[i][j]._id.type);
-                    var kgs = (sale[i][j].kgs);
-                    var dataObj = {Name: name + '-' + type, Kgs: kgs};
-                    deduceminus(dataObj, sum);
+                for (i = 0; i < temp1.length; i++) {
+                    for (j = 0; j < temp1[i].length; j++) {
+                        var name = (temp1[i][j]._id.name);
+                        var type = (temp1[i][j]._id.type);
+                        var kgs = (temp1[i][j].kgs);
+                        var dataObj = {Name: name + '-' + type, Kgs: kgs};
+                        Sums(dataObj, sum);
+                    }
                 }
-            }
-            for (i = 0; i < raw.length; i++) {
-                for (j = 0; j < raw[i].length; j++) {
-                    var name = (raw[i][j]._id);
-                    var kgs = (raw[i][j].Kgs);
-                    var dataObj = {Name: name + '-' + 'Raw', Kgs: kgs};
-                    Sumsminus(dataObj, sum);
+                sale.push(salesObj);
+                for (i = 0; i < sale.length; i++) {
+                    for (j = 0; j < sale[i].length; j++) {
+                        var name = (sale[i][j]._id.name);
+                        var type = (sale[i][j]._id.type);
+                        var kgs = (sale[i][j].kgs);
+                        var dataObj = {Name: name + '-' + type, Kgs: kgs};
+                        deduceminus(dataObj, sum);
+                    }
                 }
+                for (i = 0; i < raw.length; i++) {
+                    for (j = 0; j < raw[i].length; j++) {
+                        var name = (raw[i][j]._id);
+                        var kgs = (raw[i][j].Kgs);
+                        var dataObj = {Name: name + '-' + 'Raw', Kgs: kgs};
+                        Sumsminus(dataObj, sum);
+                    }
+                }
+                return sum;
             }
-            return sum;
+
         },
 		deleteAllStock : function(){
 			var sto = OpeningStockForDay.remove({});

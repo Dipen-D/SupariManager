@@ -17,7 +17,6 @@ angular.module('supariApp').directive('salesList', function () {
                     return x1 + x2;
                 }
                 $scope.SaleEntry = function () {
-                    $("html").mask("");
                         window.location.href = "/sales";
                     };
                 $scope.trim = function (x) {

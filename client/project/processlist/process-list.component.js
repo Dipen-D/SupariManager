@@ -16,7 +16,6 @@ angular.module('supariApp').directive('processList', function () {
                     return x1 + x2;
                 }
                 $scope.ProcessEntry = function () {
-                    $("html").mask("");
                         window.location.href = "/process";
                 }
                 $scope.trim = function (x) {
