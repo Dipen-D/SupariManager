@@ -259,7 +259,6 @@
                     });
                     clearPurchaseFields();
                     $("html").mask("");
-                    $("html").mask("");
                     setTimeout(function () {
                         window.location.href = "/purchaselist";
                         $("html").unmask("");

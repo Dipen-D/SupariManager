@@ -204,6 +204,7 @@
                 };
                 var resetprocess = function () {
                     $("#type").val('');
+                    $("#godown").val('');
                     $("#rawMaterialBags,#rawMaterialPackets,#RawBags").val('');
                     $("#Mari1Bags,#Mari2Bags,#Mari2Packets,#Mari1Packets").val('');
                     $("#GFBags,#GFPackets,#JFBags,#JFPackets,#JamBags,#JamPackets,#JiniBags,#JiniPackets,#LindiBags,#LindiPackets,#MFBags,#MFPackets,#MMFBags,#MMFPackets,#MoroBags,#MoroPackets,#MotiBags,#MotiPackets,#RFBags,#RFPackets,#SFBags,#SFPackets,#SevarBags,#SevarPackets").val('');
