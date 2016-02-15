@@ -54,8 +54,27 @@ if (Meteor.isServer) {
             return maritypes;
         },
         getSalesAccountName: function () {
-            var salesaccoutname = SalesAccountNames.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
+           // var salesaccoutname = SalesAccountNames.find({},{fields: {'Name': 1, '_id': 0}}).fetch();
+            var sort_fields = {'Name':1};
+            var projection = {'Name':1,'_id':1};
+            return SalesAccountNames.find({},{fields: projection, sort:sort_fields}).fetch();
+           // return salesaccoutname;
+        },
+
+        getSalesAccountNameAddParty: function () {
+            var salesaccoutname = SalesAccountNames.find({}, {fields: {'Name': 1, '_id': 1}}).fetch();
             return salesaccoutname;
+        },
+        DeleteSalesAccountParty: function(id){
+            SalesAccountNames.remove({
+                _id: id
+            });
+        },
+        AddNewSalesAccountparty : function(name){
+            SalesAccountNames.insert({
+
+                "Name":name
+            })
         },
         getBrandName: function () {
             var brandname = BrandTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();

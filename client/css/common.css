@@ -385,3 +385,7 @@ a.redirected {
 
     width: 100%;
 }
+.whitespace{
+    white-space: nowrap;
+    overflow: hidden;
+}

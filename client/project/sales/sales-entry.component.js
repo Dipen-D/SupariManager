@@ -484,9 +484,9 @@
                     });
                     deleteItemDesktopsalesEntry();
 
-                    $('#accountName').on('change', function () {
+                  /*  $('#accountName').on('change', function () {
                         resetAll();
-                    });
+                    });*/
                     //Swipe to delete
                     $('.item-swipe').swipeTo({
                         minSwipe: 50,

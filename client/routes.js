@@ -63,6 +63,11 @@ angular.module('supariApp').config(function ($urlRouterProvider, $stateProvider,
 				resolve: {authenticate: authenticate},
                 url: '/stock',
                 template: '<stock></stock>'
+            })
+            .state('salesparty', {
+                resolve: {authenticate: authenticate},
+                url: '/salesparty',
+                template: '<salesparty></salesparty>'
             });
 
         $urlRouterProvider.otherwise("/loginlist");

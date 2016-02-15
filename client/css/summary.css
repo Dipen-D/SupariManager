@@ -74,3 +74,7 @@ input#datePicker {
 .summary-table {
     box-shadow: 0px 7px 10px 0px rgba(50, 50, 50, 0.25)
 }
+
+#account{
+    width:96%;
+}
