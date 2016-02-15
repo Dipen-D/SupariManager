@@ -25,6 +25,7 @@ angular.module('supariApp').directive('processEntry', function () {
                             });
                             $("#godown").removeClass("hidden");
                             $(".stock").removeClass("hidden");
+                            $(".salesparty").removeClass("hidden");
                         }
                         else {
                             var godown = data[0].Name;

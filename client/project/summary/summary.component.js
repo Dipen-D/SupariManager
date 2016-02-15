@@ -290,6 +290,7 @@ angular.module('supariApp').directive('summary', function () {
                     if(data[0].Name == "Admin"){
                         $("#godown").removeClass("hidden");
                         $(".stock").removeClass("hidden");
+                        $(".salesparty").removeClass("hidden");
                     }
 
                 }

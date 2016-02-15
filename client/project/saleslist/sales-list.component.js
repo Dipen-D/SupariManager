@@ -58,6 +58,7 @@ angular.module('supariApp').directive('salesList', function () {
                     if (!err) {
                         if (data[0].Name == "Admin") {
                             $(".stock").removeClass("hidden");
+                            $(".salesparty").removeClass("hidden");
                             Meteor.call('getSalesList', function (err, data) {
                                 if (!err) {
                                     $scope.Sales = data;

@@ -5,6 +5,7 @@ angular.module('supariApp').directive('salesparty', function () {
         controllerAs: 'salesparty',
         controller: function ($scope, $reactive, $meteor, $stateParams) {
             $reactive(this).attach($scope);
+            $(".stock").removeClass("hidden");
 
             $scope.predicate = 'Name';
             $scope.reverse = true;
@@ -12,9 +13,7 @@ angular.module('supariApp').directive('salesparty', function () {
                 $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
                 $scope.predicate = predicate;
             }
-
             Meteor.call('getSalesAccountNameAddParty', function (err, data) {
-
                 if (!err) {
                     $scope.Sales = data;
                     console.log(data);
@@ -25,9 +24,10 @@ angular.module('supariApp').directive('salesparty', function () {
                     console.log(err);
                     var message = "Error in getPurchaseList Method in Purchase List for Admin";
                     var error = JSON.stringify(err);
-                    Meteor.call('sendEmail',message,error);
+                    Meteor.call('sendEmail', message, error);
                 }
             });
+
             $scope.delete = function (id) {
                 $("#delete-modal").modal('show');
                     $scope.confirm = function(){

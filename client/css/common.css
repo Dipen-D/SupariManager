@@ -389,3 +389,19 @@ a.redirected {
     white-space: nowrap;
     overflow: hidden;
 }
+.align-right{
+    text-align: right;
+}
+@media (max-width: 768px) {
+    .align-right {
+        text-align: left;
+    }
+}
+.margin-left{
+    margin-left: -6px;
+}
+@media (max-width: 768px) {
+    .margin-left{
+        margin-left: 0px;
+    }
+}

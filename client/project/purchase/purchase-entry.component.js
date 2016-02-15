@@ -26,6 +26,7 @@
                             });
                             $("#selectGodown").removeClass("hidden");
                             $(".stock").removeClass("hidden");
+                            $(".salesparty").removeClass("hidden");
 
                         }
                         else {
