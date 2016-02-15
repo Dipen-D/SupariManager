@@ -182,7 +182,8 @@ if (Meteor.isServer) {
                     'PurchaseAccountName': 1,
                     kgs: 1,
                     '_id': 1,
-                    'ProductType': 1
+                    'ProductType': 1,
+                    'MongoDate':1
                 }
             }).fetch();
             return purchaselist;
@@ -204,7 +205,8 @@ if (Meteor.isServer) {
                     'Product': 1,
                     Input: 1,
                     '_id': 1,
-                    'Output': 1
+                    'Output': 1,
+                    'MongoDate':1
                 }
             }).fetch();
             return processlist;
@@ -262,7 +264,8 @@ if (Meteor.isServer) {
                     'salesAccountName': 1,
                     'TransportName': 1,
                     'TotalBags': 1,
-                    '_id': 1
+                    '_id': 1,
+                    'MongoDate':1
                 }
             }).fetch();
             return sale;

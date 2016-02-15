@@ -6,6 +6,7 @@ angular.module('supariApp').directive('salesparty', function () {
         controller: function ($scope, $reactive, $meteor, $stateParams) {
             $reactive(this).attach($scope);
             $(".stock").removeClass("hidden");
+            $(".salesparty").removeClass("hidden");
 
             $scope.predicate = 'Name';
             $scope.reverse = true;
