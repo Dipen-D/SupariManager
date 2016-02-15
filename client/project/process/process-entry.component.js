@@ -260,12 +260,7 @@ angular.module('supariApp').directive('processEntry', function () {
                                         console.log(err);
                                     }
                                 });
-
-                                $("html").mask("");
-                                setTimeout(function () {
                                     window.location.href = "/processlist";
-                                    $("html").unmask("");
-                                }, 199);
                             }
                         } else {
                             console.log(err);
@@ -314,11 +309,7 @@ angular.module('supariApp').directive('processEntry', function () {
                         }
                     });
 
-                    $("html").mask("");
-                    setTimeout(function () {
                         window.location.href = "/processlist";
-                        $("html").unmask("");
-                    }, 199);
                 }
                 $(document).ready(function () {
                     $('select').on('change', function () {

@@ -33,9 +33,7 @@ angular.module('supariApp').directive('salesList', function () {
               };
                 $scope.load = function (id) {
                     $("html").mask("");
-                    setInterval(function () {
                         window.location.href = '/sales/' + id;
-                    }, 500);
                     window.onload = function () {
                         $("html").unmask();
                         $("body").show();

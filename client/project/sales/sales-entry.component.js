@@ -404,11 +404,7 @@
                                 });
                                 resetAll();
                                 clearAllFields();
-                                $("html").mask("");
-                                setTimeout(function () {
                                     window.location.href = "/saleslist";
-                                    $("html").unmask("");
-                                }, 199);
                             }
 
                         } else {
@@ -454,10 +450,7 @@
                     resetAll();
                     clearAllFields();
                     $("html").mask("");
-                    setTimeout(function () {
                         window.location.href = "/saleslist";
-                        $("html").unmask("");
-                    }, 199);
                 }
                 $(document).ready(function () {
                     $('#add').click(function () {

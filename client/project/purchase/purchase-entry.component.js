@@ -184,11 +184,7 @@
                             });
                             clearPurchaseFields();
                             $("#summary-modal").modal('hide');
-                            $("html").mask("");
-                            setTimeout(function () {
                                 window.location.href = "/purchaselist";
-                                $("html").unmask("");
-                            }, 199);
                         }
                     });
 
@@ -259,11 +255,7 @@
                         }
                     });
                     clearPurchaseFields();
-                    $("html").mask("");
-                    setTimeout(function () {
                         window.location.href = "/purchaselist";
-                        $("html").unmask("");
-                    }, 199);
                 }
                 $(document).ready(function () {
 

@@ -72,7 +72,6 @@ if (Meteor.isServer) {
         },
         AddNewSalesAccountparty : function(name){
             SalesAccountNames.insert({
-
                 "Name":name
             })
         },
@@ -81,8 +80,11 @@ if (Meteor.isServer) {
             return brandname;
         },
         getTransportTypes: function () {
-            var transportname = TransportTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
-            return transportname;
+            //var transportname = TransportTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
+           // return transportname;
+            var sort_fields = {'Name':1};
+            var projection = {'Name':1,'_id':1};
+            return TransportTypes.find({},{fields: projection, sort:sort_fields}).fetch();
         },
         getGodown: function () {
             var godown = Godowns.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();

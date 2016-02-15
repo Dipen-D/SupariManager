@@ -93,12 +93,7 @@
                                         console.log(err);
                                     }
                                 });
-                                $("html").mask("");
-                                setTimeout(function () {
-                                    window.location.href = "/purchase";
-                                    //$("html").unmask("");
-                                }, 299);
-
+                                    window.location.href = "/summary";
                             }
                             else {
                                 window.location.href = "https://www.google.co.in/";
