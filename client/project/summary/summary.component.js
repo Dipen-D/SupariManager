@@ -77,6 +77,7 @@ angular.module('supariApp').directive('summary', function () {
                                     $(".table-opening").find("td:nth-child(4)").eq(i).closest('tr').hide();
                                 }
                             }
+                            $('#open').tablesorter({sortList: [[0, 0]]});
                         });
 
                         $(".table-balance tbody").html('');
@@ -126,6 +127,8 @@ angular.module('supariApp').directive('summary', function () {
                                     $(".table-balance").find("td:nth-child(4)").eq(i).closest('tr').hide();
                                 }
                             }
+                            $('#balance').tablesorter({sortList: [[0, 0]]});
+
                         });
 
                         $(".table-process tbody").html('');
@@ -316,7 +319,6 @@ angular.module('supariApp').directive('summary', function () {
                 var godownchoice = $("#godown").val();
                 fill(x,date,godownchoice);
             }
-
         }
 
     }

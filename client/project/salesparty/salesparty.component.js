@@ -5,6 +5,7 @@ angular.module('supariApp').directive('salesparty', function () {
         controllerAs: 'salesparty',
         controller: function ($scope, $reactive, $meteor, $stateParams) {
             $reactive(this).attach($scope);
+
             var x = getCookie("LoginUser");
             Meteor.call('getNameByPin', x, function (err, data) {
                 if (!err) {

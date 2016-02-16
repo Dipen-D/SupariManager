@@ -68,7 +68,6 @@ angular.module('supariApp').directive('salesList', function () {
                             Meteor.call('getSalesList', function (err, data) {
                                 if (!err) {
                                     $scope.Sales = data;
-                                    console.log(data);
                                     if (!$scope.$$phase) {
                                         $scope.$digest();
                                     }
