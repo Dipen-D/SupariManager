@@ -5,9 +5,19 @@ angular.module('supariApp').directive('salesparty', function () {
         controllerAs: 'salesparty',
         controller: function ($scope, $reactive, $meteor, $stateParams) {
             $reactive(this).attach($scope);
+            var x = getCookie("LoginUser");
+            Meteor.call('getNameByPin', x, function (err, data) {
+                if (!err) {
+                    if (data[0].Name == "Admin") {
+
+                    }
+                    else{
+                        window.location.href="/loginlist";
+                    }
+                }
+            });
             $(".stock").removeClass("hidden");
             $(".salesparty").removeClass("hidden");
-
             $scope.predicate = 'Name';
             $scope.reverse = true;
             $scope.order = function (predicate) {

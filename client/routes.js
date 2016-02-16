@@ -79,10 +79,10 @@ angular.module('supariApp').config(function ($urlRouterProvider, $stateProvider,
                     window.location.href = "/loginlist";
                     Meteor.call('getAccess', x, function (err, data) {
                         if (!err) {
-                            if (!(data == true)) {
-                                //location.href.replace(/^(?:\/\/|[^\/]+)*\//, "") != "/loginlist";
-                                window.location.href = "/loginlist";
-                            }
+                                if (!(data == true)) {
+                                    //location.href.replace(/^(?:\/\/|[^\/]+)*\//, "") != "/loginlist";
+                                    window.location.href = "/loginlist";
+                                }
                         }
                     });
         }

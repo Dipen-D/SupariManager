@@ -103,6 +103,15 @@
                         Meteor.call('sendEmail',message,error);
                     }
                 });
+                Meteor.call(' Tagad', function (err, data) {
+                    if (!err) {
+                        $scope.Tagad = data;
+                        console.log(data);
+                        if (!$scope.$$phase) {
+                            $scope.$digest();
+                        }
+                    }
+                });
                 Meteor.call('getSupariTypes', function (err, data) {
                     if (!err) {
                         $scope.SupariTypes = data;
@@ -420,7 +429,7 @@
                         }
                     });
                 }
-                
+
                 $scope.salesave = function () {
 
 

@@ -5,6 +5,17 @@
             controllerAs: 'stock',
             controller: function ($scope, $reactive, $meteor, $stateParams) {
                 $reactive(this).attach($scope);
+                var x = getCookie("LoginUser");
+                Meteor.call('getNameByPin', x, function (err, data) {
+                    if (!err) {
+                        if (data[0].Name == "Admin") {
+
+                        }
+                        else{
+                            window.location.href="/loginlist";
+                        }
+                    }
+                });
 				
 				$scope.delstock = function () {
 					$("#delete-modals").modal("show");

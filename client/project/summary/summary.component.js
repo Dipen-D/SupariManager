@@ -18,11 +18,18 @@ angular.module('supariApp').directive('summary', function () {
                         if ($("#godown").is(":visible") == false) {
                             godownchoice = data[0].Name;
                         }
-                        else if ($("#godown").is(":visible") == true && $("#godown").val() == "All") {
+                        else if ($("#godown").is(":visible") == true && $("#godown").val() == "All" && data[0].Name =="Admin") {
                             godownchoice = '';
                         }
-                        else {
-                            godownchoice = $("#godown").val();
+                        else if($("#godown").is(":visible") == true && data[0].Name =="Admin"){
+                            if($("#godown").val() == "Balaji"||$("#godown").val() == "Vittal"||$("#godown").val() == "Moodabidri"){
+                                godownchoice = $("#godown").val();
+                            }
+
+                        }
+                        else
+                        {
+                            godownchoice = data[0].Name;
                         }
 
                         //-----------GET OPENING STOCK VIA DATE -------------------------------------------------------------------------//

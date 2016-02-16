@@ -23,6 +23,8 @@ if (Meteor.isServer) {
     Meteor.startup(function () {
         console.log("-------started-------")
         process.env.MAIL_URL = 'smtp://postmaster%40sandbox7af40b8faa404edeac80024df30c445b.mailgun.org:e3d4aad4b53507080f05eec594a6ef18@smtp.mailgun.org:587';
+            var sample = SalesAccountNames.find({},{fields:{'Name':1,'Tagad':1,'_id':0}}).fetch();
+            console.log(sample);
     });
 
     Meteor.methods({
@@ -229,6 +231,13 @@ if (Meteor.isServer) {
         },
 
         EditSalesEntry: function (data, datapro, id) {
+            var sample = SalesAccountNames.find({},{fields:{'Name':1,'Tagad':1,'_id':0}}).fetch();
+            var Original;
+            for(i=0;i<sample.length;i++){
+                if(sample[i].Tagad == datapro.salesAccountName){
+                    Original=  sample[i].Name
+                }
+            }
             Sales.update({_id: id},
                 {
                     CreatedDate: datapro.CreatedDate,
@@ -240,11 +249,19 @@ if (Meteor.isServer) {
                     Godown: datapro.Godown,
                     TotalBags: datapro.TotalBags,
                     Memo:data.memo,
+                    RealSalesAccountName:Original,
                     Info: data
                 })
 
         },
         SalesEntry: function (data, datapro) {
+            var sample = SalesAccountNames.find({},{fields:{'Name':1,'Tagad':1,'_id':0}}).fetch();
+            var Original;
+            for(i=0;i<sample.length;i++){
+                if(sample[i].Tagad == datapro.salesAccountName){
+                    Original=  sample[i].Name
+                }
+            }
             var _id;
             Counters.update({_id: "salesId"}, {$inc: {SequenceValue: 1}});
             var ret = Counters.findOne({_id: "salesId"});
@@ -261,8 +278,7 @@ if (Meteor.isServer) {
                 Godown: datapro.Godown,
                 TotalBags: datapro.TotalBags,
                 Memo:datapro.memo,
-                names:datapro.names,
-
+                RealSalesAccountName:Original,
                 Info: data
             };
             Sales.insert(final);
@@ -276,7 +292,8 @@ if (Meteor.isServer) {
                     'TransportName': 1,
                     'TotalBags': 1,
                     '_id': 1,
-                    'MongoDate':1
+                    'MongoDate':1,
+                    'RealSalesAccountName':1
                 }
             }).fetch();
             return sale;
