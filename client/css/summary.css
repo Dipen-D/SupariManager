@@ -75,11 +75,15 @@ input#datePicker {
     box-shadow: 0px 7px 10px 0px rgba(50, 50, 50, 0.25)
 }
 
-#account{
+#account,#tagad{
     width:96%;
 }
 @media (max-width:768px){
     #account{
         width:92%;
     }
+}
+
+.padding-zero{
+    padding-left:0px;
 }

@@ -6,6 +6,7 @@
             controller: function ($scope, $reactive, $meteor, $stateParams) {
                 $reactive(this).attach($scope);
                 var salesDetail = [];
+                var names;
                 var x = getCookie("LoginUser");
                 Meteor.call('getNameByPin', x, function (err, data) {
                     if (!err) {
@@ -352,6 +353,7 @@
                             for (i = 0; i < salesData.length; i++) {
                                 $("#accountName").val(salesData[i].salesAccountName);
                                 $("#transportName").val(salesData[i].TransportName);
+                                $(".memo").val(salesData[i].Memo);
                                 $("#product").val(salesData[i].Product);
                                 $scope.salesEntry.godown = salesData[i].Godown;
                                 $("#datePicker").val(salesData[i].CreatedDate);
@@ -370,12 +372,14 @@
                             console.log(salesData);
                             fillRecieptHtml();
                             $scope.salesave = function () {
+
                                 var date = $("#datePicker").val();
                                 var convertDate = function(usDate) {
                                     var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
                                     return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
                                 }
                                 var outDate = convertDate(date);
+                                var memo = $(".memo").val();
                                 var salesAccountName = $('#accountName').val();
                                 var transportName = $('#transportName').val();
                                 var product = $('#product').val();
@@ -393,7 +397,8 @@
                                     Product: product,
                                     Godown: godown,
                                     TotalBags: totalbags,
-                                    mdate: mdate
+                                    mdate: mdate,
+                                    memo:memo
                                 }
                                 Meteor.call('EditSalesEntry', salesDetail, po, id, function (err, data) {
                                     if (!err) {
@@ -415,18 +420,23 @@
                         }
                     });
                 }
+                
                 $scope.salesave = function () {
+
+
                     var date = $("#datePicker").val();
                     var convertDate = function(usDate) {
                         var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
                         return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
                     }
+                    var memo = $(".memo").val();
                     var outDate = convertDate(date);
                     var salesAccountName = $('#accountName').val();
                     var transportName = $('#transportName').val();
                     var product = $('#product').val();
                     var godown = $("#godown").val();
                     var totalbags = parseInt($('#tbags').text());
+
                     var data = {
                         _id: "0",
                         CreatedDate: date,
@@ -435,7 +445,9 @@
                         TransportName: transportName,
                         Product: product,
                         Godown: godown,
-                        TotalBags: totalbags
+                        TotalBags: totalbags,
+                        memo:memo,
+                        names:names
                     }
                     Meteor.call('SalesEntry', salesDetail, data, function (err, data) {
                         if (!err) {

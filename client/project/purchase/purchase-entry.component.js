@@ -117,6 +117,7 @@
                                 $scope.datePicker = data[0].CreatedDate;
                                 var name = data[0].PurchaseAccountName;
                                 $scope.AccountName = name;
+                                $scope.memo = data[0].Memo;
                                 $scope.type = data[0].ProductType
                                 $("#selectType").val(data[0].Type);
                                 $scope.godowns = data[0].Godown;
@@ -214,6 +215,7 @@
                     var bags = $scope.getValidValue($scope.bagsinput);
                     var packets = $scope.getValidValue($scope.packetsinput);
                     var kgs = bags * 65 + packets;
+                    var memo =$(".memo").val();
                     var ProductTypeAlias;
                     if (producttype == "C2" || producttype == "C3" || producttype == "CX") {
                         var productTypeAlias = "C";
@@ -230,6 +232,7 @@
                         var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
                         return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
                     }
+
                     var outDate = convertDate(date);
                     var data = {
                         _id: "0",
@@ -242,7 +245,8 @@
                         bags: bags,
                         packets: packets,
                         producttype: producttype,
-                        productTypeAlias: productTypeAlias
+                        productTypeAlias: productTypeAlias,
+                        memo:memo
                     }
                     Meteor.call('purchaseEntry', data, function (err, data) {
                         if (!err) {

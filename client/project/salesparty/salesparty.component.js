@@ -57,9 +57,11 @@ angular.module('supariApp').directive('salesparty', function () {
             $scope.create = function(){
                 $("#salesparty-modals").modal("show");
                     var name = $("#account").val();
+                    var tagad = $("#tagad").val();
                     $scope.add = function(name){
                         var name = $("#account").val();
-                        Meteor.call('AddNewSalesAccountparty', name, function (err, data) {
+                        var tagad = $("#tagad").val();
+                        Meteor.call('AddNewSalesAccountparty', name,tagad, function (err, data) {
                             if (!err) {
                                 $("html").mask("");
                                 location.reload();

@@ -26,8 +26,9 @@
                 <select id="accountName" class="bigFonts" style="width: 100%;" ng-model="salesEntry.accountName">
                     <option value="">Select an account</option>
                     <option ng-repeat="sales in SalesAccountNames"
-                            value="{{sales.Name}}">
-                        {{sales.Name}}
+                            value="{{sales.Tagad}}">
+                        {{sales.Tagad}}
+
                     </option>
                 </select>
                 <div>
@@ -109,6 +110,11 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <button id="add" type="button" class="btn btn-success addBtn btn-block btn-block-xs bigFonts" ng-click="form()">Add
                 </button>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12 col-lg-6 col-xs-12">
+                <textarea type="text" class="memo" placeholder="Memo" ng-model="memo"></textarea>
             </div>
         </div>
 

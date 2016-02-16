@@ -18,10 +18,18 @@
             <tr>
                 <td>
 
-                    <div class="col-xs-8 col-lg-10 col-md-10 heading-date headerStyle">
-                        <b class="date-heading" ng-click="order('Name')">Account Name </b><span class="sortorder"
+                    <div class="col-xs-5 col-lg-6 col-md-6 heading-date headerStyle">
+                        <b class="date-heading" ng-click="order('Name')">Name </b><span class="sortorder"
                                                                                               ng-show="predicate === 'Name'"
                                                                                               ng-class="{reverse:reverse}"></span>
+                    </div>
+                </td>
+                <td>
+
+                    <div class="col-xs-3 col-lg-4 col-md-4 heading-date headerStyle">
+                        <b class="date-heading" ng-click="order('Tagad')">Tagad </b><span class="sortorder"
+                                                                                                ng-show="predicate === 'Tagad'"
+                                                                                                ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
                 <td>
@@ -37,9 +45,14 @@
     <div class="list" ng-repeat="user in Sales |  orderBy:predicate:reverse">
         <div class="item">
             <div class="item-swipe bigFonts">
-                <div class="col-xs-8 col-lg-11 col-md-11">
+                <div class="col-xs-5 col-lg-6 col-md-6">
                     <div class="wrap">
                         <span class="row1 date-content date">{{user.Name}} </span>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-lg-5 col-md-5">
+                    <div class="wrap">
+                        <span class="row1 date-content date">{{user.Tagad}} </span>
                     </div>
                 </div>
                 <div class="col-xs-4 col-lg-1 col-md-1" ng-click="delete(user._id)">
@@ -62,6 +75,10 @@
             <div class="modal-body">
                 <span class="glyphicon glyphicon-user"></span>
                 <input type="text" id="account" placeholder="Enter Account Name">
+                <br>
+                <br>
+                <span class="  glyphicon glyphicon-pushpin"></span>
+                <input type="text" id="tagad" placeholder="Enter Tagad Name">
             </div>
             <div class="modal-footer">
                 <div class="col-xs-6">

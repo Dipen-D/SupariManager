@@ -405,3 +405,8 @@ a.redirected {
         margin-left: 0px;
     }
 }
+
+.memo{
+    width:100%;
+    height:120px;
+}

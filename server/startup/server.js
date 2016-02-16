@@ -56,13 +56,13 @@ if (Meteor.isServer) {
         getSalesAccountName: function () {
            // var salesaccoutname = SalesAccountNames.find({},{fields: {'Name': 1, '_id': 0}}).fetch();
             var sort_fields = {'Name':1};
-            var projection = {'Name':1,'_id':1};
+            var projection = {'Name':1,'_id':1,'Tagad':1};
             return SalesAccountNames.find({},{fields: projection, sort:sort_fields}).fetch();
            // return salesaccoutname;
         },
 
         getSalesAccountNameAddParty: function () {
-            var salesaccoutname = SalesAccountNames.find({}, {fields: {'Name': 1, '_id': 1}}).fetch();
+            var salesaccoutname = SalesAccountNames.find({}, {fields: {'Name': 1,'Tagad':1, '_id': 1}}).fetch();
             return salesaccoutname;
         },
         DeleteSalesAccountParty: function(id){
@@ -70,9 +70,10 @@ if (Meteor.isServer) {
                 _id: id
             });
         },
-        AddNewSalesAccountparty : function(name){
+        AddNewSalesAccountparty : function(name,tagad){
             SalesAccountNames.insert({
-                "Name":name
+                "Name":name,
+                "Tagad":tagad
             })
         },
         getBrandName: function () {
@@ -111,7 +112,8 @@ if (Meteor.isServer) {
                 ProductTypeAlias: data.productTypeAlias,
                 Bags: data.bags,
                 Packets: data.packets,
-                kgs: data.kgs
+                kgs: data.kgs,
+                Memo: data.memo
             });
 
         },
@@ -128,7 +130,8 @@ if (Meteor.isServer) {
                     ProductTypeAlias: data.productTypeAlias,
                     Bags: data.bags,
                     Packets: data.packets,
-                    kgs: data.kgs
+                    kgs: data.kgs,
+                    Memo: data.memo
                 })
 
         },
@@ -143,6 +146,7 @@ if (Meteor.isServer) {
                     Type: datapro.type,
                     Input: datapro.input,
                     Output: datapro.output,
+                    Memo :datapro.memo,
                     Info: data
                 })
         },
@@ -163,6 +167,7 @@ if (Meteor.isServer) {
                 Type: datapro.type,
                 Input: datapro.input,
                 Output: datapro.output,
+                Memo: datapro.memo,
                 Info: data
             };
             Process.insert(final);
@@ -234,6 +239,7 @@ if (Meteor.isServer) {
                     Product: datapro.Product,
                     Godown: datapro.Godown,
                     TotalBags: datapro.TotalBags,
+                    Memo:data.memo,
                     Info: data
                 })
 
@@ -254,6 +260,9 @@ if (Meteor.isServer) {
                 Product: datapro.Product,
                 Godown: datapro.Godown,
                 TotalBags: datapro.TotalBags,
+                Memo:datapro.memo,
+                names:datapro.names,
+
                 Info: data
             };
             Sales.insert(final);
@@ -1003,6 +1012,10 @@ if (Meteor.isServer) {
                 text: subject+'\n'+message
             };
             Email.send(email);
+        },
+        decodeName :function(x){
+            var name = SalesAccountNames.find({"Tagad":x}, {fields: {'Name': 1, '_id': 0}}).fetch();
+            return name;
         }
     });
 }

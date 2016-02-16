@@ -213,6 +213,7 @@ angular.module('supariApp').directive('processEntry', function () {
                             for (i = 0; i < data.length; i++) {
                                 $("#product").val(data[0].Product).change();
                                 $scope.processEntry.godown = data[0].Godown;
+                                $scope.memo = data[0].Memo;
                                 $("#type").val(data[0].Type);
                                 $("#rawMaterialBags").val(Math.floor(data[0].Input / 65)).change();
                                 $("#rawMaterialPackets").val(data[0].Input - parseInt(Math.floor(data[0].Input / 65) * 65)).change();
@@ -232,6 +233,7 @@ angular.module('supariApp').directive('processEntry', function () {
                                     return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
                                 }
                                 var outDate = convertDate(date);
+                                var memo = $(".memo").val();
                                 var product = $("#product").val();
                                 var godown = $("#godown").val();
                                 var type = $("#type").val();
@@ -251,7 +253,8 @@ angular.module('supariApp').directive('processEntry', function () {
                                     godown: godown,
                                     type: type,
                                     input: input,
-                                    output: output
+                                    output: output,
+                                    memo:memo
                                 };
                                 Meteor.call('EditProcessEntry', processDetail, po, id, function (err, data) {
                                     if (!err) {
@@ -281,6 +284,7 @@ angular.module('supariApp').directive('processEntry', function () {
                         return dateParts[3] + "-" + dateParts[2] + "-" + dateParts[1];
                     }
                     var outDate = convertDate(date);
+                    var memo = $(".memo").val();
                     var product = $("#product").val();
                     var godown = $("#godown").val();
                     var type = $("#type").val();
@@ -296,7 +300,8 @@ angular.module('supariApp').directive('processEntry', function () {
                         godown: godown,
                         type: type,
                         input: input,
-                        output: output
+                        output: output,
+                        memo:memo
                     }
                     Meteor.call('process', processDetail, pro, function (err, data) {
                         if (!err) {
