@@ -24,7 +24,6 @@ if (Meteor.isServer) {
         console.log("-------started-------")
         process.env.MAIL_URL = 'smtp://postmaster%40sandbox7af40b8faa404edeac80024df30c445b.mailgun.org:e3d4aad4b53507080f05eec594a6ef18@smtp.mailgun.org:587';
             var sample = SalesAccountNames.find({},{fields:{'Name':1,'Tagad':1,'_id':0}}).fetch();
-            console.log(sample);
     });
 
     Meteor.methods({
@@ -248,7 +247,7 @@ if (Meteor.isServer) {
                     Product: datapro.Product,
                     Godown: datapro.Godown,
                     TotalBags: datapro.TotalBags,
-                    Memo:data.memo,
+                    Memo:datapro.memo,
                     RealSalesAccountName:Original,
                     Info: data
                 })

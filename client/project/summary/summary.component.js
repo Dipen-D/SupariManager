@@ -77,7 +77,14 @@ angular.module('supariApp').directive('summary', function () {
                                     $(".table-opening").find("td:nth-child(4)").eq(i).closest('tr').hide();
                                 }
                             }
-                            $('#open').tablesorter({sortList: [[0, 0]]});
+                            $('#open')
+                                .unbind('appendCache applyWidgetId applyWidgets sorton update updateCell')
+                                .removeClass('tablesorter')
+                                .find('thead th')
+                                .unbind('click mousedown')
+                                .removeClass('header headerSortDown headerSortUp');
+                            $("#open").tablesorter({sortList: [[0,0]]});
+
                         });
 
                         $(".table-balance tbody").html('');
@@ -119,6 +126,7 @@ angular.module('supariApp').directive('summary', function () {
                             ob += '<td>' + add_commasInAmount(kgs) + '</td>';
                             ob += '</tr>';
                             $(".table-balance tbody").append(ob);
+
                             for (i = 0; i < $(".table-balance tbody tr").length; i++) {
                                 if (parseInt($(".table-balance").find("td:nth-child(4)").eq(i).text()) < 0) {
                                     $(".table-balance").find("td:nth-child(4)").eq(i).closest('tr').addClass('alertStock');
@@ -127,7 +135,13 @@ angular.module('supariApp').directive('summary', function () {
                                     $(".table-balance").find("td:nth-child(4)").eq(i).closest('tr').hide();
                                 }
                             }
-                            $('#balance').tablesorter({sortList: [[0, 0]]});
+                            $('#balance')
+                                .unbind('appendCache applyWidgetId applyWidgets sorton update updateCell')
+                                .removeClass('tablesorter')
+                                .find('thead th')
+                                .unbind('click mousedown')
+                                .removeClass('header headerSortDown headerSortUp');
+                            $("#balance").tablesorter({sortList: [[0,0]]});
 
                         });
 
@@ -319,7 +333,6 @@ angular.module('supariApp').directive('summary', function () {
                 var godownchoice = $("#godown").val();
                 fill(x,date,godownchoice);
             }
-
         }
 
     }
