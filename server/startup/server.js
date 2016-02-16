@@ -57,7 +57,7 @@ if (Meteor.isServer) {
         },
         getSalesAccountName: function () {
            // var salesaccoutname = SalesAccountNames.find({},{fields: {'Name': 1, '_id': 0}}).fetch();
-            var sort_fields = {'Name':1};
+            var sort_fields = {'Tagad':1};
             var projection = {'Name':1,'_id':1,'Tagad':1};
             return SalesAccountNames.find({},{fields: projection, sort:sort_fields}).fetch();
            // return salesaccoutname;
