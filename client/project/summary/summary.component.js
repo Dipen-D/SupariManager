@@ -319,6 +319,7 @@ angular.module('supariApp').directive('summary', function () {
                 var godownchoice = $("#godown").val();
                 fill(x,date,godownchoice);
             }
+
         }
 
     }
