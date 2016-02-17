@@ -79,7 +79,7 @@ input#datePicker {
     width:96%;
 }
 @media (max-width:768px){
-    #account{
+    #account,#tagad{
         width:92%;
     }
 }

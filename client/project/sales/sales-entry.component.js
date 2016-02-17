@@ -106,7 +106,6 @@
                 Meteor.call(' Tagad', function (err, data) {
                     if (!err) {
                         $scope.Tagad = data;
-                        console.log(data);
                         if (!$scope.$$phase) {
                             $scope.$digest();
                         }
@@ -334,11 +333,12 @@
 
                 var deleteItemDesktopsalesEntry = function () {
                     $('body').on('click tap', '.delete-salesEntry', function (e) {
-                        // e.preventDefault();
+                       //  e.preventDefault();
                         var that = $(this);
-                        var index = $(this).parent().parent().index();
+                        /*var index = $(this).parent().parent().index();*/
+                        var index = that.parent().parent().parent().index();
                         if (index > -1) {
-                            data.splice(index, 1);
+                            data.splice(index-1, 1);
                         }
                         if ($('.list').length > 2) {
                             that.parent().parent().remove();
@@ -378,7 +378,6 @@
 
 
                             }
-                            console.log(salesData);
                             fillRecieptHtml();
                             $scope.salesave = function () {
 
@@ -518,15 +517,16 @@
                     $('body').on('click tap', '.mobile-sales-delete', function (e) {
                         // e.preventDefault();
                         var that = $(this);
-                        var index = $(this).parent().parent().parent().index();
+                       /* var index = $(this).parent().index();*/
+                        var index = that.parent().parent().parent().parent().index();
                         if (index > -1) {
-                            data.splice(index, 1);
+                            data.splice(index-1, 1);
                         }
                         if ($('.list').length > 2) {
-                            that.parent().parent().parent().remove()
+                            that.parent().parent().parent().remove();
                         }
                         else {
-                            that.parent().parent().parent().remove()
+                            that.parent().parent().parent().remove();
                             $('.recieptContainer').hide();
                             $('#saveBtnsales').hide();
                         }

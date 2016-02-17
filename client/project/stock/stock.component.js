@@ -13,7 +13,6 @@
                         }
                         else{
                             window.location.href="/loginlist";
-                            setCookie("LoginUser", "", -1);
                         }
                     }
                 });

@@ -26,14 +26,14 @@
                 </td>
                 <td>
 
-                    <div class="col-xs-3 col-lg-4 col-md-4 heading-date headerStyle">
+                    <div class="col-xs-4 col-lg-4 col-md-4 heading-date headerStyle">
                         <b class="date-heading" ng-click="order('Tagad')">Tagad </b><span class="sortorder"
                                                                                                 ng-show="predicate === 'Tagad'"
                                                                                                 ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
                 <td>
-                    <div class="col-xs-4 col-lg-2 col-md-2 headerStyle align-right margin-left">
+                    <div class="col-xs-3 col-lg-2 col-md-2 headerStyle align-right margin-left">
                         <b>Delete</b>
                     </div>
                 </td>
@@ -49,12 +49,12 @@
                         <span class="row1 date-content date">{{user.Name}} </span>
                     </div>
                 </div>
-                <div class="col-xs-3 col-lg-5 col-md-5">
+                <div class="col-xs-4 col-lg-5 col-md-5">
                     <div class="wrap">
                         <span class="row1 date-content date">{{user.Tagad}} </span>
                     </div>
                 </div>
-                <div class="col-xs-4 col-lg-1 col-md-1" ng-click="delete(user._id)">
+                <div class="col-xs-3 col-lg-1 col-md-1" ng-click="delete(user._id)">
                     <div class="wrap">
                         <a class="id hidden">{{user._id}}</a>
                         <a class="delete" href='#'><span class='glyphicon glyphicon-trash'></span></a>

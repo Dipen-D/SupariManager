@@ -14,7 +14,7 @@ angular.module('supariApp').directive('salesparty', function () {
                     }
                     else{
                         window.location.href="/loginlist";
-                        setCookie("LoginUser", "", -1);
+
                     }
                 }
             });
