@@ -1032,6 +1032,15 @@ if (Meteor.isServer) {
         decodeName :function(x){
             var name = SalesAccountNames.find({"Tagad":x}, {fields: {'Name': 1, '_id': 0}}).fetch();
             return name;
+        },
+        CheckForDuplicateAccount:function(name,tagad){
+            var x  = SalesAccountNames.find({$or:[ { Name:name},{ Tagad:tagad}]}).fetch();
+            return x ;
+
+        },
+        CheckForTransactionBeforeDelete : function(name){
+            var x = Sales.find({"RealSalesAccountName":name}).fetch();
+            return x;
         }
     });
 }

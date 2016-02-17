@@ -4,6 +4,16 @@ angular.module('supariApp').directive('summary', function () {
         templateUrl: 'client/project/summary/summary.html',
         controllerAs: 'summary',
         controller: function ($scope, $reactive, $meteor, $stateParams) {
+            Meteor.call('getGodown', function (err, data) {
+                if (!err) {
+                    $scope.Godowns = data;
+                    if (!$scope.$$phase) {
+                        $scope.$digest();
+                    }
+                } else {
+                    console.log(err);
+                }
+            });
             var date = $("#datePicker").val();
             var convertDate = function (usDate) {
                 var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
@@ -18,11 +28,11 @@ angular.module('supariApp').directive('summary', function () {
                         if ($("#godown").is(":visible") == false) {
                             godownchoice = data[0].Name;
                         }
-                        else if ($("#godown").is(":visible") == true && $("#godown").val() == "All" && data[0].Name =="Admin") {
+                        else if ($("#godown").is(":visible") == true && $("#godown").val() == "" && data[0].Name =="Admin") {
                             godownchoice = '';
                         }
                         else if($("#godown").is(":visible") == true && data[0].Name =="Admin"){
-                            if($("#godown").val() == "Balaji"||$("#godown").val() == "Vittal"||$("#godown").val() == "Moodabidri"){
+                            if($("#godown").val() == "B"||$("#godown").val() == "V"||$("#godown").val() == "M"){
                                 godownchoice = $("#godown").val();
                             }
 
@@ -327,7 +337,7 @@ angular.module('supariApp').directive('summary', function () {
                     $("p").show();
                     $(".table").show();
                     $("html").unmask();
-                }, 299);
+                }, 200);
                 var x = getCookie("LoginUser");
                 var date = $("#datePicker").val();
                 var godownchoice = $("#godown").val();

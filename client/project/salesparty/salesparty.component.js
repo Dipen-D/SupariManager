@@ -29,7 +29,6 @@ angular.module('supariApp').directive('salesparty', function () {
             Meteor.call('getSalesAccountNameAddParty', function (err, data) {
                 if (!err) {
                     $scope.Sales = data;
-                    console.log(data);
                     if (!$scope.$$phase) {
                         $scope.$digest();
                     }
@@ -41,20 +40,32 @@ angular.module('supariApp').directive('salesparty', function () {
                 }
             });
 
-            $scope.delete = function (id) {
+            $scope.delete = function (id,name) {
                 $("#delete-modal").modal('show');
                     $scope.confirm = function(){
-                        Meteor.call('DeleteSalesAccountParty', id, function (err, data) {
+                        Meteor.call('CheckForTransactionBeforeDelete', name,function(err, data) {
                             if (!err) {
-                                $scope.updateProcessObj(id);
-                                location.reload();
-                            } else {
-                                console.log(err);
-                                var message = "Error in Deleting Sales party";
-                                var error = JSON.stringify(err);
-                                Meteor.call('sendEmail',message,error);
+                                if(data.length == 0){
+                                    Meteor.call('DeleteSalesAccountParty', id, function (err, data) {
+                                        if (!err) {
+                                            $scope.updateProcessObj(id);
+                                            location.reload();
+                                        } else {
+                                            console.log(err);
+                                            var message = "Error in Deleting Sales party";
+                                            var error = JSON.stringify(err);
+                                            Meteor.call('sendEmail',message,error);
+                                        }
+                                    });
+                                }
+                                else{
+                                   $("#recordExists").modal("show");
+                                }
                             }
+
+
                         });
+
 
                     }
 
@@ -72,14 +83,26 @@ angular.module('supariApp').directive('salesparty', function () {
                     var tagad = $("#tagad").val();
                     $scope.add = function(name){
                         var name = $("#account").val();
-                        var tagad = parseInt($("#tagad").val());
-                        Meteor.call('AddNewSalesAccountparty', name,tagad, function (err, data) {
+                        var tagad = $("#tagad").val();
+                        Meteor.call('CheckForDuplicateAccount', name,tagad, function (err, data) {
                             if (!err) {
-                                $("html").mask("");
-                                location.reload();
-                            }
+                                if(data.length == 0){
+                                    var name = $("#account").val();
+                                    var tagad = $("#tagad").val();
+                                    Meteor.call('AddNewSalesAccountparty', name,tagad, function (err, data) {
+                                        if (!err) {
+                                            $("html").mask("");
+                                            location.reload();
+                                        }
 
-                        });
+                                    });
+                                }
+                                else{
+                                   $("#alert-modal").modal("show");
+                                }
+
+                            }});
+
                  };
             }
 

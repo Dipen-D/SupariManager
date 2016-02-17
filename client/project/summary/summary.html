@@ -9,11 +9,12 @@
         </div>
         <div class="col-lg-2 godowns" >
             <div class="form-group">
-                <select class="form-control bigFonts godown hidden" id="godown" style="padding:4px;">
-                    <option>Balaji</option>
-                    <option>Vittal</option>
-                    <option>Moodabidri</option>
-                    <option>All</option>
+                <select class="form-control bigFonts godown hidden" id="godown" style="padding:4px;" ng-model="godown">
+                        <option value="">All</option>
+                        <option ng-repeat="godown in Godowns" value="{{godown.Name}}">
+                            {{godown.Name}}
+                        </option>
+
                 </select>
             </div>
         </div>
