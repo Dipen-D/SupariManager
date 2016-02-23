@@ -16,7 +16,7 @@
                         }
                     }
                 });
-				
+
 				$scope.delstock = function () {
 					$("#delete-modals").modal("show");
 				};
@@ -26,7 +26,7 @@
                                     var message = "Opening Stock was Deleted";
                                     var error = new Date();
                                     Meteor.call('sendEmail',message,error);
-                                    
+
                                 } else {
                                     console.log(err);
 
@@ -100,7 +100,7 @@
                 });
 				 var type = $("#product").val();
                     var godown = $("#godown").val();
-			
+
                 this.getTotalWeights = function () {
                     var total = 0;
                     var data = (this.product == 'Supari') ? $scope.Stock : $scope.MariTypes;
@@ -246,6 +246,7 @@
                         }
                     });
                     resetprocess();
+                    location.reload();
 
                 }
                 $(document).ready(function () {
