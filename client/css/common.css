@@ -409,6 +409,10 @@ a.redirected {
 .memo{
     width:100%;
     height:120px;
+    font-family: verdana;
 }
 
 
+.item-back.sales {
+    background: #333 !important;
+}
