@@ -17,22 +17,15 @@
         <div class="tableHeader item">
             <tr>
                 <td>
-                    <div class="col-xs-5 col-xs-offset-1 col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 heading-date headerStyle">
-                        <b class="date-heading" ng-click="order('Name')">Name </b><span class="sortorder"
-                                                                                              ng-show="predicate === 'Name'"
-                                                                                        ng-class="{reverse:reverse}"></span>
-                    </div>
-                </td>
-                <td>
 
-                    <div class="col-xs-4 col-xs-offset-2 col-lg-4 col-lg-offset-0 col-md-4 col-md-offset-0 heading-date headerStyle">
+                    <div class="col-xs-8 col-xs-offset-2 col-lg-9 col-lg-offset-1 col-md-9 col-md-offset-1 heading-date headerStyle">
                         <b class="date-heading" ng-click="order('Tagad')">Tagad </b><span class="sortorder"
                                                                                                 ng-show="predicate === 'Tagad'"
                                                                                                 ng-class="{reverse:reverse}"></span>
                     </div>
                 </td>
                 <td>
-                    <div class="col-xs-3 col-lg-2 col-lg-offset-0 col-md-2 col-md-offset-0 hidden-xs hidden-sm hidden-md headerStyle align-right margin-left">
+                    <div class="col-xs-2 col-lg-1 col-lg-offset-1 col-md-2 col-md-offset-0 hidden-xs hidden-sm hidden-md headerStyle align-right margin-left">
                         <b>Delete</b>
                     </div>
                 </td>
@@ -42,17 +35,12 @@
     <div class="list" ng-repeat="user in Sales |  orderBy:predicate:reverse">
         <div class="item">
             <div class="item-swipe bigFonts">
-                <div class="col-xs-5 col-xs-offset-1 col-lg-6 col-md-6 col-lg-offset-0 col-md-offset-0">
-                    <div class="wrap">
-                        <span class="row1 date-content date whitespace">{{user.Name}} </span>
-                    </div>
-                </div>
-                <div class="col-xs-4 col-xs-offset-2 col-lg-5 col-md-5 col-lg-offset-0 col-md-offset-0">
+                <div class="col-xs-8 col-xs-offset-2 col-lg-9 col-lg-offset-1 col-md-9 col-md-offset-1">
                     <div class="wrap">
                         <span class="row1 date-content date">{{user.Tagad}} </span>
                     </div>
                 </div>
-                <div class="col-xs-3 col-lg-1 col-md-1 col-lg-offset-0 col-md-offset-0 hidden-xs hidden-xs hidden-sm hidden-md" ng-click="delete(user._id,user.Name)">
+                <div class="col-xs-3 col-lg-1 col-md-1 col-lg-offset-0 col-md-offset-0 hidden-xs hidden-xs hidden-sm hidden-md" ng-click="delete(user._id,user.Tagad)">
                     <div class="wrap">
                         <a class="id hidden">{{user._id}}</a>
                         <a class="delete" href='#'><span class='glyphicon glyphicon-trash'></span></a>
@@ -60,8 +48,8 @@
                 </div>
             </div>
             <div class="item-back sales ">
-               <button class="action first btn-delete " type="button" ng-click="delete(user._id,user.Name)">
-                    <a class="id hidden">{{user._id}}-{{user.Name}}</a>
+               <button class="action first btn-delete " type="button" ng-click="delete(user._id,user.Tagad)">
+                    <a class="id hidden">{{user._id}}-{{user.Tagad}}</a>
                     <i class="fa fa-trash-o"></i>
                 </button>
             </div>
@@ -76,10 +64,6 @@
                 <h4 class="modal-title">Account Name</h4>
             </div>
             <div class="modal-body">
-                <span class="glyphicon glyphicon-user"></span>
-                <input type="text" id="account" placeholder="Enter Account Name">
-                <br>
-                <br>
                 <span class="  glyphicon glyphicon-pushpin"></span>
                 <input type="text" id="tagad" placeholder="Enter Tagad Name">
             </div>

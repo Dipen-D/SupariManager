@@ -40,10 +40,10 @@ angular.module('supariApp').directive('salesparty', function () {
                 }
             });
 
-            $scope.delete = function (id,name) {
+            $scope.delete = function (id,tagad) {
                 $("#delete-modal").modal('show');
                     $scope.confirm = function(){
-                        Meteor.call('CheckForTransactionBeforeDelete', name,function(err, data) {
+                        Meteor.call('CheckForTransactionBeforeDelete', tagad,function(err, data) {
                             if (!err) {
                                 if(data.length == 0){
                                     Meteor.call('DeleteSalesAccountParty', id, function (err, data) {
@@ -79,17 +79,14 @@ angular.module('supariApp').directive('salesparty', function () {
             };
             $scope.create = function(){
                 $("#salesparty-modals").modal("show");
-                    var name = $("#account").val();
                     var tagad = $("#tagad").val();
                     $scope.add = function(name){
-                        var name = $("#account").val();
                         var tagad = $("#tagad").val();
-                        Meteor.call('CheckForDuplicateAccount', name,tagad, function (err, data) {
+                        Meteor.call('CheckForDuplicateAccount',tagad, function (err, data) {
                             if (!err) {
                                 if(data.length == 0){
-                                    var name = $("#account").val();
                                     var tagad = $("#tagad").val();
-                                    Meteor.call('AddNewSalesAccountparty', name,tagad, function (err, data) {
+                                    Meteor.call('AddNewSalesAccountparty',tagad, function (err, data) {
                                         if (!err) {
                                             $("html").mask("");
                                             location.reload();

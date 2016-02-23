@@ -57,13 +57,13 @@ if (Meteor.isServer) {
         getSalesAccountName: function () {
            // var salesaccoutname = SalesAccountNames.find({},{fields: {'Name': 1, '_id': 0}}).fetch();
             var sort_fields = {'Tagad':1};
-            var projection = {'Name':1,'_id':1,'Tagad':1};
+            var projection = {'_id':1,'Tagad':1};
             return SalesAccountNames.find({},{fields: projection, sort:sort_fields}).fetch();
            // return salesaccoutname;
         },
 
         getSalesAccountNameAddParty: function () {
-            var salesaccoutname = SalesAccountNames.find({}, {fields: {'Name': 1,'Tagad':1, '_id': 1}}).fetch();
+            var salesaccoutname = SalesAccountNames.find({}, {fields: {'Tagad':1, '_id': 1}}).fetch();
             return salesaccoutname;
         },
         DeleteSalesAccountParty: function(id){
@@ -71,9 +71,8 @@ if (Meteor.isServer) {
                 _id: id
             });
         },
-        AddNewSalesAccountparty : function(name,tagad){
+        AddNewSalesAccountparty : function(tagad){
             SalesAccountNames.insert({
-                "Name":name,
                 "Tagad":tagad
             })
         },
@@ -230,13 +229,6 @@ if (Meteor.isServer) {
         },
 
         EditSalesEntry: function (data, datapro, id) {
-            var sample = SalesAccountNames.find({},{fields:{'Name':1,'Tagad':1,'_id':0}}).fetch();
-            var Original;
-            for(i=0;i<sample.length;i++){
-                if(sample[i].Tagad == datapro.salesAccountName){
-                    Original=  sample[i].Name
-                }
-            }
             Sales.update({_id: id},
                 {
                     CreatedDate: datapro.CreatedDate,
@@ -248,19 +240,11 @@ if (Meteor.isServer) {
                     Godown: datapro.Godown,
                     TotalBags: datapro.TotalBags,
                     Memo:datapro.memo,
-                    RealSalesAccountName:Original,
                     Info: data
                 })
 
         },
         SalesEntry: function (data, datapro) {
-            var sample = SalesAccountNames.find({},{fields:{'Name':1,'Tagad':1,'_id':0}}).fetch();
-            var Original;
-            for(i=0;i<sample.length;i++){
-                if(sample[i].Tagad == datapro.salesAccountName){
-                    Original=  sample[i].Name
-                }
-            }
             var _id;
             Counters.update({_id: "salesId"}, {$inc: {SequenceValue: 1}});
             var ret = Counters.findOne({_id: "salesId"});
@@ -277,7 +261,6 @@ if (Meteor.isServer) {
                 Godown: datapro.Godown,
                 TotalBags: datapro.TotalBags,
                 Memo:datapro.memo,
-                RealSalesAccountName:Original,
                 Info: data
             };
             Sales.insert(final);
@@ -1033,13 +1016,13 @@ if (Meteor.isServer) {
             var name = SalesAccountNames.find({"Tagad":x}, {fields: {'Name': 1, '_id': 0}}).fetch();
             return name;
         },
-        CheckForDuplicateAccount:function(name,tagad){
-            var x  = SalesAccountNames.find({$or:[ { Name:name},{ Tagad:tagad}]}).fetch();
+        CheckForDuplicateAccount:function(tagad){
+            var x  = SalesAccountNames.find({Tagad:tagad}).fetch();
             return x ;
 
         },
-        CheckForTransactionBeforeDelete : function(name){
-            var x = Sales.find({"RealSalesAccountName":name}).fetch();
+        CheckForTransactionBeforeDelete : function(tagad){
+            var x = Sales.find({"salesAccountName":tagad}).fetch();
             return x;
         }
     });
