@@ -39,8 +39,11 @@ if (Meteor.isServer) {
             return product;
         },
         getProductTypes: function () {
-            var producttypes = ProductTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
-            return producttypes;
+            //var producttypes = ProductTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
+            //return producttypes;
+            var sort_fields = {'Name':1};
+            var projection = {'_id':0,'Name':1};
+            return ProductTypes.find({},{fields:projection,sort:sort_fields}).fetch();
         },
         getProductMainTypes: function () {
             var productmaintypes = ProductMainTypes.find({}, {fields: {'Name': 1, '_id': 0}}).fetch();
