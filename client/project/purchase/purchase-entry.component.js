@@ -217,7 +217,7 @@
                     var kgs = bags * 65 + packets;
                     var memo =$(".memo").val();
                     var ProductTypeAlias;
-                    if (producttype == "C2" || producttype == "C3" || producttype == "CX") {
+                    if (producttype == "C2" || producttype == "C3" || producttype == "CX" || producttype == "CF") {
                         var productTypeAlias = "C";
                     }
                     else if (producttype == "DC2" || producttype == "DCX") {
