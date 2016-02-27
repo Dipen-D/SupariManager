@@ -149,7 +149,7 @@
                             var dates = new Date();
                             var datestring = ("0" + (dates.getMonth() + 1).toString()).substr(-2) + "/" + ("0" + dates.getDate().toString()).substr(-2) + "/" + (dates.getFullYear().toString()).substr(0);
                             var mdate = datestring;
-                            if (producttype == "C2" || producttype == "C3" || producttype == "CX") {
+                            if (producttype == "C2" || producttype == "C3" || producttype == "CX" || producttype == "CF") {
                                 var productTypeAlias = "C";
                             }
                             else if (producttype == "DC2" || producttype == "DCX") {
