@@ -13,13 +13,14 @@ angular.module('supariApp').directive('salesparty', function () {
 
                     }
                     else{
-                        window.location.href="/loginlist";
+                        window.location.href="/birthdaycalculator";
 
                     }
                 }
             });
             $(".stock").removeClass("hidden");
             $(".salesparty").removeClass("hidden");
+            $(".purchaseparty").removeClass("hidden");
             $scope.predicate = 'Name';
             $scope.reverse = true;
             $scope.order = function (predicate) {
@@ -48,8 +49,8 @@ angular.module('supariApp').directive('salesparty', function () {
                                 if(data.length == 0){
                                     Meteor.call('DeleteSalesAccountParty', id, function (err, data) {
                                         if (!err) {
-                                            $scope.updateProcessObj(id);
                                             location.reload();
+                                            $scope.updateProcessObj(id);
                                         } else {
                                             console.log(err);
                                             var message = "Error in Deleting Sales party";

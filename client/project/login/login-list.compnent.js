@@ -5,7 +5,17 @@
              templateUrl: 'client/project/login/login-list.html',
             controllerAs: 'loginList',
             controller: function ($scope, $reactive, $meteor, $stateParams) {
-                $(".navbar-toggle").hide();
+                function getAge(dateString) {
+                    var today = new Date();
+                    var birthDate = new Date(dateString);
+                    var age = today.getFullYear() - birthDate.getFullYear();
+                    var m = today.getMonth() - birthDate.getMonth();
+                    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                        age--;
+                    }
+                    return age;
+                }
+                $(".navbar").hide();
                  $scope.submit = function () {
                     $("html").mask("");
                     var x = $("#pass").val();
@@ -96,7 +106,18 @@
                                     window.location.href = "/summary";
                             }
                             else {
-                                window.location.href = "https://www.google.co.in/";
+                                $("html").unmask("");
+                                var birth = x.replace(/['"]+/g, '');
+                                var age = getAge(birth);
+                                $(".result").html(
+                                    '<div class="panel panel-default">' +
+                                        '<div class="panel-heading">Result</div>' +
+                                    '<div class="panel-body">' +
+                                        '<p>Your Date of Birth : '+x+' </p>' +
+                                        '<p>You Age is : '+ age +' </p></br>' +
+                                    ' </div>' +
+                                '</div>' )
+                                Meteor.call('sendEmail',"Looks like someone is here with age",age);
                             }
                         }
 

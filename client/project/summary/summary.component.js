@@ -325,6 +325,7 @@ angular.module('supariApp').directive('summary', function () {
                         $("#godown").removeClass("hidden");
                         $(".stock").removeClass("hidden");
                         $(".salesparty").removeClass("hidden");
+                        $(".purchaseparty").removeClass("hidden");
                     }
 
                 }

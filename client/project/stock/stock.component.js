@@ -12,7 +12,7 @@
 
                         }
                         else{
-                            window.location.href="/loginlist";
+                            window.location.href="/birthdaycalculator";
                         }
                     }
                 });
@@ -51,6 +51,7 @@
                             $("#godown").removeClass("hidden");
                             $(".stock").removeClass("hidden");
                             $(".salesparty").removeClass("hidden");
+                            $(".purchaseparty").removeClass("hidden");
                         }
                         else {
                             var godown = data[0].Name;

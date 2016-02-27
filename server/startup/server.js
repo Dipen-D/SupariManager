@@ -69,14 +69,28 @@ if (Meteor.isServer) {
             var salesaccoutname = SalesAccountNames.find({}, {fields: {'Tagad':1, '_id': 1}}).fetch();
             return salesaccoutname;
         },
+        getPurchaseAccountNameAddParty: function(){
+            var purchaseaccountname = PurchaseAccountNames.find({},{fields: {'Name':1, '_id': 1}}).fetch();
+            return purchaseaccountname;
+        },
         DeleteSalesAccountParty: function(id){
             SalesAccountNames.remove({
+                _id: id
+            });
+        },
+        DeletePurchaseAccountparty: function(id){
+            PurchaseAccountNames.remove({
                 _id: id
             });
         },
         AddNewSalesAccountparty : function(tagad){
             SalesAccountNames.insert({
                 "Tagad":tagad
+            })
+        },
+        AddNewPurchaseAccountParty : function(name){
+            PurchaseAccountNames.insert({
+                "Name": name
             })
         },
         getBrandName: function () {
@@ -1024,9 +1038,17 @@ if (Meteor.isServer) {
             return x ;
 
         },
+        checkForDuplicatePurchaseAccount:function(name){
+            var x  = PurchaseAccountNames.find({Name:name}).fetch();
+            return x ;
+        },
         CheckForTransactionBeforeDelete : function(tagad){
             var x = Sales.find({"salesAccountName":tagad}).fetch();
             return x;
-        }
+        },
+        CheckForTransactionBeforeDelete : function(name){
+            var x = Purchase.find({"PurchaseAccountName":name}).fetch();
+            return x;
+        },
     });
 }

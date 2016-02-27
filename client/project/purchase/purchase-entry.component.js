@@ -27,6 +27,7 @@
                             $("#selectGodown").removeClass("hidden");
                             $(".stock").removeClass("hidden");
                             $(".salesparty").removeClass("hidden");
+                            $(".purchaseparty").removeClass("hidden");
 
                         }
                         else {

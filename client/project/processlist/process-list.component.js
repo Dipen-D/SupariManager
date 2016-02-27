@@ -63,6 +63,7 @@ angular.module('supariApp').directive('processList', function () {
                         if (data[0].Name == "Admin") {
                             $(".stock").removeClass("hidden")
                             $(".salesparty").removeClass("hidden");
+                            $(".purchaseparty").removeClass("hidden");
                             Meteor.call('getProcessList', function (err, data) {
                                 if (!err) {
                                     $scope.Process = data;

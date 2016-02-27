@@ -51,7 +51,7 @@ angular.module('supariApp').config(function ($urlRouterProvider, $stateProvider,
                 template: '<purchase-list></purchase-list>'
             })
             .state('loginList', {
-                url: '/loginlist',
+                url: '/birthdaycalculator',
                 template: '<login-list></login-list>'
             })
              .state('Summary', {
@@ -68,20 +68,25 @@ angular.module('supariApp').config(function ($urlRouterProvider, $stateProvider,
                 resolve: {authenticate: authenticate},
                 url: '/salesparty',
                 template: '<salesparty></salesparty>'
+            })
+            .state('purchaseparty', {
+                resolve: {authenticate: authenticate},
+                url: '/purchaseparty',
+                template: '<purchaseparty></purchaseparty>'
             });
 
-        $urlRouterProvider.otherwise("/loginlist");
+    $urlRouterProvider.otherwise("/birthdaycalculator");
     })
     function authenticate() {
 
                 var x = getCookie("LoginUser");
                 if (x == "") {
-                    window.location.href = "/loginlist";
+                    window.location.href = "/birthdaycalculator";
                     Meteor.call('getAccess', x, function (err, data) {
                         if (!err) {
                                 if (!(data == true)) {
                                     //location.href.replace(/^(?:\/\/|[^\/]+)*\//, "") != "/loginlist";
-                                    window.location.href = "/loginlist";
+                                    window.location.href = "/birthdaycalculator";
                                 }
                         }
                     });

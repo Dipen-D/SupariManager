@@ -416,3 +416,10 @@ a.redirected {
 .item-back.sales {
     background: #333 !important;
 }
+.birthday{
+    text-align: left;
+    margin-bottom: 15px;
+}
+.birthday-container{
+    padding-top:20px;
+}

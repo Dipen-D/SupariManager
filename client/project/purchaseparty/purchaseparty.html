@@ -3,7 +3,7 @@
 <div class="container">
     <div class="page-header row">
         <div class="col-xs-12 col-lg-10">
-            <h1>Sales Account</h1>
+            <h1>Purchase Account</h1>
         </div>
         <div class="col-xs-12 col-lg-2 del">
             <button id="deletebtn" type="submit" class="btn btn-success btn-block btn-block-xs bigFonts"
@@ -12,61 +12,61 @@
         </div>
     </div>
 
-<!-- Modal starts -->
-<div class="tableContainer ">
-    <div class="list">
-        <div class="tableHeader item">
-            <tr>
-                <td>
+    <!-- Modal starts -->
+    <div class="tableContainer ">
+        <div class="list">
+            <div class="tableHeader item">
+                <tr>
+                    <td>
 
-                    <div class="col-xs-8 col-xs-offset-2 col-lg-9 col-lg-offset-1 col-md-9 col-md-offset-1 heading-date headerStyle">
-                        <b class="date-heading" ng-click="order('Tagad')">Tagad </b><span class="sortorder"
-                                                                                                ng-show="predicate === 'Tagad'"
-                                                                                                ng-class="{reverse:reverse}"></span>
-                    </div>
-                </td>
-                <td>
-                    <div class="col-xs-2 col-lg-1 col-lg-offset-1 col-md-2 col-md-offset-0 hidden-xs hidden-sm hidden-md headerStyle align-right margin-left">
-                        <b>Delete</b>
-                    </div>
-                </td>
-            </tr>
+                        <div class="col-xs-8 col-xs-offset-2 col-lg-9 col-lg-offset-1 col-md-9 col-md-offset-1 heading-date headerStyle">
+                            <b class="date-heading" ng-click="order('Name')">Purchase Name </b><span class="sortorder"
+                                                                                              ng-show="predicate === 'Name'"
+                                                                                              ng-class="{reverse:reverse}"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-xs-2 col-lg-1 col-lg-offset-1 col-md-2 col-md-offset-0 hidden-xs hidden-sm hidden-md headerStyle align-right margin-left">
+                            <b>Delete</b>
+                        </div>
+                    </td>
+                </tr>
             </div>
-    </div>
-    <div class="list" ng-repeat="user in Sales |  orderBy:predicate:reverse">
-        <div class="item">
-            <div class="item-swipe bigFonts">
-                <div class="col-xs-8 col-xs-offset-2 col-lg-9 col-lg-offset-1 col-md-9 col-md-offset-1">
-                    <div class="wrap">
-                        <span class="row1 date-content date">{{user.Tagad}} </span>
+        </div>
+        <div class="list" ng-repeat="user in Purchase |  orderBy:predicate:reverse">
+            <div class="item">
+                <div class="item-swipe bigFonts">
+                    <div class="col-xs-8 col-xs-offset-2 col-lg-9 col-lg-offset-1 col-md-9 col-md-offset-1">
+                        <div class="wrap">
+                            <span class="row1 date-content date">{{user.Name}} </span>
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-lg-1 col-md-1 col-lg-offset-0 col-md-offset-0 hidden-xs hidden-xs hidden-sm hidden-md" ng-click="delete(user._id,user.Name)">
+                        <div class="wrap">
+                            <a class="id hidden">{{user._id}}</a>
+                            <a class="delete" href='#'><span class='glyphicon glyphicon-trash'></span></a>
+                        </div>
                     </div>
                 </div>
-                <div class="col-xs-3 col-lg-1 col-md-1 col-lg-offset-0 col-md-offset-0 hidden-xs hidden-xs hidden-sm hidden-md" ng-click="delete(user._id,user.Tagad)">
-                    <div class="wrap">
-                        <a class="id hidden">{{user._id}}</a>
-                        <a class="delete" href='#'><span class='glyphicon glyphicon-trash'></span></a>
-                    </div>
+                <div class="item-back sales ">
+                    <button class="action first btn-delete " type="button" ng-click="delete(user._id,user.Name)">
+                        <a class="id hidden">{{user._id}}-{{user.Name}}</a>
+                        <i class="fa fa-trash-o"></i>
+                    </button>
                 </div>
-            </div>
-            <div class="item-back sales ">
-               <button class="action first btn-delete " type="button" ng-click="delete(user._id,user.Tagad)">
-                    <a class="id hidden">{{user._id}}-{{user.Tagad}}</a>
-                    <i class="fa fa-trash-o"></i>
-                </button>
             </div>
         </div>
     </div>
 </div>
-</div>
-<div id="salesparty-modals" class="modal fade" tabindex="-1" role="dialog" aria-hidden="false" >
+<div id="party-modals" class="modal fade" tabindex="-1" role="dialog" aria-hidden="false" >
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Account Name</h4>
+                <h4 class="modal-title">Purchase Account Name</h4>
             </div>
             <div class="modal-body">
                 <span class="  glyphicon glyphicon-pushpin"></span>
-                <input type="text" id="tagad" placeholder="Enter Tagad Name">
+                <input type="text" id="name" placeholder="Enter Name">
             </div>
             <div class="modal-footer">
                 <div class="col-xs-6">
