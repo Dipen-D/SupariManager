@@ -71,7 +71,7 @@ angular.module('supariApp').directive('purchaseList', function () {
                     }
 
                 });
-                $("html").mask("");
+               // $("html").mask("");
                 $scope.weight = function (nStr) { //regulerExpression function add coma(,) in price range
                     nStr += '';
                     x = nStr.split('.');
@@ -178,12 +178,6 @@ angular.module('supariApp').directive('purchaseList', function () {
                     }
                 };
                 $(document).ready(function () {
-                    $("body").hide();
-                    $("html").mask("");
-                    window.onload = function () {
-                        $("html").unmask();
-                        $("body").show();
-                    };
 
                 })
 

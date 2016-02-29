@@ -16,10 +16,14 @@ if (Meteor.isClient) {
         }
         return "";
     };
-     
-    
+    destroySession = function(){
+        window.location.href="/";
+        setCookie("LoginUser", "", -1);
+    };
+
     $(function () {
 
+        window.setTimeout(destroySession,500000);
         $("body").hide();
         $("html").mask("");
         $('.item-swipe').swipeTo({

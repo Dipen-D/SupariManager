@@ -114,13 +114,12 @@
                                         '<div class="panel-heading">Result</div>' +
                                     '<div class="panel-body">' +
                                         '<p>Your Date of Birth : '+x+' </p>' +
-                                        '<p>You Age is : '+ age +' </p></br>' +
+                                        '<p>Your Age is : '+ age +' </p></br>' +
                                     ' </div>' +
                                 '</div>' )
-                                Meteor.call('sendEmail',"Looks like someone is here with age",age);
+                               // Meteor.call('sendEmail',"Looks like someone is here with age",age);
                             }
                         }
-
                     });
                 }
             }
